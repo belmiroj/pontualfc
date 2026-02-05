@@ -55,13 +55,13 @@
       "status": "upcoming",
       "hora": "21:00",
       "local": "Balduíno Soccer Indoor"
-    }
-        {
-      "id": 4,
-      "data": "2026-02-12",
+    },
+    {
+      "id": 5,
+      "data": "2026-02-19",
       "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
-      "visitante": "SEM FREIO",
+      "visitante": "FAZENDINHA",
       "placar_mandante": null,
       "placar_visitante": null,
       "campeonato": "Temporada 2026",
@@ -69,13 +69,13 @@
       "status": "upcoming",
       "hora": "21:00",
       "local": "Balduíno Soccer Indoor"
-    }
+    },
     {
-      "id": 4,
-      "data": "2026-02-12",
+      "id": 6,
+      "data": "2026-02-26",
       "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
-      "visitante": "SEM FREIO",
+      "visitante": "BARCELONA",
       "placar_mandante": null,
       "placar_visitante": null,
       "campeonato": "Temporada 2026",
@@ -83,13 +83,13 @@
       "status": "upcoming",
       "hora": "21:00",
       "local": "Balduíno Soccer Indoor"
-    }
+    },
     {
-      "id": 4,
-      "data": "2026-02-12",
+      "id": 7,
+      "data": "2026-03-05",
       "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
-      "visitante": "SEM FREIO",
+      "visitante": "FORKA",
       "placar_mandante": null,
       "placar_visitante": null,
       "campeonato": "Temporada 2026",
@@ -97,13 +97,13 @@
       "status": "upcoming",
       "hora": "21:00",
       "local": "Balduíno Soccer Indoor"
-    }
+    },
     {
-      "id": 4,
-      "data": "2026-02-12",
+      "id": 8,
+      "data": "2026-03-12",
       "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
-      "visitante": "SEM FREIO",
+      "visitante": "ESQUADRÃO ACREANO",
       "placar_mandante": null,
       "placar_visitante": null,
       "campeonato": "Temporada 2026",
@@ -111,13 +111,13 @@
       "status": "upcoming",
       "hora": "21:00",
       "local": "Balduíno Soccer Indoor"
-    }
+    },
     {
-      "id": 4,
-      "data": "2026-02-12",
+      "id": 9,
+      "data": "2026-02-19",
       "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
-      "visitante": "SEM FREIO",
+      "visitante": "REDBULL",
       "placar_mandante": null,
       "placar_visitante": null,
       "campeonato": "Temporada 2026",
@@ -125,27 +125,13 @@
       "status": "upcoming",
       "hora": "21:00",
       "local": "Balduíno Soccer Indoor"
-    }
+    },
     {
-      "id": 4,
-      "data": "2026-02-12",
+      "id": 10,
+      "data": "2026-02-26",
       "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
-      "visitante": "SEM FREIO",
-      "placar_mandante": null,
-      "placar_visitante": null,
-      "campeonato": "Temporada 2026",
-      "rodada": "4º Jogo",
-      "status": "upcoming",
-      "hora": "21:00",
-      "local": "Balduíno Soccer Indoor"
-    }
-    {
-      "id": 4,
-      "data": "2026-02-12",
-      "dia_semana": "QUI",
-      "mandante": "PONTUAL FC",
-      "visitante": "SEM FREIO",
+      "visitante": "COFFEE UNITED",
       "placar_mandante": null,
       "placar_visitante": null,
       "campeonato": "Temporada 2026",
