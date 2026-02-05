@@ -245,7 +245,7 @@
 
         async function calcularEstatisticas() {
 			try {
-				const response = await fetch('jogos.json');
+				const response = await fetch('jogos-2026.json');
 				const data = await response.json();
 				const jogos = data.temporada_2026;
 		
@@ -264,9 +264,9 @@
 						}
 		
 						// Contagem de resultados
-						if (jogo.status === 'win') v++;
-						else if (jogo.status === 'draw') e++;
-						else if (jogo.status === 'loss') d++;
+						if (jogo.status === 'vitoria') v++;
+						else if (jogo.status === 'empate') e++;
+						else if (jogo.status === 'derrota') d++;
 					}
 				});
 		
