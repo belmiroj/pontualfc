@@ -1,0 +1,60 @@
+{
+  "temporada_2026": [
+    {
+      "id": 1,
+      "data": "2026-01-22",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "MALA FC",
+      "placar_mandante": 4,
+      "placar_visitante": 4,
+      "campeonato": "Estadual",
+      "rodada": "1º Jogo",
+      "status": "draw",
+      "hora": "21:00",
+      "local": "Arena Pontual"
+    },
+    {
+      "id": 2,
+      "data": "2026-01-29",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SERRARIA EC",
+      "placar_mandante": 3,
+      "placar_visitante": 2,
+      "campeonato": "Estadual",
+      "rodada": "2º Jogo",
+      "status": "win",
+      "hora": "21:00",
+      "local": "Arena Pontual"
+    },
+    {
+      "id": 3,
+      "data": "2026-02-05",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "NEW CITY FA",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Estadual",
+      "rodada": "3º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Campo do Rival"
+    },
+    {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Estadual",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Arena Pontual"
+    }
+  ]
+}
