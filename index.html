@@ -8,7 +8,6 @@
         :root {
             --bvb-yellow: #FDE100;
             --bvb-black: #000000;
-            --gray-dark: #1a1a1a;
             --text-light: #ffffff;
         }
 
@@ -58,7 +57,7 @@
 
         nav a:hover { color: var(--bvb-yellow); }
 
-        /* Dropdown Estilo Corinthians/BVB */
+        /* Dropdown Estilo Borussia */
         .dropdown { position: relative; }
         .submenu {
             display: none;
@@ -68,6 +67,7 @@
             background-color: var(--bvb-black);
             min-width: 180px;
             border-top: 3px solid var(--bvb-yellow);
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.5);
         }
         .submenu li { display: block; width: 100%; }
         .submenu a { padding: 12px; font-size: 0.8rem; border-bottom: 1px solid #222; }
@@ -75,8 +75,8 @@
 
         /* --- HERO BANNER --- */
         .hero {
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1500') center/cover;
-            height: 400px;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1500') center/cover;
+            height: 350px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -111,42 +111,42 @@
             border-bottom: 6px solid var(--bvb-yellow);
         }
 
-        .match-header { color: var(--bvb-yellow); font-size: 0.8rem; margin-bottom: 20px; text-transform: uppercase; }
+        .match-header { color: var(--bvb-yellow); font-size: 0.8rem; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
 
         .match-teams {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             margin-bottom: 20px;
         }
 
         .vs { color: var(--bvb-yellow); font-style: italic; font-weight: bold; }
 
-        .match-info { font-size: 0.9rem; margin-bottom: 20px; color: #ccc; }
+        .match-info { font-size: 0.9rem; margin-bottom: 20px; color: #bbb; }
 
         /* TABELA DE ESTATÍSTICAS */
         .stats-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .stats-table td {
-            padding: 15px;
+            padding: 18px;
             border-bottom: 1px solid #eee;
             text-transform: uppercase;
             font-size: 0.85rem;
         }
 
-        .stat-value { text-align: right; font-weight: bold; color: var(--bvb-black); }
+        .stat-value { text-align: right; font-weight: bold; color: var(--bvb-black); font-size: 1.1rem; }
 
         .stats-footer { background: var(--bvb-yellow); font-weight: bold; }
 
         @media (max-width: 768px) {
             .dashboard-grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
@@ -174,7 +174,7 @@
 
     <div class="hero">
         <h1>MAIS QUE UM TIME</h1>
-        <p>Pontual FC é uma família!</p>
+        <p>A força imparável do Pontual Futebol Clube.</p>
     </div>
 
     <div class="container">
@@ -185,13 +185,9 @@
                 <div id="home-match-card" class="match-card" style="display: none;">
                     <div id="home-campeonato" class="match-header">---</div>
                     <div class="match-teams">
-                        <div class="team">
-                            <span>PONTUAL FC</span>
-                        </div>
+                        <div class="team">PONTUAL FC</div>
                         <div class="vs">VS</div>
-                        <div class="team">
-                            <span id="home-adversario">---</span>
-                        </div>
+                        <div id="home-adversario" class="team">---</div>
                     </div>
                     <div id="home-info" class="match-info">---</div>
                 </div>
@@ -203,11 +199,12 @@
             <section>
                 <h2 class="section-title">Estatísticas 2026</h2>
                 <table class="stats-table">
-                    <tr><td>Jogos</td><td class="stat-value">14</td></tr>
-                    <tr><td>Vitórias</td><td class="stat-value">9</td></tr>
-                    <tr><td>Empates</td><td class="stat-value">3</td></tr>
-                    <tr><td>Derrotas</td><td class="stat-value">2</td></tr>
-                    <tr class="stats-footer"><td>Aproveitamento</td><td class="stat-value">71%</td></tr>
+                    <tr><td>Jogos</td><td id="stat-jogos" class="stat-value">0</td></tr>
+                    <tr><td>Vitórias</td><td id="stat-vitorias" class="stat-value">0</td></tr>
+                    <tr><td>Empates</td><td id="stat-empates" class="stat-value">0</td></tr>
+                    <tr><td>Derrotas</td><td id="stat-derrotas" class="stat-value">0</td></tr>
+                    <tr><td>Gols Pró</td><td id="stat-gols" class="stat-value">0</td></tr>
+                    <tr class="stats-footer"><td>Aproveitamento</td><td id="stat-aproveitamento" class="stat-value">0%</td></tr>
                 </table>
             </section>
 
@@ -215,15 +212,14 @@
     </div>
 
     <script>
-        async function carregarDestaqueHome() {
+        async function inicializarDashboard() {
             try {
-                // Tenta carregar o JSON de jogos
                 const response = await fetch('jogos-2026.json');
                 const data = await response.json();
-                
-                // Encontra o primeiro jogo com status 'upcoming'
-                const proximo = data.temporada_2026.find(j => j.status === 'upcoming');
+                const jogos = data.temporada_2026;
 
+                // 1. LÓGICA DO PRÓXIMO JOGO
+                const proximo = jogos.find(j => j.status === 'upcoming');
                 if (proximo) {
                     const adversario = proximo.mandante === "PONTUAL FC" ? proximo.visitante : proximo.mandante;
                     document.getElementById('home-adversario').innerText = adversario;
@@ -238,62 +234,38 @@
                 } else {
                     document.getElementById('no-matches').style.display = 'block';
                 }
-            } catch (e) {
-                console.error("Erro ao carregar jogos.json. Certifique-se de usar um servidor local.", e);
+
+                // 2. LÓGICA DAS ESTATÍSTICAS
+                let v = 0, e = 0, d = 0, gp = 0, totalJogos = 0;
+
+                jogos.forEach(jogo => {
+                    if (jogo.status !== 'upcoming') {
+                        totalJogos++;
+                        gp += (jogo.mandante === "PONTUAL FC") ? jogo.placar_mandante : jogo.placar_visitante;
+                        
+                        if (jogo.status === 'vitoria') v++;
+                        else if (jogo.status === 'empate') e++;
+                        else if (jogo.status === 'derrota') d++;
+                    }
+                });
+
+                const pontosGanhos = (v * 3) + (e * 1);
+                const pontosPossiveis = totalJogos * 3;
+                const aprov = totalJogos > 0 ? ((pontosGanhos / pontosPossiveis) * 100).toFixed(1) : 0;
+
+                document.getElementById('stat-jogos').innerText = totalJogos;
+                document.getElementById('stat-vitorias').innerText = v;
+                document.getElementById('stat-empates').innerText = e;
+                document.getElementById('stat-derrotas').innerText = d;
+                document.getElementById('stat-gols').innerText = gp;
+                document.getElementById('stat-aproveitamento').innerText = aprov + "%";
+
+            } catch (err) {
+                console.error("Erro ao carregar o dashboard:", err);
             }
         }
 
-        async function calcularEstatisticas() {
-			try {
-				const response = await fetch('jogos-2026.json');
-				const data = await response.json();
-				const jogos = data.temporada_2026;
-		
-				let v = 0, e = 0, d = 0, gp = 0, totalJogos = 0;
-		
-				jogos.forEach(jogo => {
-					// Só calcula jogos que já possuem resultado (status diferente de upcoming)
-					if (jogo.status !== 'upcoming') {
-						totalJogos++;
-						
-						// Soma de Gols (considerando que o Pontual FC pode ser mandante ou visitante)
-						if (jogo.mandante === "PONTUAL FC") {
-							gp += jogo.placar_mandante;
-						} else {
-							gp += jogo.placar_visitante;
-						}
-		
-						// Contagem de resultados
-						if (jogo.status === 'vitoria') v++;
-						else if (jogo.status === 'empate') e++;
-						else if (jogo.status === 'derrota') d++;
-					}
-				});
-		
-				// Cálculo de aproveitamento: (Pontos Ganhos / Pontos Possíveis) * 100
-				const pontosGanhos = (v * 3) + (e * 1);
-				const pontosPossiveis = totalJogos * 3;
-				const aproveitamento = totalJogos > 0 ? ((pontosGanhos / pontosPossiveis) * 100).toFixed(1) : 0;
-		
-				// Inserir no HTML
-				document.getElementById('stat-jogos').innerText = totalJogos;
-				document.getElementById('stat-vitorias').innerText = v;
-				document.getElementById('stat-empates').innerText = e;
-				document.getElementById('stat-derrotas').innerText = d;
-				document.getElementById('stat-gols').innerText = gp;
-				document.getElementById('stat-aproveitamento').innerText = aproveitamento + "%";
-		
-			} catch (error) {
-				console.error("Erro ao calcular estatísticas:", error);
-			}
-		}
-		
-		// Chame a função no window.onload
-		window.onload = () => {
-			carregarDestaqueHome();
-			calcularEstatisticas();
-		};
-
+        vitoriadow.onload = inicializarDashboard;
     </script>
 </body>
 </html>
