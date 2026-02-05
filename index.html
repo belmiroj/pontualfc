@@ -174,7 +174,7 @@
 
     <div class="hero">
         <h1>MAIS QUE UM TIME</h1>
-        <p>Pontual FC é uma família!.</p>
+        <p>Pontual FC é uma família!</p>
     </div>
 
     <div class="container">
@@ -242,7 +242,58 @@
                 console.error("Erro ao carregar jogos.json. Certifique-se de usar um servidor local.", e);
             }
         }
-        window.onload = carregarDestaqueHome;
+
+        async function calcularEstatisticas() {
+			try {
+				const response = await fetch('jogos.json');
+				const data = await response.json();
+				const jogos = data.temporada_2026;
+		
+				let v = 0, e = 0, d = 0, gp = 0, totalJogos = 0;
+		
+				jogos.forEach(jogo => {
+					// Só calcula jogos que já possuem resultado (status diferente de upcoming)
+					if (jogo.status !== 'upcoming') {
+						totalJogos++;
+						
+						// Soma de Gols (considerando que o Pontual FC pode ser mandante ou visitante)
+						if (jogo.mandante === "PONTUAL FC") {
+							gp += jogo.placar_mandante;
+						} else {
+							gp += jogo.placar_visitante;
+						}
+		
+						// Contagem de resultados
+						if (jogo.status === 'win') v++;
+						else if (jogo.status === 'draw') e++;
+						else if (jogo.status === 'loss') d++;
+					}
+				});
+		
+				// Cálculo de aproveitamento: (Pontos Ganhos / Pontos Possíveis) * 100
+				const pontosGanhos = (v * 3) + (e * 1);
+				const pontosPossiveis = totalJogos * 3;
+				const aproveitamento = totalJogos > 0 ? ((pontosGanhos / pontosPossiveis) * 100).toFixed(1) : 0;
+		
+				// Inserir no HTML
+				document.getElementById('stat-jogos').innerText = totalJogos;
+				document.getElementById('stat-vitorias').innerText = v;
+				document.getElementById('stat-empates').innerText = e;
+				document.getElementById('stat-derrotas').innerText = d;
+				document.getElementById('stat-gols').innerText = gp;
+				document.getElementById('stat-aproveitamento').innerText = aproveitamento + "%";
+		
+			} catch (error) {
+				console.error("Erro ao calcular estatísticas:", error);
+			}
+		}
+		
+		// Chame a função no window.onload
+		window.onload = () => {
+			carregarDestaqueHome();
+			calcularEstatisticas();
+		};
+
     </script>
 </body>
 </html>
