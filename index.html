@@ -205,6 +205,7 @@
                     <tr><td>Derrotas</td><td id="stat-derrotas" class="stat-value">0</td></tr>
                     <tr><td>Gols Pró</td><td id="stat-gols" class="stat-value">0</td></tr>
                     <tr><td>Gols Contra</td><td id="stat-gols-contra" class="stat-value">0</td></tr>
+                    <tr><td>Saldo de Gols</td><td id="stat-saldo" class="stat-value">0</td></tr>
                     <tr class="stats-footer"><td>Aproveitamento</td><td id="stat-aproveitamento" class="stat-value">0%</td></tr>
                 </table>
             </section>
@@ -257,6 +258,7 @@
                     }
                 });
 
+                const saldoGols = gp - gc;
                 const pontosGanhos = (v * 3) + (e * 1);
                 const pontosPossiveis = totalJogos * 3;
                 const aprov = totalJogos > 0 ? ((pontosGanhos / pontosPossiveis) * 100).toFixed(1) : 0;
@@ -267,7 +269,10 @@
                 document.getElementById('stat-derrotas').innerText = d;
                 document.getElementById('stat-gols').innerText = gp;
                 document.getElementById('stat-gols-contra').innerText = gc;
+                document.getElementById('stat-saldo').innerText = (saldoGols > 0 ? "+" : "") + saldoGols;
                 document.getElementById('stat-aproveitamento').innerText = aprov + "%";
+
+                document.getElementById('stat-saldo').style.color = saldoGols >= 0 ? "#2ecc71" : "#e74c3c";
 
             } catch (err) {
                 console.error("Erro ao carregar o dashboard:", err);
