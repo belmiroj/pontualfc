@@ -204,6 +204,7 @@
                     <tr><td>Empates</td><td id="stat-empates" class="stat-value">0</td></tr>
                     <tr><td>Derrotas</td><td id="stat-derrotas" class="stat-value">0</td></tr>
                     <tr><td>Gols Pró</td><td id="stat-gols" class="stat-value">0</td></tr>
+                    <tr><td>Gols Contra</td><td id="stat-gols-contra" class="stat-value">0</td></tr>
                     <tr class="stats-footer"><td>Aproveitamento</td><td id="stat-aproveitamento" class="stat-value">0%</td></tr>
                 </table>
             </section>
@@ -241,8 +242,15 @@
                 jogos.forEach(jogo => {
                     if (jogo.status !== 'upcoming') {
                         totalJogos++;
+ 
+                        // Cálculo de Gols Pró
                         gp += (jogo.mandante === "PONTUAL FC") ? jogo.placar_mandante : jogo.placar_visitante;
-                        
+                
+                        // Cálculo de Gols Contra (Soma os gols do adversário + GCs registrados)
+                        const golsAdversario = (jogo.mandante === "PONTUAL FC") ? jogo.placar_visitante : jogo.placar_mandante;
+                        const golsContraRegistrados = jogo.gols_contra || 0;
+                        gc += (golsAdversario + golsContraRegistrados);
+
                         if (jogo.status === 'vitoria') v++;
                         else if (jogo.status === 'empate') e++;
                         else if (jogo.status === 'derrota') d++;
@@ -258,6 +266,7 @@
                 document.getElementById('stat-empates').innerText = e;
                 document.getElementById('stat-derrotas').innerText = d;
                 document.getElementById('stat-gols').innerText = gp;
+                document.getElementById('stat-gols-contra').innerText = gc;
                 document.getElementById('stat-aproveitamento').innerText = aprov + "%";
 
             } catch (err) {
