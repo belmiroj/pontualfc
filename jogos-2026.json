@@ -10,9 +10,9 @@
       "placar_visitante": 4,
       "campeonato": "Estadual",
       "rodada": "1º Jogo",
-      "status": "draw",
+      "status": "Empate",
       "hora": "21:00",
-      "local": "Arena Pontual"
+      "local": "Balduíno Soccer Indoor"
     },
     {
       "id": 2,
@@ -22,11 +22,11 @@
       "visitante": "SERRARIA EC",
       "placar_mandante": 3,
       "placar_visitante": 2,
-      "campeonato": "Estadual",
+      "campeonato": "Temporada 2026",
       "rodada": "2º Jogo",
-      "status": "win",
+      "status": "Vitória",
       "hora": "21:00",
-      "local": "Arena Pontual"
+      "local": "Balduíno Soccer Indoor"
     },
     {
       "id": 3,
@@ -36,7 +36,7 @@
       "visitante": "NEW CITY FA",
       "placar_mandante": null,
       "placar_visitante": null,
-      "campeonato": "Estadual",
+      "campeonato": "Temporada 2026",
       "rodada": "3º Jogo",
       "status": "upcoming",
       "hora": "21:00",
@@ -50,11 +50,109 @@
       "visitante": "SEM FREIO",
       "placar_mandante": null,
       "placar_visitante": null,
-      "campeonato": "Estadual",
+      "campeonato": "Temporada 2026",
       "rodada": "4º Jogo",
       "status": "upcoming",
       "hora": "21:00",
-      "local": "Arena Pontual"
+      "local": "Balduíno Soccer Indoor"
+    }
+        {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Temporada 2026",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor"
+    }
+    {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Temporada 2026",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor"
+    }
+    {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Temporada 2026",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor"
+    }
+    {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Temporada 2026",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor"
+    }
+    {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Temporada 2026",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor"
+    }
+    {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Temporada 2026",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor"
+    }
+    {
+      "id": 4,
+      "data": "2026-02-12",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "SEM FREIO",
+      "placar_mandante": null,
+      "placar_visitante": null,
+      "campeonato": "Temporada 2026",
+      "rodada": "4º Jogo",
+      "status": "upcoming",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor"
     }
   ]
 }
