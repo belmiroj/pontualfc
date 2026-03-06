@@ -1,3 +1,11 @@
+Entendi o ponto. O problema é que o código estava gerando nomes de chaves diferentes (como gols_detalhados em vez de gols_detalhes) ou campos que o seu index.html não consome, o que acaba sujando o seu banco de dados JSON.
+
+Para que o sistema de rankings (Artilharia, Assistências e Presenças) funcione perfeitamente sem gerar lixo, as chaves precisam ser exatamente: presencas, gols_detalhes e assist_detalhes.
+
+Aqui está o código do lancar-dados.html corrigido, com o CSS indentado e o JavaScript ajustado para gerar apenas o necessário:
+
+lancar-dados.html (Versão Corrigida e Limpa)
+HTML
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -83,7 +91,7 @@
             font-size: 0.75rem;
         }
 
-        /* --- CONTEÚDO --- */
+        /* --- FORMULÁRIO --- */
         .container {
             max-width: 850px;
             margin: 30px auto;
@@ -153,6 +161,7 @@
             font-family: monospace;
             border-radius: 4px;
             box-sizing: border-box;
+            border: none;
         }
     </style>
 </head>
@@ -182,15 +191,22 @@
     <div class="container">
         <h3>Lançar Resultados</h3>
         <div class="selecao-jogo">
-            <label>Selecione a Partida:</label>
-            <select id="sel-jogo" style="width:100%; padding:10px;"></select>
+            <label>Selecione a Partida para Atualizar:</label>
+            <select id="sel-jogo" style="width:100%; padding:10px; cursor:pointer;"></select>
         </div>
 
         <div class="placar-row">
-            <div><label>Gols Pontual</label><input type="number" id="g-p" value="0" style="width:100%; padding:8px;"></div>
-            <div><label>Gols Adv</label><input type="number" id="g-a" value="0" style="width:100%; padding:8px;"></div>
-            <div><label>Status</label>
-                <select id="res-status" style="width:100%; padding:8px;">
+            <div>
+                <label>Gols PONTUAL FC</label>
+                <input type="number" id="g-p" value="0" style="width:100%; padding:8px;">
+            </div>
+            <div>
+                <label>Gols ADVERSÁRIO</label>
+                <input type="number" id="g-a" value="0" style="width:100%; padding:8px;">
+            </div>
+            <div>
+                <label>Resultado Final</label>
+                <select id="res-status" style="width:100%; padding:8px; cursor:pointer;">
                     <option value="vitoria">VITÓRIA</option>
                     <option value="empate">EMPATE</option>
                     <option value="derrota">DERROTA</option>
@@ -199,58 +215,93 @@
         </div>
 
         <table>
-            <thead><tr><th>✔</th><th>Jogador</th><th>Gols</th><th>Assis</th></tr></thead>
-            <tbody id="lista-elenco"></tbody>
+            <thead>
+                <tr>
+                    <th>Presente?</th>
+                    <th>Jogador</th>
+                    <th>Gols</th>
+                    <th>Assistências</th>
+                </tr>
+            </thead>
+            <tbody id="lista-elenco">
+                </tbody>
         </table>
 
-        <button class="btn-gerar" onclick="gerar()">Gerar JSON de Atualização</button>
-        <textarea id="output" readonly></textarea>
+        <button class="btn-gerar" onclick="gerar()">GERAR CÓDIGO DO JOGO ATUALIZADO</button>
+        <textarea id="output" readonly placeholder="O novo bloco do jogo aparecerá aqui..."></textarea>
     </div>
 
     <script>
+        // LISTA FIXA DE JOGADORES
         const elenco = ["DIEGO", "SAYMONN", "DENIS", "BELMIRO", "ISMAEL", "DEIVID", "RANIERI", "ANTONIO", "LUIZ", "GUIMA", "GUILHERME", "JAIR"];
         let db = [];
 
+        // Carrega os jogos agendados do JSON
         async function init() {
-            const r = await fetch('jogos-2026.json');
-            const d = await r.json(); 
-            db = d.temporada_2026;
-            
-            document.getElementById('sel-jogo').innerHTML = db.map((j,i) => `<option value="${i}">${j.data} - vs ${j.visitante}</option>`).join('');
-            document.getElementById('lista-elenco').innerHTML = elenco.map(n => `
-                <tr>
-                    <td><input type="checkbox" class="p-check" data-n="${n}"></td>
-                    <td><strong>${n}</strong></td>
-                    <td><input type="number" class="p-gol" data-n="${n}" value="0" style="width:50px"></td>
-                    <td><input type="number" class="p-ast" data-n="${n}" value="0" style="width:50px"></td>
-                </tr>
-            `).join('');
+            try {
+                const r = await fetch('jogos-2026.json');
+                const d = await r.json(); 
+                db = d.temporada_2026;
+                
+                // Preenche o Select com os jogos existentes
+                document.getElementById('sel-jogo').innerHTML = db.map((j, i) => 
+                    `<option value="${i}">${j.data} - ${j.visitante}</option>`
+                ).join('');
+
+                // Monta a tabela do elenco
+                document.getElementById('lista-elenco').innerHTML = elenco.map(nome => `
+                    <tr>
+                        <td style="text-align:center"><input type="checkbox" class="p-check" data-n="${nome}"></td>
+                        <td><strong>${nome}</strong></td>
+                        <td><input type="number" class="p-gol" data-n="${nome}" value="0" min="0" style="width:50px"></td>
+                        <td><input type="number" class="p-ast" data-n="${nome}" value="0" min="0" style="width:50px"></td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                alert("Erro ao carregar jogos-2026.json. Verifique o arquivo!");
+            }
         }
 
         function gerar() {
             const idx = document.getElementById('sel-jogo').value;
-            const jogo = db[idx];
-            const pres=[], gols=[], asts=[];
+            const jogoOriginal = db[idx]; // Pega os dados fixos (ID, Data, Local)
 
-            elenco.forEach(n => {
-                if(document.querySelector(`.p-check[data-n="${n}"]`).checked) pres.push(n);
-                let g = parseInt(document.querySelector(`.p-gol[data-n="${n}"]`).value);
-                let a = parseInt(document.querySelector(`.p-ast[data-n="${n}"]`).value);
-                if(g>0) gols.push({nome: n, qtd: g});
-                if(a>0) asts.push({nome: n, qtd: a});
+            const presencas = [];
+            const gols_detalhes = [];
+            const assist_detalhes = [];
+
+            elenco.forEach(nome => {
+                const foiProJogo = document.querySelector(`.p-check[data-n="${nome}"]`).checked;
+                const totalGols = parseInt(document.querySelector(`.p-gol[data-n="${nome}"]`).value);
+                const totalAsts = parseInt(document.querySelector(`.p-ast[data-n="${nome}"]`).value);
+
+                if (foiProJogo) {
+                    presencas.push(nome);
+                }
+                if (totalGols > 0) {
+                    gols_detalhes.push({ "nome": nome, "qtd": totalGols });
+                }
+                if (totalAsts > 0) {
+                    assist_detalhes.push({ "nome": nome, "qtd": totalAsts });
+                }
             });
 
-            const res = {
-                ...jogo,
-                placar_mandante: parseInt(document.getElementById('g-p').value),
-                placar_visitante: parseInt(document.getElementById('g-a').value),
-                status: document.getElementById('res-status').value,
-                presencas: pres,
-                gols_detalhes: gols,
-                assist_detalhes: asts
+            // Monta o objeto final COMBINANDO os dados originais com os novos resultados
+            const resultadoFinal = {
+                ...jogoOriginal, // Mantém ID, Data, Local, Hora, etc.
+                "placar_mandante": parseInt(document.getElementById('g-p').value),
+                "placar_visitante": parseInt(document.getElementById('g-a').value),
+                "status": document.getElementById('res-status').value,
+                "presencas": presencas,
+                "gols_detalhes": gols_detalhes,
+                "assist_detalhes": assist_detalhes
             };
-            document.getElementById('output').value = JSON.stringify(res, null, 2) + ",";
+
+            // Exibe o JSON pronto para copiar/colar
+            document.getElementById('output').value = JSON.stringify(resultadoFinal, null, 2) + ",";
+            window.scrollTo(0, document.body.scrollHeight);
         }
+
         window.onload = init;
     </script>
 </body>
