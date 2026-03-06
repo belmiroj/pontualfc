@@ -82,7 +82,7 @@
             list-style: none;
             padding: 10px 0;
             border-bottom: 3px solid var(--bvb-yellow);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
         .submenu li a {
@@ -92,7 +92,6 @@
             text-decoration: none;
             font-size: 0.75rem;
             text-transform: uppercase;
-            transition: background 0.3s;
         }
 
         .submenu li a:hover {
@@ -106,7 +105,7 @@
 
         /* --- CONTEÚDO --- */
         .container {
-            max-width: 1200px;
+            max-width: 1250px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -142,31 +141,16 @@
             font-weight: 800;
         }
 
-        .card.win {
-            border-color: var(--win);
-            color: var(--win);
-        }
-
-        .card.draw {
-            border-color: var(--draw);
-            color: var(--draw);
-        }
-
-        .card.loss {
-            border-color: var(--loss);
-            color: var(--loss);
-        }
-
         .card.neutral {
             border-color: var(--bvb-black);
             color: var(--bvb-black);
         }
 
-        /* --- TABELAS --- */
+        /* --- GRID DE TABELAS (4 COLUNAS) --- */
         .tables-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
             margin-top: 30px;
         }
 
@@ -182,7 +166,7 @@
             color: var(--bvb-yellow);
             margin: 0;
             padding: 12px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-align: center;
             text-transform: uppercase;
         }
@@ -193,34 +177,38 @@
         }
 
         td {
-            padding: 12px;
-            font-size: 0.85rem;
+            padding: 10px 12px;
+            font-size: 0.8rem;
             border-bottom: 1px solid #eee;
         }
 
         .val {
             text-align: right;
             font-weight: bold;
+            color: var(--bvb-black);
         }
 
-        @media (max-width: 800px) {
-            .stats-row {
-                grid-template-columns: 1fr 1fr;
-            }
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 1000px) {
             .tables-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-row, .tables-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+
     <header>
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">Início</a>
-                </li>
+                <li class="nav-item"><a href="index.html" class="nav-link">Início</a></li>
                 <li class="nav-item">
                     <a class="nav-link">Jogos ▾</a>
                     <ul class="submenu">
@@ -241,9 +229,9 @@
     <div class="container">
         <div class="stats-row">
             <div class="card neutral"><small>Jogos</small><span id="stat-total">0</span></div>
-            <div class="card win"><small>Vitórias</small><span id="stat-vitorias">0</span></div>
-            <div class="card draw"><small>Empates</small><span id="stat-empates">0</span></div>
-            <div class="card loss"><small>Derrotas</small><span id="stat-derrotas">0</span></div>
+            <div class="card" style="border-color: var(--win); color: var(--win)"><small>Vitórias</small><span id="stat-vitorias">0</span></div>
+            <div class="card" style="border-color: var(--draw); color: var(--draw)"><small>Empates</small><span id="stat-empates">0</span></div>
+            <div class="card" style="border-color: var(--loss); color: var(--loss)"><small>Derrotas</small><span id="stat-derrotas">0</span></div>
         </div>
 
         <div class="stats-row">
@@ -254,9 +242,22 @@
         </div>
 
         <div class="tables-grid">
-            <div class="table-box"><h3>Artilharia</h3><table><tbody id="lista-gols"></tbody></table></div>
-            <div class="table-box"><h3>Assistências</h3><table><tbody id="lista-assist"></tbody></table></div>
-            <div class="table-box"><h3>Presenças</h3><table><tbody id="lista-presencas"></tbody></table></div>
+            <div class="table-box">
+                <h3>Artilharia</h3>
+                <table><tbody id="lista-gols"></tbody></table>
+            </div>
+            <div class="table-box">
+                <h3>Assistências</h3>
+                <table><tbody id="lista-assist"></tbody></table>
+            </div>
+            <div class="table-box">
+                <h3>Votos (Melhor)</h3>
+                <table><tbody id="lista-votos"></tbody></table>
+            </div>
+            <div class="table-box">
+                <h3>Presenças</h3>
+                <table><tbody id="lista-presencas"></tbody></table>
+            </div>
         </div>
     </div>
 
@@ -266,7 +267,9 @@
                 const resp = await fetch('jogos-2026.json');
                 const data = await resp.json();
                 const jogos = data.temporada_2026;
-                let t = 0, v = 0, e = 0, d = 0, gp = 0, gc = 0, g = {}, a = {}, p = {};
+                
+                let t = 0, v = 0, e = 0, d = 0, gp = 0, gc = 0;
+                let art = {}, ast = {}, pre = {}, vot = {};
 
                 jogos.forEach(j => {
                     if (j.status !== 'upcoming') {
@@ -279,12 +282,15 @@
                         gp += isM ? (j.placar_mandante || 0) : (j.placar_visitante || 0);
                         gc += isM ? (j.placar_visitante || 0) : (j.placar_mandante || 0);
                         
-                        if (j.gols_detalhes) j.gols_detalhes.forEach(i => g[i.nome] = (g[i.nome] || 0) + i.qtd);
-                        if (j.assist_detalhes) j.assist_detalhes.forEach(i => a[i.nome] = (a[i.nome] || 0) + i.qtd);
-                        if (j.presencas) j.presencas.forEach(i => p[i] = (p[i] || 0) + 1);
+                        // Processar Detalhes
+                        if (j.gols_detalhes) j.gols_detalhes.forEach(i => art[i.nome] = (art[i.nome] || 0) + i.qtd);
+                        if (j.assist_detalhes) j.assist_detalhes.forEach(i => ast[i.nome] = (ast[i.nome] || 0) + i.qtd);
+                        if (j.votos_melhor) j.votos_melhor.forEach(i => vot[i.nome] = (vot[i.nome] || 0) + i.qtd);
+                        if (j.presencas) j.presencas.forEach(i => pre[i] = (pre[i] || 0) + 1);
                     }
                 });
 
+                // Preencher Stats
                 document.getElementById('stat-total').innerText = t;
                 document.getElementById('stat-vitorias').innerText = v;
                 document.getElementById('stat-empates').innerText = e;
@@ -293,25 +299,12 @@
                 document.getElementById('stat-gc').innerText = gc;
                 document.getElementById('stat-sg').innerText = (gp - gc);
 
+                // Aproveitamento
                 const pts = (v * 3) + (e * 1);
-                const totalPts = t * 3;
-                const perc = totalPts > 0 ? (pts / totalPts) * 100 : 0;
-                const elAprov = document.getElementById('stat-aprov');
-                const cardAprov = document.getElementById('card-aprov');
+                const perc = t > 0 ? ((pts / (t * 3)) * 100).toFixed(1) : 0;
+                document.getElementById('stat-aprov').innerText = perc + "%";
 
-                elAprov.innerText = perc.toFixed(1) + "%";
-
-                if (perc < 50) {
-                    cardAprov.style.borderColor = "var(--loss)";
-                    elAprov.style.color = "var(--loss)";
-                } else if (perc <= 59.9) {
-                    cardAprov.style.borderColor = "var(--draw)";
-                    elAprov.style.color = "var(--draw)";
-                } else {
-                    cardAprov.style.borderColor = "var(--win)";
-                    elAprov.style.color = "var(--win)";
-                }
-
+                // Renderizar Tabelas
                 const render = (id, obj) => {
                     document.getElementById(id).innerHTML = Object.entries(obj)
                         .sort((x, y) => y[1] - x[1])
@@ -319,11 +312,13 @@
                         .join('');
                 };
                 
-                render('lista-gols', g);
-                render('lista-assist', a);
-                render('lista-presencas', p);
-            } catch (error) {
-                console.error("Erro ao carregar o JSON:", error);
+                render('lista-gols', art);
+                render('lista-assist', ast);
+                render('lista-votos', vot);
+                render('lista-presencas', pre);
+
+            } catch (err) {
+                console.error("Erro:", err);
             }
         }
         window.onload = carregar;
