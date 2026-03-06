@@ -57,23 +57,6 @@
             transition: 0.3s;
         }
 
-        nav a:hover {
-            color: var(--bvb-yellow);
-        }
-
-        .nav-link {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-        }
-
-        .nav-link:hover {
-            color: var(--bvb-yellow);
-        }
-
         .submenu {
             display: none;
             position: absolute;
@@ -84,7 +67,8 @@
             list-style: none;
             padding: 10px 0;
             border-bottom: 3px solid var(--bvb-yellow);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            z-index: 10;
         }
 
         .submenu li a {
@@ -93,13 +77,6 @@
             display: block;
             text-decoration: none;
             font-size: 0.75rem;
-            text-transform: uppercase;
-            transition: background 0.3s;
-        }
-
-        .submenu li a:hover {
-            background: #222;
-            color: var(--bvb-yellow);
         }
 
         .nav-item:hover .submenu {
@@ -108,7 +85,7 @@
 
         /* --- FORMULÁRIO --- */
         .container {
-            max-width: 800px;
+            max-width: 850px;
             margin: 30px auto;
             background: #fff;
             padding: 30px;
@@ -124,7 +101,7 @@
             color: var(--bvb-black);
         }
 
-        select, 
+        select,
         input {
             width: 100%;
             padding: 12px;
@@ -146,11 +123,6 @@
             border-radius: 6px;
             margin-top: 20px;
             text-transform: uppercase;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #222;
         }
 
         /* --- OUTPUT --- */
@@ -167,7 +139,7 @@
             box-sizing: border-box;
         }
 
-        /* --- TABELA DE ELENCO --- */
+        /* --- TABELA --- */
         table {
             width: 100%;
             margin-top: 20px;
@@ -190,7 +162,7 @@
         }
 
         .input-mini {
-            width: 50px !important;
+            width: 60px !important;
             padding: 5px !important;
             margin: 0 !important;
             text-align: center;
@@ -200,12 +172,10 @@
 <body>
 
     <header>
-        <a href="index.html" class="logo">PONTUAL FC</a>7
+        <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">Início</a>
-                </li>
+                <li class="nav-item"><a href="index.html" class="nav-link">Início</a></li>
                 <li class="nav-item">
                     <a class="nav-link">Jogos ▾</a>
                     <ul class="submenu">
@@ -225,10 +195,10 @@
 
     <div class="container">
         <h3>Lançar Resultado</h3>
-        
+
         <label style="font-size: 0.8rem; font-weight: bold; color: #666;">Selecione o Jogo:</label>
         <select id="sel-jogo"></select>
-        
+
         <div style="display:flex; gap:10px; margin-top: 10px;">
             <input type="number" id="gp" placeholder="Gols Pontual">
             <input type="number" id="gc" placeholder="Gols Adv">
@@ -244,29 +214,30 @@
                 <tr>
                     <th style="width: 40px;">✔</th>
                     <th>Jogador</th>
-                    <th style="width: 60px;">Gols</th>
-                    <th style="width: 60px;">Ast</th>
+                    <th style="width: 70px;">Gols</th>
+                    <th style="width: 70px;">Ast</th>
+                    <th style="width: 70px;">Votos</th>
                 </tr>
             </thead>
             <tbody id="elenco"></tbody>
         </table>
 
         <button onclick="gerar()">Gerar JSON de Resultado</button>
-        
+
         <textarea id="out" readonly placeholder="O código JSON aparecerá aqui..."></textarea>
     </div>
 
     <script>
-        const elenco = ["ANTONIO", "BELMIRO", "DENIS", "DEIVID", "DIEGO", "GUILHERME", "GUIMA", "ISMAEL", "JAIR", "LUIZ", "RANIERI", "SAYMONN", "ROGERIO", "AUGUSTO", "CLESIO", "CELSO"];
+        const elenco = ["ANTONIO", "AUGUSTO", "BELMIRO", "CELSO", "CLESIO", "DEIVID", "DENIS", "DIEGO", "GUILHERME", "GUIMA", "ISMAEL", "JAIR", "LUIZ", "RANIERI", "ROGERIO", "SAYMONN"];
         let db = [];
 
         async function init() {
             try {
                 const r = await fetch('jogos-2026.json');
-                const d = await r.json(); 
+                const d = await r.json();
                 db = d.temporada_2026;
 
-                document.getElementById('sel-jogo').innerHTML = db.map((j, i) => 
+                document.getElementById('sel-jogo').innerHTML = db.map((j, i) =>
                     `<option value="${i}">${j.data} - ${j.visitante}</option>`
                 ).join('');
 
@@ -276,6 +247,7 @@
                         <td><strong>${n}</strong></td>
                         <td><input type="number" class="gol input-mini" data-n="${n}" value="0"></td>
                         <td><input type="number" class="ast input-mini" data-n="${n}" value="0"></td>
+                        <td><input type="number" class="voto input-mini" data-n="${n}" value="0"></td>
                     </tr>
                 `).join('');
             } catch (e) {
@@ -286,7 +258,7 @@
         function gerar() {
             const idx = document.getElementById('sel-jogo').value;
             const jogo = db[idx];
-            const pres = [], gols = [], asts = [];
+            const pres = [], gols = [], asts = [], votos = [];
 
             elenco.forEach(n => {
                 if (document.querySelector(`.pre[data-n="${n}"]`).checked) {
@@ -294,9 +266,11 @@
                 }
                 let g = parseInt(document.querySelector(`.gol[data-n="${n}"]`).value);
                 let a = parseInt(document.querySelector(`.ast[data-n="${n}"]`).value);
-                
+                let v = parseInt(document.querySelector(`.voto[data-n="${n}"]`).value);
+
                 if (g > 0) gols.push({ nome: n, qtd: g });
                 if (a > 0) asts.push({ nome: n, qtd: a });
+                if (v > 0) votos.push({ nome: n, qtd: v });
             });
 
             const res = {
@@ -306,7 +280,8 @@
                 status: document.getElementById('status').value,
                 presencas: pres,
                 gols_detalhes: gols,
-                assist_detalhes: asts
+                assist_detalhes: asts,
+                votos_melhor: votos
             };
 
             document.getElementById('out').value = JSON.stringify(res, null, 2) + ",";
