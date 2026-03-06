@@ -13,12 +13,8 @@
       "hora": "21:00",
       "local": "Balduíno Soccer Indoor",
       "presenca": ["Jogador 1", "Jogador 2"],
-      "gols_detalhados": [
-        { "nome": "Jogador 1", "qtd": 2 }
-      ],
-      "assist_detalhadas": [
-        { "nome": "Jogador 2", "qtd": 1 }
-      ]
+      "gols_detalhados": [{ "nome": "Jogador 1", "qtd": 2 }],
+      "assist_detalhadas": [{ "nome": "Jogador 2", "qtd": 1 }]
     }
   ]
 }
