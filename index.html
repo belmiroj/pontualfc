@@ -19,22 +19,23 @@
             color: var(--bvb-black);
         }
 
-        /* --- NAVEGAÇÃO --- */
+        /* --- NAVEGAÇÃO & MENUS --- */
         header {
             background-color: var(--bvb-black);
             border-bottom: 5px solid var(--bvb-yellow);
-            padding: 1rem 5%;
+            padding: 0 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
+            height: 70px;
         }
 
         .logo {
             color: var(--bvb-yellow);
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             text-decoration: none;
             text-transform: uppercase;
         }
@@ -42,85 +43,79 @@
         nav ul {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 5px;
             margin: 0;
+            padding: 0;
+            height: 100%;
         }
 
-        nav a {
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
             text-decoration: none;
             color: var(--text-light);
             text-transform: uppercase;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
             transition: 0.3s;
         }
 
-        nav a:hover {
+        .nav-link:hover {
+            color: var(--bvb-yellow);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- SUBMENUS (DROPDOWN) --- */
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            background-color: var(--bvb-black);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-top: 3px solid var(--bvb-yellow);
+        }
+
+        .submenu li {
+            width: 100%;
+        }
+
+        .submenu a {
+            padding: 12px 20px;
+            display: block;
+            color: white;
+            text-decoration: none;
+            font-size: 0.7rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .submenu a:hover {
+            background: #222;
             color: var(--bvb-yellow);
         }
 
-        /* --- LAYOUT DASHBOARD --- */
+        .nav-item:hover .submenu {
+            display: block;
+        }
+
+        /* --- DASHBOARD LAYOUT --- */
         .container {
             padding: 30px 5%;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .section-title {
-            border-left: 6px solid var(--bvb-yellow);
-            padding-left: 12px;
-            margin-bottom: 15px;
-            font-size: 1rem;
-            text-transform: uppercase;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* --- TABELAS --- */
-        .card-stats {
-            background: #fff;
-            border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            overflow: hidden;
-        }
-
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .stats-table th {
-            background: #eee;
-            font-size: 0.7rem;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .stats-table td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-        }
-
-        .val-col {
-            text-align: right;
-            font-weight: bold;
-            color: #000;
-            width: 50px;
-        }
-
-        /* --- RESUMO TOPO --- */
         .resumo-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
 
         .resumo-item {
@@ -133,15 +128,58 @@
 
         .resumo-item span {
             display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: #fff;
             margin-bottom: 5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card-stats {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section-title {
+            background: #f8f8f8;
+            border-left: 6px solid var(--bvb-yellow);
+            padding: 10px 15px;
+            margin: 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f9f9f9;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .val-col {
+            text-align: right;
+            font-weight: bold;
+            color: #000;
         }
 
         /* --- MOBILE --- */
         @media (max-width: 900px) {
             .stats-grid { grid-template-columns: 1fr; }
             .resumo-row { grid-template-columns: 1fr 1fr; }
+            header { flex-direction: column; height: auto; padding: 10px; }
+            .submenu { top: auto; position: relative; }
         }
     </style>
 </head>
@@ -151,15 +189,30 @@
     <a href="index.html" class="logo">PONTUAL FC</a>
     <nav>
         <ul>
-            <li><a href="jogos-2026.html">Jogos</a></li>
-            <li><a href="lancar-dados.html">Lançar Dados</a></li>
+            <li class="nav-item">
+                <a href="index.html" class="nav-link">Início</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Jogos ▾</a>
+                <ul class="submenu">
+                    <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    <li><a href="#">Histórico (Em breve)</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">Cadastro ▾</a>
+                <ul class="submenu">
+                    <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                    <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                </ul>
+            </li>
         </ul>
     </nav>
 </header>
 
 <div class="container">
     <div class="resumo-row">
-        <div class="resumo-item"><span id="txt-jogos">JOGOS</span><div id="stat-total">0</div></div>
+        <div class="resumo-item"><span>JOGOS</span><div id="stat-total">0</div></div>
         <div class="resumo-item"><span>VITÓRIAS</span><div id="stat-vitorias">0</div></div>
         <div class="resumo-item"><span>GOLS PRÓ</span><div id="stat-gp">0</div></div>
         <div class="resumo-item"><span>APROVEITAMENTO</span><div id="stat-aprov">0%</div></div>
@@ -190,59 +243,56 @@
 </div>
 
 <script>
-    async function carregarDados() {
-        const resp = await fetch('jogos-2026.json');
-        const data = await resp.json();
-        const jogos = data.temporada_2026;
+    async function carregarDashboard() {
+        try {
+            const resp = await fetch('jogos-2026.json');
+            const data = await resp.json();
+            const jogos = data.temporada_2026;
 
-        let totalGeral = 0, vitorias = 0, gp = 0;
-        let artilharia = {}, assistencias = {}, presencas = {};
+            let total = 0, vit = 0, gp = 0;
+            let gols = {}, assist = {}, pres = {};
 
-        jogos.forEach(j => {
-            if (j.status !== 'upcoming') {
-                totalGeral++;
-                if (j.status === 'vitoria') vitorias++;
-                gp += (j.mandante === "PONTUAL FC" ? j.placar_mandante : j.placar_visitante);
+            jogos.forEach(j => {
+                if (j.status !== 'upcoming') {
+                    total++;
+                    if (j.status === 'vitoria') vit++;
+                    gp += (j.mandante === "PONTUAL FC" ? j.placar_mandante : j.placar_visitante);
 
-                // Contar Gols
-                if (j.gols_detalhes) {
-                    j.gols_detalhes.forEach(g => artilharia[g.nome] = (artilharia[g.nome] || 0) + g.qtd);
+                    if (j.gols_detalhes) {
+                        j.gols_detalhes.forEach(g => gols[g.nome] = (gols[g.nome] || 0) + g.qtd);
+                    }
+                    if (j.assist_detalhes) {
+                        j.assist_detalhes.forEach(a => assist[a.nome] = (assist[a.nome] || 0) + a.qtd);
+                    }
+                    if (j.presencas) {
+                        j.presencas.forEach(p => pres[p] = (pres[p] || 0) + 1);
+                    }
                 }
-                // Contar Assistências
-                if (j.assist_detalhes) {
-                    j.assist_detalhes.forEach(a => assistencias[a.nome] = (assistencias[a.nome] || 0) + a.qtd);
-                }
-                // Contar Presenças
-                if (j.presencas) {
-                    j.presencas.forEach(p => presencas[p] = (presencas[p] || 0) + 1);
-                }
-            }
-        });
+            });
 
-        // Atualizar Resumo
-        document.getElementById('stat-total').innerText = totalGeral;
-        document.getElementById('stat-vitorias').innerText = vitorias;
-        document.getElementById('stat-gp').innerText = gp;
-        document.getElementById('stat-aprov').innerText = totalGeral > 0 ? ((vitorias / totalGeral) * 100).toFixed(0) + "%" : "0%";
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-vitorias').innerText = vit;
+            document.getElementById('stat-gp').innerText = gp;
+            document.getElementById('stat-aprov').innerText = total > 0 ? ((vit / total) * 100).toFixed(0) + "%" : "0%";
 
-        // Renderizar Tabelas
-        renderTable('lista-gols', artilharia);
-        renderTable('lista-assist', assistencias);
-        renderTable('lista-presencas', presencas);
+            renderTable('lista-gols', gols);
+            renderTable('lista-assist', assist);
+            renderTable('lista-presencas', pres);
+
+        } catch (e) { console.error("Erro ao carregar dados:", e); }
     }
 
-    function renderTable(id, objeto) {
-        const sorted = Object.entries(objeto).sort((a, b) => b[1] - a[1]);
-        const html = sorted.map(([nome, valor]) => `
+    function renderTable(id, obj) {
+        const sorted = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+        document.getElementById(id).innerHTML = sorted.map(([nome, val]) => `
             <tr>
                 <td>${nome}</td>
-                <td class="val-col">${valor}</td>
+                <td class="val-col">${val}</td>
             </tr>
-        `).join('');
-        document.getElementById(id).innerHTML = html || "<tr><td>Sem dados</td></tr>";
+        `).join('') || "<tr><td>Nenhum dado</td></tr>";
     }
 
-    window.onload = carregarDados;
+    window.onload = carregarDashboard;
 </script>
 
 </body>

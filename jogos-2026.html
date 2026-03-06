@@ -10,148 +10,45 @@
             --bvb-black: #000000;
             --text-light: #ffffff;
             --bg-gray: #f4f4f4;
-            --win-green: #2ecc71;
-            --lose-red: #e74c3c;
-            --draw-yellow: #f1c40f;
         }
 
         body {
             font-family: 'Arial Black', sans-serif;
             margin: 0;
             background-color: var(--bg-gray);
-            color: var(--bvb-black);
         }
 
-        /* --- HEADER --- */
+        /* --- MENU GLOBAL --- */
         header {
             background-color: var(--bvb-black);
             border-bottom: 5px solid var(--bvb-yellow);
-            padding: 1rem 5%;
+            padding: 0 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 1000;
+            height: 70px;
         }
 
-        .logo {
-            color: var(--bvb-yellow);
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
-        }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-light);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--bvb-yellow);
-        }
+        .logo { color: var(--bvb-yellow); font-size: 1.5rem; text-decoration: none; text-transform: uppercase; }
+        nav ul { list-style: none; display: flex; gap: 5px; margin: 0; padding: 0; height: 100%; }
+        .nav-item { position: relative; display: flex; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--text-light); text-transform: uppercase; font-size: 0.75rem; padding: 0 15px; height: 100%; display: flex; align-items: center; transition: 0.3s; }
+        .nav-link:hover { color: var(--bvb-yellow); background: rgba(255, 255, 255, 0.1); }
+        .submenu { display: none; position: absolute; top: 70px; left: 0; background-color: var(--bvb-black); min-width: 200px; border-top: 3px solid var(--bvb-yellow); }
+        .submenu a { padding: 12px 20px; display: block; color: white; text-decoration: none; font-size: 0.7rem; border-bottom: 1px solid #222; }
+        .nav-item:hover .submenu { display: block; }
 
         /* --- CONTEÚDO --- */
-        .container {
-            padding: 40px 10%;
-        }
-
-        .month-title {
-            background: var(--bvb-black);
-            color: var(--bvb-yellow);
-            padding: 12px 20px;
-            margin: 30px 0 15px 0;
-            text-transform: uppercase;
-            font-size: 1.1rem;
-            clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 0% 100%);
-            display: inline-block;
-        }
-
-        .game-card {
-            background: #ffffff;
-            margin-bottom: 12px;
-            display: grid;
-            grid-template-columns: 100px 1fr 100px 1fr 120px;
-            align-items: center;
-            padding: 20px;
-            border-left: 6px solid #ccc;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-
-        .game-card:hover {
-            transform: scale(1.01);
-        }
-
-        /* Status das Bordas */
-        .vitoria { border-left-color: var(--win-green); }
-        .derrota { border-left-color: var(--lose-red); }
-        .empate { border-left-color: var(--draw-yellow); }
-        .upcoming { border-left-color: var(--bvb-black); }
-
-        .game-date {
-            font-size: 0.8rem;
-            color: #666;
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .game-date strong {
-            font-size: 1.2rem;
-            display: block;
-            color: #000;
-        }
-
-        .team-name {
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 1rem;
-        }
-
-        .team-right { text-align: left; padding-left: 15px; }
-        .team-left { text-align: right; padding-right: 15px; }
-
-        .score-box {
-            background: #eeeeee;
-            text-align: center;
-            padding: 10px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-
-        .match-info-col {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #777;
-            text-transform: uppercase;
-        }
-
-        /* --- MOBILE --- */
-        @media (max-width: 768px) {
-            .game-card {
-                grid-template-columns: 1fr 1fr 1fr;
-                gap: 10px;
-            }
-            .match-info-col {
-                grid-column: span 3;
-                border-top: 1px solid #eee;
-                padding-top: 10px;
-            }
-            .container { padding: 20px 5%; }
-        }
+        .container { padding: 40px 10%; }
+        .month-title { background: var(--bvb-black); color: var(--bvb-yellow); padding: 10px 20px; display: inline-block; margin-bottom: 20px; text-transform: uppercase; }
+        .game-card { background: #fff; margin-bottom: 10px; display: grid; grid-template-columns: 100px 1fr 100px 1fr 120px; align-items: center; padding: 15px; border-left: 6px solid #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .vitoria { border-left-color: #2ecc71; }
+        .derrota { border-left-color: #e74c3c; }
+        .empate { border-left-color: #f1c40f; }
+        .score-box { background: #eee; text-align: center; padding: 10px; font-weight: bold; font-size: 1.2rem; }
     </style>
 </head>
 <body>
@@ -159,47 +56,47 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="jogos-2026.html">Jogos</a></li>
-                <li><a href="cadastro-partida.html">Cadastros</a></li>
+                <li class="nav-item"><a href="index.html" class="nav-link">Início</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Cadastro ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <div class="container" id="jogos-container">
-        <p style="text-align: center;">Carregando temporada 2026...</p>
-    </div>
+    <div class="container" id="jogos-lista">
+        <h2 class="month-title">Temporada 2026</h2>
+        </div>
 
     <script>
-        async function renderizar() {
-            try {
-                const resp = await fetch('jogos-2026.json');
-                const data = await resp.json();
-                const container = document.getElementById('jogos-container');
-                container.innerHTML = '<h2 class="month-title">Temporada 2026</h2>';
-
-                data.temporada_2026.forEach(j => {
-                    const placar = j.status === 'upcoming' ? 'VS' : `${j.placar_mandante} - ${j.placar_visitante}`;
-                    const dataObj = new Date(j.data + "T00:00:00");
-                    const dia = dataObj.getDate();
-                    const mes = dataObj.toLocaleString('pt-br', { month: 'short' }).toUpperCase();
-
-                    container.innerHTML += `
-                        <div class="game-card ${j.status}">
-                            <div class="game-date">${dia} ${mes} <strong>${j.dia_semana}</strong></div>
-                            <div class="team-name team-left">${j.mandante}</div>
-                            <div class="score-box">${placar}</div>
-                            <div class="team-name team-right">${j.visitante}</div>
-                            <div class="match-info-col">
-                                <strong>${j.status.toUpperCase()}</strong><br>
-                                ${j.rodada}
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (e) { container.innerHTML = "Erro ao carregar JSON."; }
+        async function carregar() {
+            const resp = await fetch('jogos-2026.json');
+            const data = await resp.json();
+            const container = document.getElementById('jogos-lista');
+            data.temporada_2026.forEach(j => {
+                const placar = j.status === 'upcoming' ? 'VS' : `${j.placar_mandante} - ${j.placar_visitante}`;
+                container.innerHTML += `
+                    <div class="game-card ${j.status}">
+                        <div style="font-size:0.8rem">${j.data}<br><strong>${j.dia_semana}</strong></div>
+                        <div style="text-align:right; font-weight:bold">${j.mandante}</div>
+                        <div class="score-box">${placar}</div>
+                        <div style="font-weight:bold">${j.visitante}</div>
+                        <div style="text-align:center; font-size:0.7rem">${j.rodada}<br><strong>${j.status.toUpperCase()}</strong></div>
+                    </div>
+                `;
+            });
         }
-        window.onload = renderizar;
+        window.onload = carregar;
     </script>
 </body>
 </html>
