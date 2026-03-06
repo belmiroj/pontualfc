@@ -42,20 +42,69 @@
             font-size: 1.2rem;
         }
 
+        /* --- NAVEGAÇÃO E SUBMENU --- */
         nav ul {
             display: flex;
             list-style: none;
             gap: 20px;
+            margin: 0;
+            padding: 0;
+            height: 100%;
         }
 
-        nav a {
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+
+        .nav-link {
             color: #fff;
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
+            cursor: pointer;
         }
 
+        .nav-link:hover {
+            color: var(--bvb-yellow);
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            background: var(--bvb-black);
+            min-width: 180px;
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 3px solid var(--bvb-yellow);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .submenu li a {
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: #222;
+            color: var(--bvb-yellow);
+        }
+
+        .nav-item:hover .submenu {
+            display: block;
+        }
+
+        /* --- CONTEÚDO --- */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -93,7 +142,6 @@
             font-weight: 800;
         }
 
-        /* Cores fixas dos cards */
         .card.win {
             border-color: var(--win);
             color: var(--win);
@@ -170,17 +218,19 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li class="nav-item"><a href="index.html" class="nav-link">Início</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Jogos ▾</a>
+                    <a href="index.html" class="nav-link">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Jogos ▾</a>
                     <ul class="submenu">
                         <li><a href="jogos-2026.html">Temporada 2026</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Cadastro ▾</a>
+                    <a class="nav-link">Cadastro ▾</a>
                     <ul class="submenu">
-                        <li><a href="cadastro-partida.html">Cadastrar Partida</a></li>
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
                         <li><a href="lancar-dados.html">Lançar Resultados</a></li>
                     </ul>
                 </li>
@@ -212,66 +262,69 @@
 
     <script>
         async function carregar() {
-            const resp = await fetch('jogos-2026.json');
-            const data = await resp.json();
-            const jogos = data.temporada_2026;
-            let t = 0, v = 0, e = 0, d = 0, gp = 0, gc = 0, g = {}, a = {}, p = {};
+            try {
+                const resp = await fetch('jogos-2026.json');
+                const data = await resp.json();
+                const jogos = data.temporada_2026;
+                let t = 0, v = 0, e = 0, d = 0, gp = 0, gc = 0, g = {}, a = {}, p = {};
 
-            jogos.forEach(j => {
-                if (j.status !== 'upcoming') {
-                    t++;
-                    if (j.status === 'vitoria') v++;
-                    else if (j.status === 'empate') e++;
-                    else if (j.status === 'derrota') d++;
-                    
-                    const isM = j.mandante === "PONTUAL FC";
-                    gp += isM ? (j.placar_mandante || 0) : (j.placar_visitante || 0);
-                    gc += isM ? (j.placar_visitante || 0) : (j.placar_mandante || 0);
-                    
-                    if (j.gols_detalhes) j.gols_detalhes.forEach(i => g[i.nome] = (g[i.nome] || 0) + i.qtd);
-                    if (j.assist_detalhes) j.assist_detalhes.forEach(i => a[i.nome] = (a[i.nome] || 0) + i.qtd);
-                    if (j.presencas) j.presencas.forEach(i => p[i] = (p[i] || 0) + 1);
+                jogos.forEach(j => {
+                    if (j.status !== 'upcoming') {
+                        t++;
+                        if (j.status === 'vitoria') v++;
+                        else if (j.status === 'empate') e++;
+                        else if (j.status === 'derrota') d++;
+                        
+                        const isM = j.mandante === "PONTUAL FC";
+                        gp += isM ? (j.placar_mandante || 0) : (j.placar_visitante || 0);
+                        gc += isM ? (j.placar_visitante || 0) : (j.placar_mandante || 0);
+                        
+                        if (j.gols_detalhes) j.gols_detalhes.forEach(i => g[i.nome] = (g[i.nome] || 0) + i.qtd);
+                        if (j.assist_detalhes) j.assist_detalhes.forEach(i => a[i.nome] = (a[i.nome] || 0) + i.qtd);
+                        if (j.presencas) j.presencas.forEach(i => p[i] = (p[i] || 0) + 1);
+                    }
+                });
+
+                document.getElementById('stat-total').innerText = t;
+                document.getElementById('stat-vitorias').innerText = v;
+                document.getElementById('stat-empates').innerText = e;
+                document.getElementById('stat-derrotas').innerText = d;
+                document.getElementById('stat-gp').innerText = gp;
+                document.getElementById('stat-gc').innerText = gc;
+                document.getElementById('stat-sg').innerText = (gp - gc);
+
+                const pts = (v * 3) + (e * 1);
+                const totalPts = t * 3;
+                const perc = totalPts > 0 ? (pts / totalPts) * 100 : 0;
+                const elAprov = document.getElementById('stat-aprov');
+                const cardAprov = document.getElementById('card-aprov');
+
+                elAprov.innerText = perc.toFixed(1) + "%";
+
+                if (perc < 50) {
+                    cardAprov.style.borderColor = "var(--loss)";
+                    elAprov.style.color = "var(--loss)";
+                } else if (perc <= 59.9) {
+                    cardAprov.style.borderColor = "var(--draw)";
+                    elAprov.style.color = "var(--draw)";
+                } else {
+                    cardAprov.style.borderColor = "var(--win)";
+                    elAprov.style.color = "var(--win)";
                 }
-            });
 
-            document.getElementById('stat-total').innerText = t;
-            document.getElementById('stat-vitorias').innerText = v;
-            document.getElementById('stat-empates').innerText = e;
-            document.getElementById('stat-derrotas').innerText = d;
-            document.getElementById('stat-gp').innerText = gp;
-            document.getElementById('stat-gc').innerText = gc;
-            document.getElementById('stat-sg').innerText = (gp - gc);
-
-            // LOGICA DE COR DO APROVEITAMENTO
-            const pts = (v * 3) + (e * 1);
-            const totalPts = t * 3;
-            const perc = totalPts > 0 ? (pts / totalPts) * 100 : 0;
-            const elAprov = document.getElementById('stat-aprov');
-            const cardAprov = document.getElementById('card-aprov');
-
-            elAprov.innerText = perc.toFixed(1) + "%";
-
-            if (perc < 50) {
-                cardAprov.style.borderColor = "var(--loss)";
-                elAprov.style.color = "var(--loss)";
-            } else if (perc <= 59.9) {
-                cardAprov.style.borderColor = "var(--draw)";
-                elAprov.style.color = "var(--draw)";
-            } else {
-                cardAprov.style.borderColor = "var(--win)";
-                elAprov.style.color = "var(--win)";
+                const render = (id, obj) => {
+                    document.getElementById(id).innerHTML = Object.entries(obj)
+                        .sort((x, y) => y[1] - x[1])
+                        .map(i => `<tr><td>${i[0]}</td><td class="val">${i[1]}</td></tr>`)
+                        .join('');
+                };
+                
+                render('lista-gols', g);
+                render('lista-assist', a);
+                render('lista-presencas', p);
+            } catch (error) {
+                console.error("Erro ao carregar o JSON:", error);
             }
-
-            const render = (id, obj) => {
-                document.getElementById(id).innerHTML = Object.entries(obj)
-                    .sort((x, y) => y[1] - x[1])
-                    .map(i => `<tr><td>${i[0]}</td><td class="val">${i[1]}</td></tr>`)
-                    .join('');
-            };
-            
-            render('lista-gols', g);
-            render('lista-assist', a);
-            render('lista-presencas', p);
         }
         window.onload = carregar;
     </script>

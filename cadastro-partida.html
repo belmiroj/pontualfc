@@ -49,6 +49,13 @@
             gap: 20px;
         }
 
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+
         nav a {
             color: #fff;
             text-decoration: none;
@@ -60,6 +67,51 @@
 
         nav a:hover {
             color: var(--bvb-yellow);
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: var(--bvb-yellow);
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            background: var(--bvb-black);
+            min-width: 180px;
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 3px solid var(--bvb-yellow);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .submenu li a {
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: #222;
+            color: var(--bvb-yellow);
+        }
+
+        .nav-item:hover .submenu {
+            display: block;
         }
 
         /* --- FORMULÁRIO ESTILIZADO --- */
@@ -168,17 +220,19 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li class="nav-item"><a href="index.html" class="nav-link">Início</a></li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Jogos ▾</a>
+                    <a href="index.html" class="nav-link">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Jogos ▾</a>
                     <ul class="submenu">
                         <li><a href="jogos-2026.html">Temporada 2026</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">Cadastro ▾</a>
+                    <a class="nav-link">Cadastro ▾</a>
                     <ul class="submenu">
-                        <li><a href="cadastro-partida.html">Cadastrar Partida</a></li>
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
                         <li><a href="lancar-dados.html">Lançar Resultados</a></li>
                     </ul>
                 </li>
