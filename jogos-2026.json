@@ -1,18 +1,46 @@
 {
   "temporada_2026": [
-    {
-      "id": 1,
-      "data": "2026-01-22",
-	    "dia_semana": "QUI",
-      "mandante": "PONTUAL FC",
-      "visitante": "MALA FC",
-      "placar_mandante": null,
-      "placar_visitante": null,
-      "campeonato": "Temporada 2026",
-      "rodada": "1º Jogo",
-	    "status": "upcoming",
-      "hora": "21:00",
-      "local": "Balduíno Soccer Indoor"
-    }
+		{
+		  "id": 1,
+		  "data": "2026-01-22",
+		  "dia_semana": "QUI",
+		  "mandante": "PONTUAL FC",
+		  "visitante": "MALA FC",
+		  "placar_mandante": 4,
+		  "placar_visitante": 4,
+		  "campeonato": "Temporada 2026",
+		  "rodada": "1º Jogo",
+		  "status": "empate",
+		  "hora": "21:00",
+		  "local": "Balduíno Soccer Indoor",
+		  "presencas": [
+			"DIEGO",
+			"SAYMONN",
+			"DENIS",
+			"BELMIRO",
+			"ISMAEL",
+			"DEIVID",
+			"RANIERI",
+			"ANTONIO",
+			"LUIZ",
+			"GUIMA"
+		  ],
+		  "gols_detalhes": [
+			{
+			  "nome": "DIEGO",
+			  "qtd": 3
+			},
+			{
+			  "nome": "SAYMONN",
+			  "qtd": 1
+			}
+		  ],
+		  "assist_detalhes": [
+			{
+			  "nome": "BELMIRO",
+			  "qtd": 1
+			}
+		  ]
+		}
   ]
 }
