@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pontual FC | Dashboard</title>
+    <title>Pontual FC | Dashboard 2026</title>
     <style>
         :root {
             --bvb-yellow: #FDE100;
@@ -42,10 +42,10 @@
 
         nav, nav ul {
             height: 100%;
-            margin: 0;
-            padding: 0;
             display: flex;
             list-style: none;
+            margin: 0;
+            padding: 0;
         }
 
         .nav-item {
@@ -70,11 +70,10 @@
             color: var(--bvb-yellow);
         }
 
-        /* SUBMENU */
         .submenu {
             display: none;
             position: absolute;
-            top: 70px; /* Alinhado ao final do header */
+            top: 70px;
             left: 0;
             background: var(--bvb-black);
             min-width: 200px;
@@ -95,27 +94,36 @@
             border-bottom: 1px solid #222;
         }
 
-        .submenu li a:hover {
-            background: #222;
-            color: var(--bvb-yellow);
+        /* --- DASHBOARD LAYOUT --- */
+        .container {
+            padding: 30px 5%;
         }
 
-        /* --- DASHBOARD --- */
-        .container { padding: 30px 5%; }
-        
-        .resumo-row {
+        .resumo-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
             margin-bottom: 30px;
         }
 
         .resumo-item {
             background: var(--bvb-black);
             color: var(--bvb-yellow);
-            padding: 15px;
+            padding: 12px;
             text-align: center;
             border-radius: 4px;
+        }
+
+        .resumo-item small {
+            display: block;
+            color: #fff;
+            font-size: 0.6rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .resumo-item div {
+            font-size: 1.2rem;
         }
 
         .stats-grid {
@@ -124,14 +132,49 @@
             gap: 20px;
         }
 
-        .card-stats { background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .section-title { border-left: 5px solid var(--bvb-yellow); padding: 10px; margin: 0; font-size: 0.9rem; background: #f9f9f9; }
-        .stats-table { width: 100%; border-collapse: collapse; }
-        .stats-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.8rem; }
-        .val-col { text-align: right; font-weight: bold; }
+        .card-stats {
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            background: #f8f8f8;
+            border-left: 6px solid var(--bvb-yellow);
+            padding: 10px 15px;
+            margin: 0;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f9f9f9;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .val-col {
+            text-align: right;
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* --- RESPONSIVIDADE --- */
+        @media (max-width: 900px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
+
     <header>
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
@@ -155,55 +198,102 @@
     </header>
 
     <div class="container">
-        <div class="resumo-row">
-            <div class="resumo-item"><small>JOGOS</small><div id="stat-total">0</div></div>
-            <div class="resumo-item"><small>VITÓRIAS</small><div id="stat-vitorias">0</div></div>
-            <div class="resumo-item"><small>GOLS PRÓ</small><div id="stat-gp">0</div></div>
-            <div class="resumo-item"><small>APROV.</small><div id="stat-aprov">0%</div></div>
+        <div class="resumo-grid">
+            <div class="resumo-item"><small>Jogos</small><div id="stat-total">0</div></div>
+            <div class="resumo-item"><small>Vitórias</small><div id="stat-vitorias">0</div></div>
+            <div class="resumo-item"><small>Empates</small><div id="stat-empates">0</div></div>
+            <div class="resumo-item"><small>Derrotas</small><div id="stat-derrotas">0</div></div>
+            <div class="resumo-item"><small>Gols Pró</small><div id="stat-gp">0</div></div>
+            <div class="resumo-item"><small>Gols Contra</small><div id="stat-gc">0</div></div>
+            <div class="resumo-item"><small>Saldo Gols</small><div id="stat-sg">0</div></div>
+            <div class="resumo-item"><small>Aprov. %</small><div id="stat-aprov">0%</div></div>
         </div>
 
         <div class="stats-grid">
             <div class="card-stats">
-                <h3 class="section-title">Artilharia</h3>
+                <h3 class="section-title">Artilharia ⚽</h3>
                 <table class="stats-table"><tbody id="lista-gols"></tbody></table>
             </div>
             <div class="card-stats">
-                <h3 class="section-title">Assistências</h3>
+                <h3 class="section-title">Assistências 👟</h3>
                 <table class="stats-table"><tbody id="lista-assist"></tbody></table>
             </div>
             <div class="card-stats">
-                <h3 class="section-title">Presenças</h3>
+                <h3 class="section-title">Presenças 🏟️</h3>
                 <table class="stats-table"><tbody id="lista-presencas"></tbody></table>
             </div>
         </div>
     </div>
 
     <script>
-        async function carregar() {
-            const resp = await fetch('jogos-2026.json');
-            const data = await resp.json();
-            const jogos = data.temporada_2026;
-            let t=0, v=0, gp=0, g={}, a={}, p={};
-            jogos.forEach(j => {
-                if(j.status !== 'upcoming'){
-                    t++; if(j.status==='vitoria') v++;
-                    gp += (j.mandante==="PONTUAL FC" ? j.placar_mandante : j.placar_visitante);
-                    if(j.gols_detalhes) j.gols_detalhes.forEach(i => g[i.nome] = (g[i.nome]||0)+i.qtd);
-                    if(j.assist_detalhes) j.assist_detalhes.forEach(i => a[i.nome] = (a[i.nome]||0)+i.qtd);
-                    if(j.presencas) j.presencas.forEach(i => p[i] = (p[i]||0)+1);
-                }
-            });
-            document.getElementById('stat-total').innerText = t;
-            document.getElementById('stat-vitorias').innerText = v;
-            document.getElementById('stat-gp').innerText = gp;
-            document.getElementById('stat-aprov').innerText = t>0 ? ((v/t)*100).toFixed(0)+"%" : "0%";
-            const render = (id, obj) => {
-                document.getElementById(id).innerHTML = Object.entries(obj).sort((x,y)=>y[1]-x[1])
-                .map(e => `<tr><td>${e[0]}</td><td class="val-col">${e[1]}</td></tr>`).join('');
-            };
-            render('lista-gols', g); render('lista-assist', a); render('lista-presencas', p);
+        async function carregarDashboard() {
+            try {
+                const resp = await fetch('jogos-2026.json');
+                const data = await resp.json();
+                const jogos = data.temporada_2026;
+
+                let total = 0, vitorias = 0, empates = 0, derrotas = 0;
+                let golsPro = 0, golsContra = 0;
+                let artilharia = {}, assistencias = {}, presencas = {};
+
+                jogos.forEach(j => {
+                    if (j.status !== 'upcoming') {
+                        total++;
+                        
+                        // Resultados
+                        if (j.status === 'vitoria') vitorias++;
+                        else if (j.status === 'empate') empates++;
+                        else if (j.status === 'derrota') derrotas++;
+
+                        // Saldo de Gols
+                        if (j.mandante === "PONTUAL FC") {
+                            golsPro += (j.placar_mandante || 0);
+                            golsContra += (j.placar_visitante || 0);
+                        } else {
+                            golsPro += (j.placar_visitante || 0);
+                            golsContra += (j.placar_mandante || 0);
+                        }
+
+                        // Individuais
+                        if (j.gols_detalhes) j.gols_detalhes.forEach(g => artilharia[g.nome] = (artilharia[g.nome] || 0) + g.qtd);
+                        if (j.assist_detalhes) j.assist_detalhes.forEach(a => assistencias[a.nome] = (assistencias[a.nome] || 0) + a.qtd);
+                        if (j.presencas) j.presencas.forEach(p => presencas[p] = (presencas[p] || 0) + 1);
+                    }
+                });
+
+                // Dom Manipulation
+                document.getElementById('stat-total').innerText = total;
+                document.getElementById('stat-vitorias').innerText = vitorias;
+                document.getElementById('stat-empates').innerText = empates;
+                document.getElementById('stat-derrotas').innerText = derrotas;
+                document.getElementById('stat-gp').innerText = golsPro;
+                document.getElementById('stat-gc').innerText = golsContra;
+                
+                // Cálculo Saldo de Gols
+                const saldo = golsPro - golsContra;
+                document.getElementById('stat-sg').innerText = (saldo > 0 ? "+" : "") + saldo;
+
+                // Cálculo de Aproveitamento % (Fórmula: Pontos ganhos / Pontos disputados)
+                const pontosGanhos = (vitorias * 3) + (empates * 1);
+                const pontosDisputados = total * 3;
+                const aprovPercent = pontosDisputados > 0 ? ((pontosGanhos / pontosDisputados) * 100).toFixed(1) : 0;
+                document.getElementById('stat-aprov').innerText = aprovPercent + "%";
+
+                renderTable('lista-gols', artilharia);
+                renderTable('lista-assist', assistencias);
+                renderTable('lista-presencas', presencas);
+
+            } catch (e) { console.error("Erro dashboard:", e); }
         }
-        window.onload = carregar;
+
+        function renderTable(id, objeto) {
+            const sorted = Object.entries(objeto).sort((a, b) => b[1] - a[1]);
+            document.getElementById(id).innerHTML = sorted.map(([n, v]) => `
+                <tr><td>${n}</td><td class="val-col">${v}</td></tr>
+            `).join('') || "<tr><td>Sem dados</td></tr>";
+        }
+
+        window.onload = carregarDashboard;
     </script>
 </body>
 </html>
