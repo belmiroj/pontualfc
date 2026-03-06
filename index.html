@@ -12,7 +12,6 @@
             --win: #2ecc71;
             --draw: #f1c40f;
             --loss: #e74c3c;
-            --info: #3498db;
         }
 
         body {
@@ -42,14 +41,12 @@
             font-size: 1.2rem;
         }
 
-        /* --- NAVEGAÇÃO E SUBMENU --- */
         nav ul {
             display: flex;
             list-style: none;
             gap: 20px;
             margin: 0;
             padding: 0;
-            height: 100%;
         }
 
         .nav-item {
@@ -66,10 +63,6 @@
             font-weight: bold;
             text-transform: uppercase;
             cursor: pointer;
-        }
-
-        .nav-link:hover {
-            color: var(--bvb-yellow);
         }
 
         .submenu {
@@ -110,7 +103,7 @@
             padding: 20px;
         }
 
-        /* --- GRID DE CARDS --- */
+        /* --- CARDS DE ESTATÍSTICAS --- */
         .stats-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -125,6 +118,7 @@
             text-align: center;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border-bottom: 4px solid #ddd;
+            transition: all 0.3s ease;
         }
 
         .card small {
@@ -146,7 +140,7 @@
             color: var(--bvb-black);
         }
 
-        /* --- GRID DE TABELAS (4 COLUNAS) --- */
+        /* --- TABELAS --- */
         .tables-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -251,7 +245,7 @@
                 <table><tbody id="lista-assist"></tbody></table>
             </div>
             <div class="table-box">
-                <h3>Votos (Melhor)</h3>
+                <h3>Votos (MVP)</h3>
                 <table><tbody id="lista-votos"></tbody></table>
             </div>
             <div class="table-box">
@@ -282,7 +276,6 @@
                         gp += isM ? (j.placar_mandante || 0) : (j.placar_visitante || 0);
                         gc += isM ? (j.placar_visitante || 0) : (j.placar_mandante || 0);
                         
-                        // Processar Detalhes
                         if (j.gols_detalhes) j.gols_detalhes.forEach(i => art[i.nome] = (art[i.nome] || 0) + i.qtd);
                         if (j.assist_detalhes) j.assist_detalhes.forEach(i => ast[i.nome] = (ast[i.nome] || 0) + i.qtd);
                         if (j.votos_melhor) j.votos_melhor.forEach(i => vot[i.nome] = (vot[i.nome] || 0) + i.qtd);
@@ -290,7 +283,7 @@
                     }
                 });
 
-                // Preencher Stats
+                // Preencher Números Básicos
                 document.getElementById('stat-total').innerText = t;
                 document.getElementById('stat-vitorias').innerText = v;
                 document.getElementById('stat-empates').innerText = e;
@@ -299,12 +292,32 @@
                 document.getElementById('stat-gc').innerText = gc;
                 document.getElementById('stat-sg').innerText = (gp - gc);
 
-                // Aproveitamento
-                const pts = (v * 3) + (e * 1);
-                const perc = t > 0 ? ((pts / (t * 3)) * 100).toFixed(1) : 0;
-                document.getElementById('stat-aprov').innerText = perc + "%";
+                // Lógica de Aproveitamento e Cores Dinâmicas
+                const ptsGanhos = (v * 3) + (e * 1);
+                const ptsPossiveis = t * 3;
+                const perc = ptsPossiveis > 0 ? (ptsGanhos / ptsPossiveis) * 100 : 0;
+                
+                const elAprov = document.getElementById('stat-aprov');
+                const cardAprov = document.getElementById('card-aprov');
+                
+                elAprov.innerText = perc.toFixed(1) + "%";
 
-                // Renderizar Tabelas
+                // Aplicação das Regras de Cores
+                if (perc < 50) {
+                    // Abaixo de 50% = Vermelho
+                    cardAprov.style.borderColor = "var(--loss)";
+                    elAprov.style.color = "var(--loss)";
+                } else if (perc >= 50 && perc < 70) {
+                    // Entre 50% e 69.9% = Amarelo
+                    cardAprov.style.borderColor = "var(--draw)";
+                    elAprov.style.color = "var(--draw)";
+                } else {
+                    // 70% ou mais = Verde
+                    cardAprov.style.borderColor = "var(--win)";
+                    elAprov.style.color = "var(--win)";
+                }
+
+                // Renderizar Tabelas de Rankings
                 const render = (id, obj) => {
                     document.getElementById(id).innerHTML = Object.entries(obj)
                         .sort((x, y) => y[1] - x[1])
@@ -318,7 +331,7 @@
                 render('lista-presencas', pre);
 
             } catch (err) {
-                console.error("Erro:", err);
+                console.error("Erro ao carregar dados:", err);
             }
         }
         window.onload = carregar;
