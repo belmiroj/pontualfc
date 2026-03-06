@@ -2,47 +2,120 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Partida</title>
+    <title>Agendar Partida | Pontual FC</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
-        .form-group { margin-bottom: 10px; }
-        label { display: block; font-weight: bold; }
-        input, select { width: 100%; padding: 8px; margin-top: 5px; }
-        textarea { width: 100%; height: 150px; margin-top: 20px; font-family: monospace; background: #222; color: #0f0; padding: 10px; }
-        button { background: #000; color: #fff; padding: 10px 20px; border: none; cursor: pointer; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            margin-top: 0;
+            border-bottom: 4px solid #FDE100;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* Evita que o padding aumente a largura */
+        }
+
+        button {
+            width: 100%;
+            background-color: #000;
+            color: #FDE100;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            margin-top: 20px;
+            background: #222;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.8rem;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
-    <h2>Cadastrar Nova Partida (Agendar)</h2>
-    <div class="form-group">
-        <label>Data:</label>
-        <input type="date" id="data">
-    </div>
-    <div class="form-group">
-        <label>Adversário:</label>
-        <input type="text" id="visitante" placeholder="Nome do time">
-    </div>
-    <div class="form-group">
-        <label>Rodada:</label>
-        <input type="text" id="rodada" placeholder="Ex: 11º Jogo">
-    </div>
-    <button onclick="gerarJSON()">Gerar Código para o JSON</button>
 
-    <p>Copie o código abaixo e cole dentro do array "temporada_2026" no seu arquivo .json:</p>
-    <textarea id="resultado" readonly></textarea>
+    <div class="form-container">
+        <h2>Novo Jogo (Agendar)</h2>
+        
+        <div class="form-group">
+            <label>Data do Jogo:</label>
+            <input type="date" id="data">
+        </div>
+
+        <div class="form-group">
+            <label>Nome do Adversário:</label>
+            <input type="text" id="adversario" placeholder="Ex: MALA FC">
+        </div>
+
+        <div class="form-group">
+            <label>Rodada/Identificação:</label>
+            <input type="text" id="rodada" placeholder="Ex: 12º Jogo">
+        </div>
+
+        <button onclick="gerarCodigo()">Gerar Bloco JSON</button>
+
+        <textarea id="resultado" readonly placeholder="O código aparecerá aqui..."></textarea>
+    </div>
 
     <script>
-        function gerarJSON() {
+        function gerarCodigo() {
+            const dataVal = document.getElementById('data').value;
             const obj = {
                 id: Date.now(),
-                data: document.getElementById('data').value,
+                data: dataVal || "2026-01-01",
                 dia_semana: "QUI",
                 mandante: "PONTUAL FC",
-                visitante: document.getElementById('visitante').value,
+                visitante: document.getElementById('adversario').value.toUpperCase() || "ADVERSÁRIO",
                 placar_mandante: null,
                 placar_visitante: null,
                 campeonato: "Temporada 2026",
-                rodada: document.getElementById('rodada').value,
+                rodada: document.getElementById('rodada').value || "Jogo",
                 status: "upcoming",
                 hora: "21:00",
                 local: "Balduíno Soccer Indoor"
