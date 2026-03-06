@@ -1,11 +1,3 @@
-Entendi o ponto. O problema é que o código estava gerando nomes de chaves diferentes (como gols_detalhados em vez de gols_detalhes) ou campos que o seu index.html não consome, o que acaba sujando o seu banco de dados JSON.
-
-Para que o sistema de rankings (Artilharia, Assistências e Presenças) funcione perfeitamente sem gerar lixo, as chaves precisam ser exatamente: presencas, gols_detalhes e assist_detalhes.
-
-Aqui está o código do lancar-dados.html corrigido, com o CSS indentado e o JavaScript ajustado para gerar apenas o necessário:
-
-lancar-dados.html (Versão Corrigida e Limpa)
-HTML
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
