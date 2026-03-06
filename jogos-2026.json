@@ -3,18 +3,16 @@
     {
       "id": 1,
       "data": "2026-01-22",
+	    "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
       "visitante": "MALA FC",
-      "placar_mandante": 4,
-      "placar_visitante": 4,
-      "status": "empate",
+      "placar_mandante": null,
+      "placar_visitante": null,
       "campeonato": "Temporada 2026",
       "rodada": "1º Jogo",
+	    "status": "upcoming",
       "hora": "21:00",
-      "local": "Balduíno Soccer Indoor",
-      "presenca": ["Jogador 1", "Jogador 2"],
-      "gols_detalhados": [{ "nome": "Jogador 1", "qtd": 2 }],
-      "assist_detalhadas": [{ "nome": "Jogador 2", "qtd": 1 }]
+      "local": "Balduíno Soccer Indoor"
     }
   ]
 }
