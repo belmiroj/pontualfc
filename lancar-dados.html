@@ -2,296 +2,221 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Lançar Resultados | Pontual FC</title>
+    <title>Admin | Pontual FC</title>
     <style>
         :root {
             --bvb-yellow: #FDE100;
-            --bvb-black: #000000;
-            --text-light: #ffffff;
+            --bvb-black: #111111;
+            --bg-gray: #f4f7f6;
         }
 
         body {
-            font-family: 'Arial Black', sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            background: #f4f4f4;
+            background: var(--bg-gray);
         }
 
-        /* --- HEADER & MENU --- */
+        /* --- HEADER --- */
         header {
-            background-color: var(--bvb-black);
-            border-bottom: 5px solid var(--bvb-yellow);
+            background: var(--bvb-black);
+            border-bottom: 4px solid var(--bvb-yellow);
             padding: 0 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: 70px;
-            position: sticky;
-            top: 0;
-            z-index: 9999;
         }
 
         .logo {
             color: var(--bvb-yellow);
-            font-size: 1.5rem;
             text-decoration: none;
-            font-family: 'Arial Black';
-        }
-
-        nav, nav ul {
-            height: 100%;
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .nav-item {
-            position: relative;
-            height: 100%;
-        }
-
-        .nav-link {
-            color: var(--text-light);
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            padding: 0 20px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-        }
-
-        .submenu {
-            display: none;
-            position: absolute;
-            top: 70px;
-            left: 0;
-            background: var(--bvb-black);
-            min-width: 200px;
-            border-top: 3px solid var(--bvb-yellow);
-        }
-
-        .nav-item:hover .submenu {
-            display: block;
-        }
-
-        .submenu a {
-            color: #fff;
-            padding: 15px;
-            display: block;
-            text-decoration: none;
-            font-size: 0.75rem;
+            font-weight: 800;
         }
 
         /* --- FORMULÁRIO --- */
         .container {
-            max-width: 850px;
+            max-width: 800px;
             margin: 30px auto;
             background: #fff;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         h3 {
-            border-left: 8px solid var(--bvb-yellow);
-            padding-left: 15px;
+            border-left: 5px solid var(--bvb-yellow);
+            padding-left: 10px;
             text-transform: uppercase;
+            font-size: 1rem;
+            color: var(--bvb-black);
         }
 
-        .selecao-jogo {
-            background: #eee;
+        select, 
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        button {
+            width: 100%;
+            background: var(--bvb-black);
+            color: var(--bvb-yellow);
             padding: 15px;
-            border-radius: 4px;
-            margin-bottom: 25px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-top: 20px;
+            text-transform: uppercase;
+            transition: background 0.3s;
         }
 
-        .placar-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
+        button:hover {
+            background: #222;
         }
 
+        /* --- OUTPUT --- */
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: #222;
+            color: #2ecc71;
+            padding: 15px;
+            font-family: 'Consolas', monospace;
+            margin-top: 20px;
+            border-radius: 6px;
+            border: none;
+            box-sizing: border-box;
+        }
+
+        /* --- TABELA DE ELENCO --- */
         table {
             width: 100%;
+            margin-top: 20px;
             border-collapse: collapse;
         }
 
         th {
-            background: #000;
-            color: #fff;
-            padding: 10px;
             text-align: left;
-            font-size: 0.8rem;
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            padding: 10px;
+            border-bottom: 2px solid #eee;
         }
 
         td {
             padding: 10px;
             border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
         }
 
-        .btn-gerar {
-            width: 100%;
-            background: var(--bvb-black);
-            color: var(--bvb-yellow);
-            padding: 18px;
-            border: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            margin-top: 30px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 250px;
-            background: #1e1e1e;
-            color: #a9dc76;
-            margin-top: 20px;
-            padding: 15px;
-            font-family: monospace;
-            border-radius: 4px;
-            box-sizing: border-box;
-            border: none;
+        .input-mini {
+            width: 50px !important;
+            padding: 5px !important;
+            margin: 0 !important;
+            text-align: center;
         }
     </style>
 </head>
 <body>
+
     <header>
         <a href="index.html" class="logo">PONTUAL FC</a>
-        <nav>
-            <ul>
-                <li class="nav-item"><a href="index.html" class="nav-link">Início</a></li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Jogos ▾</a>
-                    <ul class="submenu">
-                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">Cadastro ▾</a>
-                    <ul class="submenu">
-                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
-                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
     </header>
 
     <div class="container">
-        <h3>Lançar Resultados</h3>
-        <div class="selecao-jogo">
-            <label>Selecione a Partida para Atualizar:</label>
-            <select id="sel-jogo" style="width:100%; padding:10px; cursor:pointer;"></select>
-        </div>
-
-        <div class="placar-row">
-            <div>
-                <label>Gols PONTUAL FC</label>
-                <input type="number" id="g-p" value="0" style="width:100%; padding:8px;">
-            </div>
-            <div>
-                <label>Gols ADVERSÁRIO</label>
-                <input type="number" id="g-a" value="0" style="width:100%; padding:8px;">
-            </div>
-            <div>
-                <label>Resultado Final</label>
-                <select id="res-status" style="width:100%; padding:8px; cursor:pointer;">
-                    <option value="vitoria">VITÓRIA</option>
-                    <option value="empate">EMPATE</option>
-                    <option value="derrota">DERROTA</option>
-                </select>
-            </div>
+        <h3>Lançar Resultado</h3>
+        
+        <label style="font-size: 0.8rem; font-weight: bold; color: #666;">Selecione o Jogo:</label>
+        <select id="sel-jogo"></select>
+        
+        <div style="display:flex; gap:10px; margin-top: 10px;">
+            <input type="number" id="gp" placeholder="Gols Pontual">
+            <input type="number" id="gc" placeholder="Gols Adv">
+            <select id="status">
+                <option value="vitoria">Vitória</option>
+                <option value="empate">Empate</option>
+                <option value="derrota">Derrota</option>
+            </select>
         </div>
 
         <table>
             <thead>
                 <tr>
-                    <th>Presente?</th>
+                    <th style="width: 40px;">✔</th>
                     <th>Jogador</th>
-                    <th>Gols</th>
-                    <th>Assistências</th>
+                    <th style="width: 60px;">Gols</th>
+                    <th style="width: 60px;">Ast</th>
                 </tr>
             </thead>
-            <tbody id="lista-elenco">
-                </tbody>
+            <tbody id="elenco"></tbody>
         </table>
 
-        <button class="btn-gerar" onclick="gerar()">GERAR CÓDIGO DO JOGO ATUALIZADO</button>
-        <textarea id="output" readonly placeholder="O novo bloco do jogo aparecerá aqui..."></textarea>
+        <button onclick="gerar()">Gerar JSON de Resultado</button>
+        
+        <textarea id="out" readonly placeholder="O código JSON aparecerá aqui..."></textarea>
     </div>
 
     <script>
-        // LISTA FIXA DE JOGADORES
         const elenco = ["DIEGO", "SAYMONN", "DENIS", "BELMIRO", "ISMAEL", "DEIVID", "RANIERI", "ANTONIO", "LUIZ", "GUIMA", "GUILHERME", "JAIR"];
         let db = [];
 
-        // Carrega os jogos agendados do JSON
         async function init() {
             try {
                 const r = await fetch('jogos-2026.json');
                 const d = await r.json(); 
                 db = d.temporada_2026;
-                
-                // Preenche o Select com os jogos existentes
+
                 document.getElementById('sel-jogo').innerHTML = db.map((j, i) => 
                     `<option value="${i}">${j.data} - ${j.visitante}</option>`
                 ).join('');
 
-                // Monta a tabela do elenco
-                document.getElementById('lista-elenco').innerHTML = elenco.map(nome => `
+                document.getElementById('elenco').innerHTML = elenco.map(n => `
                     <tr>
-                        <td style="text-align:center"><input type="checkbox" class="p-check" data-n="${nome}"></td>
-                        <td><strong>${nome}</strong></td>
-                        <td><input type="number" class="p-gol" data-n="${nome}" value="0" min="0" style="width:50px"></td>
-                        <td><input type="number" class="p-ast" data-n="${nome}" value="0" min="0" style="width:50px"></td>
+                        <td><input type="checkbox" class="pre" data-n="${n}"></td>
+                        <td><strong>${n}</strong></td>
+                        <td><input type="number" class="gol input-mini" data-n="${n}" value="0"></td>
+                        <td><input type="number" class="ast input-mini" data-n="${n}" value="0"></td>
                     </tr>
                 `).join('');
             } catch (e) {
-                alert("Erro ao carregar jogos-2026.json. Verifique o arquivo!");
+                console.error("Erro ao carregar dados:", e);
             }
         }
 
         function gerar() {
             const idx = document.getElementById('sel-jogo').value;
-            const jogoOriginal = db[idx]; // Pega os dados fixos (ID, Data, Local)
+            const jogo = db[idx];
+            const pres = [], gols = [], asts = [];
 
-            const presencas = [];
-            const gols_detalhes = [];
-            const assist_detalhes = [];
-
-            elenco.forEach(nome => {
-                const foiProJogo = document.querySelector(`.p-check[data-n="${nome}"]`).checked;
-                const totalGols = parseInt(document.querySelector(`.p-gol[data-n="${nome}"]`).value);
-                const totalAsts = parseInt(document.querySelector(`.p-ast[data-n="${nome}"]`).value);
-
-                if (foiProJogo) {
-                    presencas.push(nome);
+            elenco.forEach(n => {
+                if (document.querySelector(`.pre[data-n="${n}"]`).checked) {
+                    pres.push(n);
                 }
-                if (totalGols > 0) {
-                    gols_detalhes.push({ "nome": nome, "qtd": totalGols });
-                }
-                if (totalAsts > 0) {
-                    assist_detalhes.push({ "nome": nome, "qtd": totalAsts });
-                }
+                let g = parseInt(document.querySelector(`.gol[data-n="${n}"]`).value);
+                let a = parseInt(document.querySelector(`.ast[data-n="${n}"]`).value);
+                
+                if (g > 0) gols.push({ nome: n, qtd: g });
+                if (a > 0) asts.push({ nome: n, qtd: a });
             });
 
-            // Monta o objeto final COMBINANDO os dados originais com os novos resultados
-            const resultadoFinal = {
-                ...jogoOriginal, // Mantém ID, Data, Local, Hora, etc.
-                "placar_mandante": parseInt(document.getElementById('g-p').value),
-                "placar_visitante": parseInt(document.getElementById('g-a').value),
-                "status": document.getElementById('res-status').value,
-                "presencas": presencas,
-                "gols_detalhes": gols_detalhes,
-                "assist_detalhes": assist_detalhes
+            const res = {
+                ...jogo,
+                placar_mandante: parseInt(document.getElementById('gp').value) || 0,
+                placar_visitante: parseInt(document.getElementById('gc').value) || 0,
+                status: document.getElementById('status').value,
+                presencas: pres,
+                gols_detalhes: gols,
+                assist_detalhes: asts
             };
 
-            // Exibe o JSON pronto para copiar/colar
-            document.getElementById('output').value = JSON.stringify(resultadoFinal, null, 2) + ",";
-            window.scrollTo(0, document.body.scrollHeight);
+            document.getElementById('out').value = JSON.stringify(res, null, 2) + ",";
         }
 
         window.onload = init;
