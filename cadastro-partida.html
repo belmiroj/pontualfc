@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Partida</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; line-height: 1.6; }
+        .form-group { margin-bottom: 10px; }
+        label { display: block; font-weight: bold; }
+        input, select { width: 100%; padding: 8px; margin-top: 5px; }
+        textarea { width: 100%; height: 150px; margin-top: 20px; font-family: monospace; background: #222; color: #0f0; padding: 10px; }
+        button { background: #000; color: #fff; padding: 10px 20px; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Cadastrar Nova Partida (Agendar)</h2>
+    <div class="form-group">
+        <label>Data:</label>
+        <input type="date" id="data">
+    </div>
+    <div class="form-group">
+        <label>Adversário:</label>
+        <input type="text" id="visitante" placeholder="Nome do time">
+    </div>
+    <div class="form-group">
+        <label>Rodada:</label>
+        <input type="text" id="rodada" placeholder="Ex: 11º Jogo">
+    </div>
+    <button onclick="gerarJSON()">Gerar Código para o JSON</button>
+
+    <p>Copie o código abaixo e cole dentro do array "temporada_2026" no seu arquivo .json:</p>
+    <textarea id="resultado" readonly></textarea>
+
+    <script>
+        function gerarJSON() {
+            const obj = {
+                id: Date.now(),
+                data: document.getElementById('data').value,
+                dia_semana: "QUI",
+                mandante: "PONTUAL FC",
+                visitante: document.getElementById('visitante').value,
+                placar_mandante: null,
+                placar_visitante: null,
+                campeonato: "Temporada 2026",
+                rodada: document.getElementById('rodada').value,
+                status: "upcoming",
+                hora: "21:00",
+                local: "Balduíno Soccer Indoor"
+            };
+            document.getElementById('resultado').value = JSON.stringify(obj, null, 2) + ",";
+        }
+    </script>
+</body>
+</html>

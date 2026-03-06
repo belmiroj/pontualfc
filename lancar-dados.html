@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lançar Resultados</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        textarea { width: 100%; height: 200px; font-family: monospace; margin-top: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        input { padding: 5px; width: 80%; }
+    </style>
+</head>
+<body>
+    <h2>Lançar Placar e Estatísticas</h2>
+    <div class="grid">
+        <div>
+            <h3>Placar</h3>
+            PONTUAL: <input type="number" id="p1" value="0"><br><br>
+            ADVERSÁRIO: <input type="number" id="p2" value="0">
+        </div>
+        <div>
+            <h3>Status</h3>
+            <select id="status">
+                <option value="vitoria">Vitória</option>
+                <option value="empate">Empate</option>
+                <option value="derrota">Derrota</option>
+            </select>
+        </div>
+    </div>
+
+    <h3>Gols do Pontual (Nome e Qtd)</h3>
+    <input type="text" id="g1_nome" placeholder="Jogador"> <input type="number" id="g1_qtd" value="1"><br>
+    
+    <h3>Assistências (Nome e Qtd)</h3>
+    <input type="text" id="a1_nome" placeholder="Jogador"> <input type="number" id="a1_qtd" value="1"><br><br>
+
+    <button onclick="gerarUpdate()">Gerar Bloco de Dados</button>
+    
+    <p>Substitua o objeto do jogo correspondente no JSON por este novo:</p>
+    <textarea id="saida"></textarea>
+
+    <script>
+        function gerarUpdate() {
+            const dados = {
+                placar_mandante: parseInt(document.getElementById('p1').value),
+                placar_visitante: parseInt(document.getElementById('p2').value),
+                status: document.getElementById('status').value,
+                gols_detalhes: [
+                    { nome: document.getElementById('g1_nome').value, qtd: parseInt(document.getElementById('g1_qtd').value) }
+                ],
+                assist_detalhes: [
+                    { nome: document.getElementById('a1_nome').value, qtd: parseInt(document.getElementById('a1_qtd').value) }
+                ]
+            };
+            document.getElementById('saida').value = "// Copie os campos abaixo para dentro do jogo no JSON:\n" + JSON.stringify(dados, null, 2);
+        }
+    </script>
+</body>
+</html>

@@ -1,28 +1,30 @@
+Para que o sistema funcione como você deseja, organizei os códigos com o layout de 3 colunas na Home e a estrutura de menus atualizada.
+
+Como você vai alterar o JSON na mão, os formulários de cadastro abaixo foram projetados para gerar o bloco de texto formatado. Você apenas preenche, clica em "Gerar Código", copia e cola dentro do seu arquivo jogos-2026.json.
+
+1. Código: index.html (Home com 3 Colunas)
+HTML
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pontual FC | Gestão de Partidas</title>
+    <title>Pontual FC | Dashboard</title>
     <style>
         :root {
             --bvb-yellow: #FDE100;
             --bvb-black: #000000;
             --text-light: #ffffff;
-            --bg-gray: #f4f4f4;
-            --card-white: #ffffff;
-            --border-color: #dddddd;
         }
 
         body {
             font-family: 'Arial Black', sans-serif;
             margin: 0;
-            background-color: var(--bg-gray);
+            background-color: #f4f4f4;
             color: var(--bvb-black);
-            line-height: 1.6;
         }
 
-        /* --- NAVEGAÇÃO --- */
+        /* --- HEADER & NAV --- */
         header {
             background-color: var(--bvb-black);
             border-bottom: 5px solid var(--bvb-yellow);
@@ -35,418 +37,191 @@
             z-index: 1000;
         }
 
-        .logo {
-            color: var(--bvb-yellow);
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-decoration: none;
-        }
+        .logo { color: var(--bvb-yellow); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
+        
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+        nav a { text-decoration: none; color: var(--text-light); text-transform: uppercase; font-size: 0.8rem; transition: 0.3s; }
+        nav a:hover { color: var(--bvb-yellow); }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 20px;
-            margin: 0;
-            padding: 0;
+        .dropdown { position: relative; }
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--bvb-black);
+            min-width: 180px;
+            border-top: 3px solid var(--bvb-yellow);
         }
-
-        nav a {
-            text-decoration: none;
-            color: var(--text-light);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--bvb-yellow);
-        }
+        .submenu li { display: block; }
+        .submenu a { padding: 12px; display: block; border-bottom: 1px solid #222; }
+        .dropdown:hover .submenu { display: block; }
 
         /* --- LAYOUT --- */
-        .container {
-            padding: 40px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
+        .container { padding: 40px 5%; }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
         }
 
         .section-title {
-            border-left: 8px solid var(--bvb-yellow);
-            padding-left: 15px;
-            margin: 40px 0 20px 0;
-            text-transform: uppercase;
-            font-size: 1.5rem;
-        }
-
-        /* --- DASHBOARD E RANKINGS --- */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .card {
-            background: var(--card-white);
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h3 {
-            margin-top: 0;
-            border-bottom: 2px solid var(--bvb-yellow);
-            padding-bottom: 10px;
-            font-size: 1.1rem;
+            border-left: 6px solid var(--bvb-yellow);
+            padding-left: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
             text-transform: uppercase;
         }
 
         .stats-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.9rem;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .stats-table td, 
-        .stats-table th {
-            padding: 12px 8px;
-            border-bottom: 1px solid #eeeeee;
+        .stats-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.8rem;
+            text-transform: uppercase;
         }
 
-        .stats-table th {
-            text-align: left;
-            color: #666666;
-            font-size: 0.75rem;
-        }
+        .stat-value { text-align: right; font-weight: bold; }
+        .stats-footer { background: var(--bvb-yellow); font-weight: bold; }
 
-        .val-highlight {
-            text-align: right;
-            font-weight: bold;
-            color: var(--bvb-black);
-        }
-
-        /* --- FORMULÁRIOS ADMINISTRATIVOS --- */
-        .admin-section {
-            background: var(--card-white);
-            padding: 30px;
-            border: 2px solid var(--bvb-black);
+        .match-card {
+            background: var(--bvb-black);
+            color: white;
+            padding: 20px;
+            text-align: center;
             margin-top: 20px;
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-size: 0.8rem;
-            margin-bottom: 5px;
-            color: #555555;
-        }
-
-        input, 
-        select, 
-        textarea {
-            padding: 12px;
-            border: 1px solid #cccccc;
-            border-radius: 4px;
-            font-family: sans-serif;
-            font-size: 1rem;
-        }
-
-        .presenca-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            background: #f9f9f9;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .check-item {
-            font-family: sans-serif;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .btn-bvb {
-            background: var(--bvb-black);
-            color: var(--bvb-yellow);
-            border: none;
-            padding: 15px 30px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-        }
-
-        .btn-bvb:hover {
-            background: #333333;
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            .section-title {
-                font-size: 1.2rem;
-            }
+        @media (max-width: 992px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="logo">PONTUAL FC</a>
+        <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
-			<ul>
-				<li><a href="index.html">Página Inicial</a></li>
-				<li class="dropdown">
-					<a href="jogos-2026.html">Jogos ▾</a>
-					<ul class="submenu">
-						<li><a href="#">2024</a></li>
-						<li><a href="#">2025</a></li>
-						<li><a href="jogos-2026.html">2026</a></li>
-					</ul>
-				</li>
-				<li class="dropdown">
-					<a href="#">Cadastro ▾</a>
-					<ul class="submenu">
-						<li><a href="cadastrar-partida.html">Agendar Partida</a></li>
-						<li><a href="lancar-presenca.html">Lançar Presença</a></li>
-					</ul>
-				</li>
-				<li><a href="#">Elenco</a></li>
-			</ul>
-		</nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li class="dropdown">
+                    <a href="#">Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Cadastros ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Nova Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Placar/Gols</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
     </header>
 
-
-
-
-
-
-    <div class="container" id="dashboard">
-        <h2 class="section-title">Temporada 2026</h2>
-        
+    <div class="container">
         <div class="dashboard-grid">
-            <div class="card">
-                <h3>Artilharia ⚽</h3>
-                <table class="stats-table" id="table-gols">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NOME</th>
-                            <th style="text-align:right">GOLS</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-            <div class="card">
-                <h3>Garçons 👟</h3>
-                <table class="stats-table" id="table-assist">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>NOME</th>
-                            <th style="text-align:right">ASSIS.</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-            <div class="card">
-                <h3>Resumo da Equipe</h3>
+            
+            <section>
+                <h2 class="section-title">Resumo 2026</h2>
                 <table class="stats-table">
-                    <tr>
-                        <td>Jogos Realizados</td>
-                        <td id="res-jogos" class="val-highlight">0</td>
-                    </tr>
-                    <tr>
-                        <td>Vitórias</td>
-                        <td id="res-vit" class="val-highlight">0</td>
-                    </tr>
-                    <tr>
-                        <td>Gols Marcados</td>
-                        <td id="res-gp" class="val-highlight">0</td>
-                    </tr>
-                    <tr style="background: var(--bvb-yellow)">
-                        <td>Aproveitamento</td>
-                        <td id="res-aprov" class="val-highlight">0%</td>
-                    </tr>
+                    <tr><td>Jogos</td><td id="stat-jogos" class="stat-value">0</td></tr>
+                    <tr><td>Vitórias</td><td id="stat-vitorias" class="stat-value">0</td></tr>
+                    <tr><td>Saldo</td><td id="stat-saldo" class="stat-value">0</td></tr>
+                    <tr class="stats-footer"><td>Aproveitamento</td><td id="stat-aproveitamento" class="stat-value">0%</td></tr>
                 </table>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2 class="section-title" id="admin-partida">1. Agendar Partida</h2>
-        <div class="admin-section">
-            <form id="form-partida">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Adversário</label>
-                        <input type="text" id="p-adv" required>
+                
+                <h2 class="section-title" style="margin-top:30px">Próximo Jogo</h2>
+                <div id="home-match-card" class="match-card">
+                    <div id="home-campeonato" style="color:var(--bvb-yellow); font-size:0.7rem">---</div>
+                    <div style="display:flex; justify-content:space-around; align-items:center; margin:10px 0">
+                        <span>PONTUAL</span>
+                        <span style="color:var(--bvb-yellow)">VS</span>
+                        <span id="home-adversario">---</span>
                     </div>
-                    <div class="form-group">
-                        <label>Data</label>
-                        <input type="date" id="p-data" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Hora</label>
-                        <input type="time" id="p-hora" value="21:00">
-                    </div>
+                    <div id="home-info" style="font-size:0.7rem; color:#ccc">---</div>
                 </div>
-                <button type="submit" class="btn-bvb">Salvar Próximo Jogo</button>
-            </form>
-        </div>
+            </section>
 
-        <h2 class="section-title" id="admin-placar">2. Lançar Placar e Presença</h2>
-        <div class="admin-section">
-            <form id="form-resultado">
-                <div class="form-group">
-                    <label>Selecione o Jogo</label>
-                    <select id="select-jogo" required></select>
-                </div>
+            <section>
+                <h2 class="section-title">Artilharia</h2>
+                <table class="stats-table">
+                    <tbody id="corpo-artilharia"></tbody>
+                </table>
+            </section>
 
-                <div class="form-row" style="margin-top:20px; background:#f0f0f0; padding:15px; border-radius:4px;">
-                    <div class="form-group">
-                        <label>Gols Pontual</label>
-                        <input type="number" id="res-gp-val" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Gols Contra</label>
-                        <input type="number" id="res-gc-val" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Resultado</label>
-                        <select id="res-status">
-                            <option value="vitoria">Vitória</option>
-                            <option value="empate">Empate</option>
-                            <option value="derrota">Derrota</option>
-                        </select>
-                    </div>
-                </div>
+            <section>
+                <h2 class="section-title">Assistências</h2>
+                <table class="stats-table">
+                    <tbody id="corpo-assistencias"></tbody>
+                </table>
+            </section>
 
-                <div class="form-group" style="margin-top:20px;">
-                    <label>Presença (Marque os presentes)</label>
-                    <div id="lista-presenca" class="presenca-grid"></div>
-                </div>
-
-                <div class="form-group" style="margin-top:20px;">
-                    <label>Gols e Assistências (Anotação para o JSON)</label>
-                    <textarea id="res-obs" rows="3" placeholder="Ex: Jogador 1 (2 gols), Jogador 2 (1 assistência)"></textarea>
-                </div>
-
-                <button type="submit" class="btn-bvb">Consolidar Partida (F12 para Log)</button>
-            </form>
         </div>
     </div>
 
     <script>
-        // Lista fixa do elenco para o checklist
-        const ELENCO = ["Jogador 1", "Jogador 2", "Jogador 3", "Jogador 4", "Jogador 5", "Jogador 6"];
+        async function carregarDashboard() {
+            const resp = await fetch('jogos-2026.json');
+            const data = await resp.json();
+            const jogos = data.temporada_2026;
 
-        async function inicializar() {
-            try {
-                const res = await fetch('jogos-2026.json');
-                const data = await res.json();
-                const jogos = data.temporada_2026;
-
-                processarStats(jogos);
-                popularAdmin(jogos);
-            } catch (e) {
-                console.error("Erro ao carregar JSON. Use um servidor local (Live Server).");
-            }
-        }
-
-        function processarStats(jogos) {
-            let v = 0, gp = 0, total = 0;
-            let golsRanking = {};
-            let assistRanking = {};
+            let v=0, e=0, d=0, gp=0, gc=0, total=0;
+            let artilharia = {}, assistencias = {};
 
             jogos.forEach(j => {
-                if (j.status !== 'upcoming') {
+                if(j.status !== 'upcoming') {
                     total++;
-                    if (j.status === 'vitoria') v++;
-                    gp += (j.placar_mandante || 0);
-
-                    if (j.gols_detalhados) {
-                        j.gols_detalhados.forEach(g => {
-                            golsRanking[g.nome] = (golsRanking[g.nome] || 0) + g.qtd;
-                        });
+                    if(j.status === 'vitoria') v++;
+                    gp += (j.mandante === "PONTUAL FC" ? j.placar_mandante : j.placar_visitante);
+                    gc += (j.mandante === "PONTUAL FC" ? j.placar_visitante : j.placar_mandante);
+                    
+                    // Processar Gols/Assis se existirem no JSON
+                    if(j.gols_detalhes) {
+                        j.gols_detalhes.forEach(g => artilharia[g.nome] = (artilharia[g.nome] || 0) + g.qtd);
                     }
-                    if (j.assist_detalhadas) {
-                        j.assist_detalhadas.forEach(a => {
-                            assistRanking[a.nome] = (assistRanking[a.nome] || 0) + a.qtd;
-                        });
+                    if(j.assist_detalhes) {
+                        j.assist_detalhes.forEach(a => assistencias[a.nome] = (assistencias[a.nome] || 0) + a.qtd);
                     }
                 }
             });
 
-            renderRank('table-gols', golsRanking);
-            renderRank('table-assist', assistRanking);
+            // Preencher Resumo
+            document.getElementById('stat-jogos').innerText = total;
+            document.getElementById('stat-vitorias').innerText = v;
+            document.getElementById('stat-saldo').innerText = (gp - gc);
+            document.getElementById('stat-aproveitamento').innerText = total > 0 ? ((v*3/ (total*3))*100).toFixed(1) + "%" : "0%";
 
-            document.getElementById('res-jogos').innerText = total;
-            document.getElementById('res-vit').innerText = v;
-            document.getElementById('res-gp').innerText = gp;
-            document.getElementById('res-aprov').innerText = total > 0 ? ((v/total)*100).toFixed(1) + "%" : "0%";
+            // Renderizar Rankings
+            renderizarRanking('corpo-artilharia', artilharia);
+            renderizarRanking('corpo-assistencias', assistencias);
+
+            // Próximo Jogo
+            const prox = jogos.find(j => j.status === 'upcoming');
+            if(prox) {
+                document.getElementById('home-adversario').innerText = prox.visitante;
+                document.getElementById('home-campeonato').innerText = prox.campeonato;
+                document.getElementById('home-info').innerText = `${prox.data} | ${prox.hora}`;
+            }
         }
 
-        function renderRank(id, obj) {
-            const tbody = document.querySelector(`#${id} tbody`);
-            const sorted = Object.entries(obj).sort((a,b) => b[1] - a[1]);
-            tbody.innerHTML = sorted.map((p, i) => `
-                <tr>
-                    <td>${i+1}º</td>
-                    <td>${p[0]}</td>
-                    <td class="val-highlight">${p[1]}</td>
-                </tr>
-            `).join('');
+        function renderizarRanking(id, obj) {
+            const html = Object.entries(obj)
+                .sort((a,b) => b[1] - a[1])
+                .map(item => `<tr><td>${item[0]}</td><td class="stat-value">${item[1]}</td></tr>`).join('');
+            document.getElementById(id).innerHTML = html || "<tr><td>Nenhum dado</td></tr>";
         }
 
-        function popularAdmin(jogos) {
-            const select = document.getElementById('select-jogo');
-            const pendentes = jogos.filter(j => j.status === 'upcoming');
-            select.innerHTML = pendentes.map(j => `<option value="${j.id}">${j.data} vs ${j.visitante}</option>`).join('');
-
-            const grid = document.getElementById('lista-presenca');
-            grid.innerHTML = ELENCO.map(p => `
-                <label class="check-item">
-                    <input type="checkbox" name="jogador" value="${p}"> ${p}
-                </label>
-            `).join('');
-        }
-
-        document.getElementById('form-resultado').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const selecionados = Array.from(document.querySelectorAll('input[name="jogador"]:checked')).map(i => i.value);
-            console.log("DADOS PARA ATUALIZAR JSON:", {
-                id_jogo: document.getElementById('select-jogo').value,
-                presenca: selecionados,
-                obs: document.getElementById('res-obs').value
-            });
-            alert("Partida consolidada! Verifique o log no console (F12) para copiar os dados.");
-        });
-
-        window.onload = inicializar;
+        window.onload = carregarDashboard;
     </script>
 </body>
 </html>
