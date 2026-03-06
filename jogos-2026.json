@@ -1,60 +1,169 @@
 {
   "temporada_2026": [
-		{
-		  "id": 1,
-		  "data": "2026-01-22",
-		  "dia_semana": "QUI",
-		  "mandante": "PONTUAL FC",
-		  "visitante": "MALA FC",
-		  "placar_mandante": 4,
-		  "placar_visitante": 4,
-		  "campeonato": "Temporada 2026",
-		  "rodada": "1º Jogo",
-		  "status": "empate",
-		  "hora": "21:00",
-		  "local": "Balduíno Soccer Indoor",
-		  "presencas": [
-			"DIEGO",
-			"SAYMONN",
-			"DENIS",
-			"BELMIRO",
-			"ISMAEL",
-			"DEIVID",
-			"RANIERI",
-			"ANTONIO",
-			"LUIZ",
-			"GUIMA"
-		  ],
-		  "gols_detalhes": [
-			{
-			  "nome": "DIEGO",
-			  "qtd": 3
-			},
-			{
-			  "nome": "SAYMONN",
-			  "qtd": 1
-			}
-		  ],
-		  "assist_detalhes": [
-			{
-			  "nome": "BELMIRO",
-			  "qtd": 1
-			}
-		  ]
-		},
+    {
+      "id": 1,
+      "data": "2026-01-22",
+      "dia_semana": "QUI",
+      "mandante": "PONTUAL FC",
+      "visitante": "MALA FC",
+      "placar_mandante": 4,
+      "placar_visitante": 4,
+      "campeonato": "Temporada 2026",
+      "rodada": "1º Jogo",
+      "status": "empate",
+      "hora": "21:00",
+      "local": "Balduíno Soccer Indoor",
+      "presencas": [
+        "ANTONIO",
+        "AUGUSTO",
+        "BELMIRO",
+        "CELSO",
+        "CLESIO",
+        "DEIVID",
+        "DENIS",
+        "DIEGO",
+        "GUIMA",
+        "ISMAEL",
+        "LUIZ",
+        "RANIERI",
+        "ROGERIO",
+        "SAYMONN"
+      ],
+      "gols_detalhes": [
+        {
+          "nome": "DIEGO",
+          "qtd": 3
+        },
+        {
+          "nome": "SAYMONN",
+          "qtd": 1
+        }
+      ],
+      "assist_detalhes": [],
+      "votos_melhor": [
+        {
+          "nome": "BELMIRO",
+          "qtd": 1
+        },
+        {
+          "nome": "DIEGO",
+          "qtd": 15
+        }
+      ]
+    },
     {
       "id": 2,
       "data": "2026-01-29",
       "dia_semana": "QUI",
       "mandante": "PONTUAL FC",
       "visitante": "SERRARIA EC",
-      "placar_mandante": null,
-      "placar_visitante": null,
+      "placar_mandante": 3,
+      "placar_visitante": 2,
       "campeonato": "Temporada 2026",
       "rodada": "2º Jogo",
-      "status": "upcoming",
+      "status": "vitoria",
       "hora": "21:00",
-      "local": "Balduíno Soccer Indoor"
-    }
+      "local": "Balduíno Soccer Indoor",
+      "presencas": [
+        "ANTONIO",
+        "AUGUSTO",
+        "BELMIRO",
+        "CELSO",
+        "CLESIO",
+        "DEIVID",
+        "DENIS",
+        "DIEGO",
+        "GUIMA",
+        "ISMAEL",
+        "RANIERI",
+        "ROGERIO",
+        "SAYMONN"
+      ],
+      "gols_detalhes": [
+        {
+          "nome": "DIEGO",
+          "qtd": 1
+        },
+        {
+          "nome": "ISMAEL",
+          "qtd": 2
+        }
+      ],
+      "assist_detalhes": [],
+      "votos_melhor": [
+        {
+          "nome": "ANTONIO",
+          "qtd": 3
+        },
+        {
+          "nome": "AUGUSTO",
+          "qtd": 2
+        },
+        {
+          "nome": "BELMIRO",
+          "qtd": 2
+        },
+        {
+          "nome": "DEIVID",
+          "qtd": 2
+        },
+        {
+          "nome": "DENIS",
+          "qtd": 2
+        },
+        {
+          "nome": "DIEGO",
+          "qtd": 2
+        },
+        {
+          "nome": "GUIMA",
+          "qtd": 15
+        },
+        {
+          "nome": "ISMAEL",
+          "qtd": 3
+        },
+        {
+          "nome": "RANIERI",
+          "qtd": 2
+        },
+        {
+          "nome": "ROGERIO",
+          "qtd": 2
+        },
+        {
+          "nome": "SAYMONN",
+          "qtd": 2
+        }
+      ]
+    },
+    {
+    "id": 3,
+    "data": "2026-02-05",
+    "dia_semana": "QUI",
+    "mandante": "PONTUAL FC",
+    "visitante": "NEW CITY FA",
+    "placar_mandante": null,
+    "placar_visitante": null,
+    "campeonato": "Temporada 2026",
+    "rodada": "3º Jogo",
+    "status": "upcoming",
+    "hora": "21:00",
+    "local": "Balduíno Soccer Indoor"
+    },
+		{
+		  "id": 4,
+		  "data": "2026-02-12",
+		  "dia_semana": "QUI",
+		  "mandante": "PONTUAL FC",
+		  "visitante": "SEM FREIO FC",
+		  "placar_mandante": null,
+		  "placar_visitante": null,
+		  "campeonato": "Temporada 2026",
+		  "rodada": "4º Jogo",
+		  "status": "upcoming",
+		  "hora": "21:00",
+		  "local": "Balduíno Soccer Indoor"
+		}
   ]
 }
