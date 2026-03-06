@@ -4,29 +4,156 @@
     <meta charset="UTF-8">
     <title>Lançar Resultados | Pontual FC</title>
     <style>
-        :root { --bvb-yellow: #FDE100; --bvb-black: #000000; --text-light: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; }
+        :root {
+            --bvb-yellow: #FDE100;
+            --bvb-black: #000000;
+            --text-light: #ffffff;
+        }
 
-        /* --- MENU GLOBAL (REPETIDO) --- */
-        header { background-color: var(--bvb-black); border-bottom: 5px solid var(--bvb-yellow); padding: 0 5%; display: flex; justify-content: space-between; align-items: center; height: 70px; }
-        .logo { color: var(--bvb-yellow); font-size: 1.5rem; text-decoration: none; text-transform: uppercase; font-family: 'Arial Black'; }
-        nav ul { list-style: none; display: flex; gap: 5px; margin: 0; padding: 0; height: 100%; }
-        .nav-item { position: relative; display: flex; align-items: center; }
-        .nav-link { text-decoration: none; color: var(--text-light); text-transform: uppercase; font-size: 0.75rem; padding: 0 15px; height: 100%; display: flex; align-items: center; }
-        .submenu { display: none; position: absolute; top: 70px; left: 0; background-color: var(--bvb-black); min-width: 200px; border-top: 3px solid var(--bvb-yellow); z-index: 10; }
-        .submenu a { padding: 12px 20px; display: block; color: white; text-decoration: none; font-size: 0.7rem; border-bottom: 1px solid #222; }
-        .nav-item:hover .submenu { display: block; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #f4f4f4;
+        }
+
+        /* --- HEADER & MENU --- */
+        header {
+            background-color: var(--bvb-black);
+            border-bottom: 5px solid var(--bvb-yellow);
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+        }
+
+        .logo {
+            color: var(--bvb-yellow);
+            font-size: 1.5rem;
+            text-decoration: none;
+            font-family: 'Arial Black';
+        }
+
+        nav, nav ul {
+            height: 100%;
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            position: relative;
+            height: 100%;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            background: var(--bvb-black);
+            min-width: 200px;
+            border-top: 3px solid var(--bvb-yellow);
+        }
+
+        .nav-item:hover .submenu {
+            display: block;
+        }
+
+        .submenu a {
+            color: #fff;
+            padding: 15px;
+            display: block;
+            text-decoration: none;
+            font-size: 0.75rem;
+        }
 
         /* --- CONTEÚDO --- */
-        .container { max-width: 800px; margin: 30px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { border-left: 6px solid var(--bvb-yellow); padding-left: 10px; text-transform: uppercase; margin-bottom: 25px; }
-        .game-sel { background: #eee; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
-        select, input { padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th { background: #000; color: #fff; padding: 10px; font-size: 0.8rem; text-align: left; }
-        td { padding: 8px; border-bottom: 1px solid #eee; }
-        .btn-gerar { width: 100%; background: var(--bvb-black); color: var(--bvb-yellow); border: none; padding: 20px; cursor: pointer; font-weight: bold; margin-top: 25px; }
-        textarea { width: 100%; height: 250px; margin-top: 20px; background: #1e1e1e; color: #a9dc76; padding: 15px; font-family: monospace; border: none; }
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h3 {
+            border-left: 8px solid var(--bvb-yellow);
+            padding-left: 15px;
+            text-transform: uppercase;
+        }
+
+        .selecao-jogo {
+            background: #eee;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+        }
+
+        .placar-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #000;
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+            font-size: 0.8rem;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .btn-gerar {
+            width: 100%;
+            background: var(--bvb-black);
+            color: var(--bvb-yellow);
+            padding: 18px;
+            border: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+            background: #1e1e1e;
+            color: #a9dc76;
+            margin-top: 20px;
+            padding: 15px;
+            font-family: monospace;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -53,77 +180,76 @@
     </header>
 
     <div class="container">
-        <h2>Lançar Dados</h2>
-        <div class="game-sel">
-            <label>Selecione o Jogo:</label>
-            <select id="select-jogos" style="width:100%"><option>Carregando...</option></select>
+        <h3>Lançar Resultados</h3>
+        <div class="selecao-jogo">
+            <label>Selecione a Partida:</label>
+            <select id="sel-jogo" style="width:100%; padding:10px;"></select>
         </div>
 
-        <div style="display:flex; gap:10px; margin-bottom:20px">
-            <input type="number" id="p1" placeholder="Gols Pontual" style="flex:1">
-            <input type="number" id="p2" placeholder="Gols Adversário" style="flex:1">
-            <select id="status" style="flex:1">
-                <option value="vitoria">VITÓRIA</option>
-                <option value="empate">EMPATE</option>
-                <option value="derrota">DERROTA</option>
-            </select>
+        <div class="placar-row">
+            <div><label>Gols Pontual</label><input type="number" id="g-p" value="0" style="width:100%; padding:8px;"></div>
+            <div><label>Gols Adv</label><input type="number" id="g-a" value="0" style="width:100%; padding:8px;"></div>
+            <div><label>Status</label>
+                <select id="res-status" style="width:100%; padding:8px;">
+                    <option value="vitoria">VITÓRIA</option>
+                    <option value="empate">EMPATE</option>
+                    <option value="derrota">DERROTA</option>
+                </select>
+            </div>
         </div>
 
         <table>
             <thead><tr><th>✔</th><th>Jogador</th><th>Gols</th><th>Assis</th></tr></thead>
-            <tbody id="tabela-elenco"></tbody>
+            <tbody id="lista-elenco"></tbody>
         </table>
 
-        <button class="btn-gerar" onclick="gerar()">GERAR JSON ATUALIZADO</button>
+        <button class="btn-gerar" onclick="gerar()">Gerar JSON de Atualização</button>
         <textarea id="output" readonly></textarea>
     </div>
 
     <script>
         const elenco = ["DIEGO", "SAYMONN", "DENIS", "BELMIRO", "ISMAEL", "DEIVID", "RANIERI", "ANTONIO", "LUIZ", "GUIMA", "GUILHERME", "JAIR"];
-        let jogosDB = [];
+        let db = [];
 
         async function init() {
-            const resp = await fetch('jogos-2026.json');
-            const data = await resp.json();
-            jogosDB = data.temporada_2026;
-            const sel = document.getElementById('select-jogos');
-            sel.innerHTML = jogosDB.map((j, i) => `<option value="${i}">${j.data} - ${j.visitante}</option>`).join('');
+            const r = await fetch('jogos-2026.json');
+            const d = await r.json(); 
+            db = d.temporada_2026;
             
-            const tab = document.getElementById('tabela-elenco');
-            tab.innerHTML = elenco.map(n => `
+            document.getElementById('sel-jogo').innerHTML = db.map((j,i) => `<option value="${i}">${j.data} - vs ${j.visitante}</option>`).join('');
+            document.getElementById('lista-elenco').innerHTML = elenco.map(n => `
                 <tr>
-                    <td><input type="checkbox" class="pres" data-nome="${n}"></td>
+                    <td><input type="checkbox" class="p-check" data-n="${n}"></td>
                     <td><strong>${n}</strong></td>
-                    <td><input type="number" class="gol" data-nome="${n}" value="0" style="width:50px"></td>
-                    <td><input type="number" class="ast" data-nome="${n}" value="0" style="width:50px"></td>
+                    <td><input type="number" class="p-gol" data-n="${n}" value="0" style="width:50px"></td>
+                    <td><input type="number" class="p-ast" data-n="${n}" value="0" style="width:50px"></td>
                 </tr>
             `).join('');
         }
 
         function gerar() {
-            const idx = document.getElementById('select-jogos').value;
-            const jogo = jogosDB[idx];
-            const pres = [], gols = [], asts = [];
+            const idx = document.getElementById('sel-jogo').value;
+            const jogo = db[idx];
+            const pres=[], gols=[], asts=[];
 
             elenco.forEach(n => {
-                const isP = document.querySelector(`.pres[data-nome="${n}"]`).checked;
-                const g = parseInt(document.querySelector(`.gol[data-nome="${n}"]`).value);
-                const a = parseInt(document.querySelector(`.ast[data-nome="${n}"]`).value);
-                if(isP) pres.push(n);
-                if(g > 0) gols.push({nome: n, qtd: g});
-                if(a > 0) asts.push({nome: n, qtd: a});
+                if(document.querySelector(`.p-check[data-n="${n}"]`).checked) pres.push(n);
+                let g = parseInt(document.querySelector(`.p-gol[data-n="${n}"]`).value);
+                let a = parseInt(document.querySelector(`.p-ast[data-n="${n}"]`).value);
+                if(g>0) gols.push({nome: n, qtd: g});
+                if(a>0) asts.push({nome: n, qtd: a});
             });
 
-            const novo = {
+            const res = {
                 ...jogo,
-                placar_mandante: parseInt(document.getElementById('p1').value),
-                placar_visitante: parseInt(document.getElementById('p2').value),
-                status: document.getElementById('status').value,
+                placar_mandante: parseInt(document.getElementById('g-p').value),
+                placar_visitante: parseInt(document.getElementById('g-a').value),
+                status: document.getElementById('res-status').value,
                 presencas: pres,
                 gols_detalhes: gols,
                 assist_detalhes: asts
             };
-            document.getElementById('output').value = JSON.stringify(novo, null, 2) + ",";
+            document.getElementById('output').value = JSON.stringify(res, null, 2) + ",";
         }
         window.onload = init;
     </script>

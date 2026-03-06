@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pontual FC | Dashboard 2026</title>
+    <title>Pontual FC | Dashboard</title>
     <style>
         :root {
             --bvb-yellow: #FDE100;
@@ -19,7 +19,7 @@
             color: var(--bvb-black);
         }
 
-        /* --- NAVEGAÇÃO & MENUS --- */
+        /* --- HEADER & MENU GLOBAL --- */
         header {
             background-color: var(--bvb-black);
             border-bottom: 5px solid var(--bvb-yellow);
@@ -29,7 +29,7 @@
             align-items: center;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 9999;
             height: 70px;
         }
 
@@ -40,27 +40,25 @@
             text-transform: uppercase;
         }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 5px;
+        nav, nav ul {
+            height: 100%;
             margin: 0;
             padding: 0;
-            height: 100%;
+            display: flex;
+            list-style: none;
         }
 
         .nav-item {
             position: relative;
-            display: flex;
-            align-items: center;
+            height: 100%;
         }
 
         .nav-link {
-            text-decoration: none;
             color: var(--text-light);
+            text-decoration: none;
             text-transform: uppercase;
-            font-size: 0.75rem;
-            padding: 0 15px;
+            font-size: 0.8rem;
+            padding: 0 20px;
             height: 100%;
             display: flex;
             align-items: center;
@@ -68,49 +66,43 @@
         }
 
         .nav-link:hover {
-            color: var(--bvb-yellow);
             background: rgba(255, 255, 255, 0.1);
+            color: var(--bvb-yellow);
         }
 
-        /* --- SUBMENUS (DROPDOWN) --- */
+        /* SUBMENU */
         .submenu {
             display: none;
             position: absolute;
-            top: 70px;
+            top: 70px; /* Alinhado ao final do header */
             left: 0;
-            background-color: var(--bvb-black);
+            background: var(--bvb-black);
             min-width: 200px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             border-top: 3px solid var(--bvb-yellow);
-        }
-
-        .submenu li {
-            width: 100%;
-        }
-
-        .submenu a {
-            padding: 12px 20px;
-            display: block;
-            color: white;
-            text-decoration: none;
-            font-size: 0.7rem;
-            border-bottom: 1px solid #222;
-        }
-
-        .submenu a:hover {
-            background: #222;
-            color: var(--bvb-yellow);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         .nav-item:hover .submenu {
             display: block;
         }
 
-        /* --- DASHBOARD LAYOUT --- */
-        .container {
-            padding: 30px 5%;
+        .submenu li a {
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.75rem;
+            border-bottom: 1px solid #222;
         }
 
+        .submenu li a:hover {
+            background: #222;
+            color: var(--bvb-yellow);
+        }
+
+        /* --- DASHBOARD --- */
+        .container { padding: 30px 5%; }
+        
         .resumo-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -126,174 +118,92 @@
             border-radius: 4px;
         }
 
-        .resumo-item span {
-            display: block;
-            font-size: 0.65rem;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 
-        .card-stats {
-            background: #fff;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .section-title {
-            background: #f8f8f8;
-            border-left: 6px solid var(--bvb-yellow);
-            padding: 10px 15px;
-            margin: 0;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            border-bottom: 1px solid #eee;
-        }
-
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .stats-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #f9f9f9;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-        }
-
-        .val-col {
-            text-align: right;
-            font-weight: bold;
-            color: #000;
-        }
-
-        /* --- MOBILE --- */
-        @media (max-width: 900px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .resumo-row { grid-template-columns: 1fr 1fr; }
-            header { flex-direction: column; height: auto; padding: 10px; }
-            .submenu { top: auto; position: relative; }
-        }
+        .card-stats { background: #fff; border-radius: 4px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section-title { border-left: 5px solid var(--bvb-yellow); padding: 10px; margin: 0; font-size: 0.9rem; background: #f9f9f9; }
+        .stats-table { width: 100%; border-collapse: collapse; }
+        .stats-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 0.8rem; }
+        .val-col { text-align: right; font-weight: bold; }
     </style>
 </head>
 <body>
+    <header>
+        <a href="index.html" class="logo">PONTUAL FC</a>
+        <nav>
+            <ul>
+                <li class="nav-item"><a href="index.html" class="nav-link">Início</a></li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Cadastro ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-<header>
-    <a href="index.html" class="logo">PONTUAL FC</a>
-    <nav>
-        <ul>
-            <li class="nav-item">
-                <a href="index.html" class="nav-link">Início</a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">Jogos ▾</a>
-                <ul class="submenu">
-                    <li><a href="jogos-2026.html">Temporada 2026</a></li>
-                    <li><a href="#">Histórico (Em breve)</a></li>
-                </ul>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">Cadastro ▾</a>
-                <ul class="submenu">
-                    <li><a href="cadastro-partida.html">Agendar Partida</a></li>
-                    <li><a href="lancar-dados.html">Lançar Resultados</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-</header>
-
-<div class="container">
-    <div class="resumo-row">
-        <div class="resumo-item"><span>JOGOS</span><div id="stat-total">0</div></div>
-        <div class="resumo-item"><span>VITÓRIAS</span><div id="stat-vitorias">0</div></div>
-        <div class="resumo-item"><span>GOLS PRÓ</span><div id="stat-gp">0</div></div>
-        <div class="resumo-item"><span>APROVEITAMENTO</span><div id="stat-aprov">0%</div></div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="card-stats">
-            <h3 class="section-title">Artilharia ⚽</h3>
-            <table class="stats-table">
-                <tbody id="lista-gols"></tbody>
-            </table>
+    <div class="container">
+        <div class="resumo-row">
+            <div class="resumo-item"><small>JOGOS</small><div id="stat-total">0</div></div>
+            <div class="resumo-item"><small>VITÓRIAS</small><div id="stat-vitorias">0</div></div>
+            <div class="resumo-item"><small>GOLS PRÓ</small><div id="stat-gp">0</div></div>
+            <div class="resumo-item"><small>APROV.</small><div id="stat-aprov">0%</div></div>
         </div>
 
-        <div class="card-stats">
-            <h3 class="section-title">Assistências 👟</h3>
-            <table class="stats-table">
-                <tbody id="lista-assist"></tbody>
-            </table>
-        </div>
-
-        <div class="card-stats">
-            <h3 class="section-title">Presenças 🏟️</h3>
-            <table class="stats-table">
-                <tbody id="lista-presencas"></tbody>
-            </table>
+        <div class="stats-grid">
+            <div class="card-stats">
+                <h3 class="section-title">Artilharia</h3>
+                <table class="stats-table"><tbody id="lista-gols"></tbody></table>
+            </div>
+            <div class="card-stats">
+                <h3 class="section-title">Assistências</h3>
+                <table class="stats-table"><tbody id="lista-assist"></tbody></table>
+            </div>
+            <div class="card-stats">
+                <h3 class="section-title">Presenças</h3>
+                <table class="stats-table"><tbody id="lista-presencas"></tbody></table>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    async function carregarDashboard() {
-        try {
+    <script>
+        async function carregar() {
             const resp = await fetch('jogos-2026.json');
             const data = await resp.json();
             const jogos = data.temporada_2026;
-
-            let total = 0, vit = 0, gp = 0;
-            let gols = {}, assist = {}, pres = {};
-
+            let t=0, v=0, gp=0, g={}, a={}, p={};
             jogos.forEach(j => {
-                if (j.status !== 'upcoming') {
-                    total++;
-                    if (j.status === 'vitoria') vit++;
-                    gp += (j.mandante === "PONTUAL FC" ? j.placar_mandante : j.placar_visitante);
-
-                    if (j.gols_detalhes) {
-                        j.gols_detalhes.forEach(g => gols[g.nome] = (gols[g.nome] || 0) + g.qtd);
-                    }
-                    if (j.assist_detalhes) {
-                        j.assist_detalhes.forEach(a => assist[a.nome] = (assist[a.nome] || 0) + a.qtd);
-                    }
-                    if (j.presencas) {
-                        j.presencas.forEach(p => pres[p] = (pres[p] || 0) + 1);
-                    }
+                if(j.status !== 'upcoming'){
+                    t++; if(j.status==='vitoria') v++;
+                    gp += (j.mandante==="PONTUAL FC" ? j.placar_mandante : j.placar_visitante);
+                    if(j.gols_detalhes) j.gols_detalhes.forEach(i => g[i.nome] = (g[i.nome]||0)+i.qtd);
+                    if(j.assist_detalhes) j.assist_detalhes.forEach(i => a[i.nome] = (a[i.nome]||0)+i.qtd);
+                    if(j.presencas) j.presencas.forEach(i => p[i] = (p[i]||0)+1);
                 }
             });
-
-            document.getElementById('stat-total').innerText = total;
-            document.getElementById('stat-vitorias').innerText = vit;
+            document.getElementById('stat-total').innerText = t;
+            document.getElementById('stat-vitorias').innerText = v;
             document.getElementById('stat-gp').innerText = gp;
-            document.getElementById('stat-aprov').innerText = total > 0 ? ((vit / total) * 100).toFixed(0) + "%" : "0%";
-
-            renderTable('lista-gols', gols);
-            renderTable('lista-assist', assist);
-            renderTable('lista-presencas', pres);
-
-        } catch (e) { console.error("Erro ao carregar dados:", e); }
-    }
-
-    function renderTable(id, obj) {
-        const sorted = Object.entries(obj).sort((a, b) => b[1] - a[1]);
-        document.getElementById(id).innerHTML = sorted.map(([nome, val]) => `
-            <tr>
-                <td>${nome}</td>
-                <td class="val-col">${val}</td>
-            </tr>
-        `).join('') || "<tr><td>Nenhum dado</td></tr>";
-    }
-
-    window.onload = carregarDashboard;
-</script>
-
+            document.getElementById('stat-aprov').innerText = t>0 ? ((v/t)*100).toFixed(0)+"%" : "0%";
+            const render = (id, obj) => {
+                document.getElementById(id).innerHTML = Object.entries(obj).sort((x,y)=>y[1]-x[1])
+                .map(e => `<tr><td>${e[0]}</td><td class="val-col">${e[1]}</td></tr>`).join('');
+            };
+            render('lista-gols', g); render('lista-assist', a); render('lista-presencas', p);
+        }
+        window.onload = carregar;
+    </script>
 </body>
 </html>
