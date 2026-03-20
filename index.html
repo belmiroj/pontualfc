@@ -36,71 +36,18 @@
             z-index: 9999;
         }
 
-        .logo {
-            color: var(--bvb-yellow);
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 15px;
-        }
-
-        .nav-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-            height: 70px;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
+        .logo { color: var(--bvb-yellow); text-decoration: none; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
+        nav ul { display: flex; list-style: none; margin: 0; padding: 0; gap: 15px; }
+        .nav-item { position: relative; display: flex; align-items: center; height: 70px; }
+        nav a { color: #fff; text-decoration: none; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
         nav a:hover { color: var(--bvb-yellow); }
-
-        .submenu {
-            display: none;
-            position: absolute;
-            top: 70px;
-            right: 0;
-            background: var(--bvb-black);
-            min-width: 170px;
-            list-style: none;
-            padding: 10px 0;
-            border-bottom: 3px solid var(--bvb-yellow);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        }
-
-        .submenu li a {
-            color: #fff;
-            padding: 12px 20px;
-            display: block;
-            font-size: 0.8rem;
-        }
-
+        .submenu { display: none; position: absolute; top: 70px; right: 0; background: var(--bvb-black); min-width: 170px; list-style: none; padding: 10px 0; border-bottom: 3px solid var(--bvb-yellow); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+        .submenu li a { color: #fff; padding: 12px 20px; display: block; font-size: 0.8rem; }
         .submenu li a:hover { background: #222; }
-
         .nav-item:hover .submenu { display: block; }
 
         /* --- CONTEÚDO --- */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 15px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px 15px; }
 
         /* --- CARD ÚLTIMA PARTIDA --- */
         .last-game-card {
@@ -113,124 +60,33 @@
             border-bottom: 5px solid var(--bvb-yellow);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-
-        .last-game-card small {
-            text-transform: uppercase;
-            color: var(--bvb-yellow);
-            font-weight: 800;
-            letter-spacing: 1px;
-            font-size: 0.7rem;
-        }
-
-        .last-game-info {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
+        .last-game-card small { text-transform: uppercase; color: var(--bvb-yellow); font-weight: 800; letter-spacing: 1px; font-size: 0.7rem; }
+        .last-game-info { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px; }
         .lg-team { font-weight: 800; font-size: 1rem; text-transform: uppercase; flex: 1; }
-        .lg-score { 
-            font-size: 2rem; 
-            font-weight: 900; 
-            background: rgba(255,255,255,0.1); 
-            padding: 5px 20px; 
-            border-radius: 8px;
-            min-width: 100px;
-        }
+        .lg-score { font-size: 2rem; font-weight: 900; background: rgba(255,255,255,0.1); padding: 5px 20px; border-radius: 8px; min-width: 100px; }
 
         /* --- CARDS DE ESTATÍSTICAS --- */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .card {
-            background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border-bottom: 4px solid #ddd;
-        }
-
-        .card small {
-            display: block;
-            text-transform: uppercase;
-            font-size: 0.6rem;
-            color: #777;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .card span {
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-
-        .card.neutral {
-            border-color: var(--bvb-black);
-            color: var(--bvb-black);
-        }
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+        .card { background: #fff; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border-bottom: 4px solid #ddd; }
+        .card small { display: block; text-transform: uppercase; font-size: 0.6rem; color: #777; margin-bottom: 5px; font-weight: bold; }
+        .card span { font-size: 1.6rem; font-weight: 800; }
+        .card.neutral { border-color: var(--bvb-black); color: var(--bvb-black); }
 
         /* --- TABELAS --- */
-        .tables-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .table-box {
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-
-        .table-box h3 {
-            background: var(--bvb-black);
-            color: var(--bvb-yellow);
-            margin: 0;
-            padding: 12px;
-            font-size: 0.7rem;
-            text-align: center;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td {
-            padding: 10px 12px;
-            font-size: 0.85rem;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .val {
-            text-align: right;
-            font-weight: bold;
-            color: var(--bvb-black);
-        }
+        .tables-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px; }
+        .table-box { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
+        .table-box h3 { background: var(--bvb-black); color: var(--bvb-yellow); margin: 0; padding: 12px; font-size: 0.7rem; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+        table { width: 100%; border-collapse: collapse; }
+        td { padding: 10px 12px; font-size: 0.85rem; border-bottom: 1px solid #f0f0f0; }
+        .val { text-align: right; font-weight: bold; color: var(--bvb-black); }
 
         /* --- RESPONSIVIDADE --- */
-        @media (max-width: 1024px) {
-            .tables-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
+        @media (max-width: 1024px) { .tables-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) {
             .stats-row { grid-template-columns: repeat(2, 1fr); }
             .tables-grid { grid-template-columns: 1fr; }
             .card span { font-size: 1.3rem; }
             .logo { font-size: 1rem; }
-            .lg-score { font-size: 1.5rem; }
-            .lg-team { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -259,7 +115,6 @@
     </header>
 
     <div class="container">
-        
         <div id="ultimo-jogo-container"></div>
 
         <div class="stats-row">
@@ -271,8 +126,8 @@
 
         <div class="stats-row">
             <div class="card neutral"><small>Gols Pró</small><span id="stat-gp" style="color:var(--win)">0</span></div>
-            <div class="card neutral"><small>Gols Contra</small><span id="stat-gc" style="color:var(--loss)">0</span></div>
-            <div class="card neutral"><small>Saldo Gols</small><span id="stat-sg">0</span></div>
+            <div class="card" style="border-color: var(--loss); color: var(--loss)"><small>Gols Contra</small><span id="stat-gc">0</span></div>
+            <div class="card" id="card-sg"><small>Saldo Gols</small><span id="stat-sg">0</span></div>
             <div class="card" id="card-aprov"><small>Aproveitamento</small><span id="stat-aprov">0%</span></div>
         </div>
 
@@ -303,16 +158,12 @@
             try {
                 const resp = await fetch(`${BASE_URL}.json`);
                 const data = await resp.json();
-                
                 if (!data) return;
 
                 const jogos = Object.values(data);
-                
-                // Variáveis para estatísticas
                 let t = 0, v = 0, e = 0, d = 0, gp = 0, gc = 0;
                 let art = {}, ast = {}, pre = {}, vot = {};
 
-                // Filtra apenas jogos finalizados e ordena por data para achar o último
                 const jogosFinalizados = jogos
                     .filter(j => j.status === 'finished')
                     .sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
@@ -338,10 +189,8 @@
                         if (j.resultado_tipo === 'vitoria') v++;
                         else if (j.resultado_tipo === 'empate') e++;
                         else if (j.resultado_tipo === 'derrota') d++;
-                        
                         gp += (j.placar_mandante || 0);
                         gc += (j.placar_visitante || 0);
-                        
                         if (j.gols_detalhes) j.gols_detalhes.forEach(i => art[i.nome] = (art[i.nome] || 0) + i.qtd);
                         if (j.assist_detalhes) j.assist_detalhes.forEach(i => ast[i.nome] = (ast[i.nome] || 0) + i.qtd);
                         if (j.votos_melhor) j.votos_melhor.forEach(i => vot[i.nome] = (vot[i.nome] || 0) + i.qtd);
@@ -355,15 +204,30 @@
                 document.getElementById('stat-derrotas').innerText = d;
                 document.getElementById('stat-gp').innerText = gp;
                 document.getElementById('stat-gc').innerText = gc;
-                document.getElementById('stat-sg').innerText = (gp - gc);
 
+                // --- LÓGICA DO SALDO DE GOLS ---
+                const sg = gp - gc;
+                const elSgValue = document.getElementById('stat-sg');
+                const cardSg = document.getElementById('card-sg');
+                elSgValue.innerText = sg;
+
+                if (sg > 0) {
+                    cardSg.style.borderColor = "var(--win)";
+                    elSgValue.style.color = "var(--win)";
+                } else if (sg === 0) {
+                    cardSg.style.borderColor = "var(--draw)";
+                    elSgValue.style.color = "var(--draw)";
+                } else {
+                    cardSg.style.borderColor = "var(--loss)";
+                    elSgValue.style.color = "var(--loss)";
+                }
+
+                // --- APROVEITAMENTO ---
                 const ptsGanhos = (v * 3) + (e * 1);
                 const ptsPossiveis = t * 3;
                 const perc = ptsPossiveis > 0 ? (ptsGanhos / ptsPossiveis) * 100 : 0;
-                
                 const elAprov = document.getElementById('stat-aprov');
                 const cardAprov = document.getElementById('card-aprov');
-                
                 elAprov.innerText = perc.toFixed(1) + "%";
 
                 if (perc < 45) {
@@ -390,9 +254,7 @@
                 render('lista-votos', vot);
                 render('lista-presencas', pre);
 
-            } catch (err) {
-                console.error("Erro ao carregar dados:", err);
-            }
+            } catch (err) { console.error("Erro ao carregar dados:", err); }
         }
         window.onload = carregar;
     </script>
