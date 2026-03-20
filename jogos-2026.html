@@ -22,7 +22,7 @@
             color: #333;
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER PADRONIZADO (RESTAURADO) --- */
         header {
             background-color: var(--bvb-black);
             border-bottom: 4px solid var(--bvb-yellow);
@@ -36,16 +36,83 @@
             z-index: 9999;
         }
 
-        .logo { color: var(--bvb-yellow); text-decoration: none; font-weight: 800; text-transform: uppercase; }
-        nav ul { display: flex; list-style: none; gap: 15px; margin: 0; padding: 0; }
-        nav a { color: #fff; text-decoration: none; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+        .logo {
+            color: var(--bvb-yellow);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 15px;
+        }
+
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 0;
+            background: var(--bvb-black);
+            min-width: 170px;
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 3px solid var(--bvb-yellow);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .submenu li a {
+            color: #fff;
+            padding: 12px 20px;
+            display: block;
+            font-size: 0.8rem;
+        }
+
+        .nav-item:hover .submenu { display: block; }
 
         /* --- FILTRO --- */
-        .filter-container { max-width: 900px; margin: 20px auto; padding: 0 15px; display: flex; justify-content: flex-end; }
-        #month-filter { padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-weight: bold; }
+        .filter-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 15px;
+            display: flex;
+            justify-content: flex-end;
+        }
 
-        /* --- LISTAGEM --- */
-        .container { max-width: 900px; margin: 0 auto 50px auto; padding: 0 15px; }
+        #month-filter {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-weight: bold;
+            background: #fff;
+        }
+
+        /* --- LISTAGEM DE JOGOS --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto 50px auto;
+            padding: 0 15px;
+        }
 
         .game-card {
             background: #fff;
@@ -57,20 +124,19 @@
             overflow: hidden;
         }
 
-        /* Cores de Status */
         .game-card.vitoria { border-left-color: var(--win); }
         .game-card.empate { border-left-color: var(--draw); }
         .game-card.derrota { border-left-color: var(--loss); }
         .game-card.upcoming { border-left-color: var(--upcoming); }
 
-        /* Estilo da Rodada */
         .round-header {
             text-align: center;
             padding: 8px 0 0 0;
         }
+
         .round-tag {
             background: #f0f0f0;
-            color: #555;
+            color: #666;
             font-size: 0.65rem;
             font-weight: 800;
             padding: 3px 12px;
@@ -79,21 +145,22 @@
             display: inline-block;
         }
 
-        /* Estrutura do Placar - DESKTOP */
+        /* Grid Desktop corrigido */
         .game-header {
             display: grid;
-            grid-template-columns: 100px 1fr 120px 1fr; /* Colunas fixas para não quebrar */
+            grid-template-columns: 100px 1fr 120px 1fr;
             align-items: center;
             padding: 15px 20px;
             text-align: center;
         }
 
         .date { font-size: 0.8rem; color: #666; font-weight: bold; border-right: 1px solid #eee; }
+        
         .team { font-weight: 800; font-size: 1rem; text-transform: uppercase; padding: 0 10px; }
         .team.mandante { text-align: right; }
         .team.visitante { text-align: left; }
 
-        .score-box { display: flex; justify-content: center; align-items: center; }
+        .score-box { display: flex; justify-content: center; }
         .score {
             background: var(--bvb-black);
             color: var(--bvb-yellow);
@@ -105,13 +172,35 @@
         }
 
         /* --- DETALHES --- */
-        .game-details { display: none; background: #fdfdfd; padding: 20px; border-top: 1px solid #eee; }
-        .details-grid { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 20px; }
-        .detail-title { font-weight: 800; font-size: 0.7rem; color: #888; text-transform: uppercase; border-bottom: 1px solid #eee; margin-bottom: 10px; }
+        .game-details {
+            display: none;
+            background: #fdfdfd;
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.5fr;
+            gap: 20px;
+        }
+
+        .detail-title {
+            font-weight: 800;
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+
         .player-list { list-style: none; padding: 0; margin: 0; font-size: 0.85rem; line-height: 1.6; }
 
         /* --- RESPONSIVIDADE (MOBILE) --- */
         @media (max-width: 600px) {
+            header { padding: 0 3%; }
+            .logo { font-size: 1rem; }
+            
             .game-header {
                 grid-template-columns: 1fr 1fr 1fr;
                 grid-template-areas: 
@@ -133,8 +222,20 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                <li class="nav-item"><a href="index.html">Início</a></li>
+                <li class="nav-item">
+                    <a>Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a>Cadastro ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
