@@ -22,7 +22,7 @@
             color: #333;
         }
 
-        /* --- HEADER --- */
+        /* --- HEADER (MENU ORIGINAL REINTEGRADO) --- */
         header {
             background: var(--bvb-black);
             border-bottom: 4px solid var(--bvb-yellow);
@@ -33,7 +33,7 @@
             height: 70px;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 9999;
         }
 
         .logo {
@@ -41,6 +41,7 @@
             text-decoration: none;
             font-weight: 800;
             text-transform: uppercase;
+            font-size: 1.2rem;
         }
 
         nav ul {
@@ -51,12 +52,57 @@
             padding: 0;
         }
 
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+
         .nav-link {
             color: #fff;
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--bvb-yellow);
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            background: var(--bvb-black);
+            min-width: 180px;
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 3px solid var(--bvb-yellow);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submenu li a {
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            transition: background 0.3s;
+        }
+
+        .submenu li a:hover {
+            background: #222;
+            color: var(--bvb-yellow);
+        }
+
+        .nav-item:hover .submenu {
+            display: block;
         }
 
         /* --- FILTRO --- */
@@ -74,6 +120,7 @@
             border: 1px solid #ccc;
             font-family: inherit;
             font-weight: bold;
+            cursor: pointer;
         }
 
         /* --- CONTEÚDO --- */
@@ -91,6 +138,11 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border-left: 6px solid #ccc;
             cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-2px);
         }
 
         .game-header {
@@ -108,9 +160,7 @@
         .date { font-size: 0.75rem; color: #666; font-weight: bold; }
         .team { font-weight: 800; font-size: 0.95rem; text-transform: uppercase; }
 
-        .score-box {
-            text-align: center;
-        }
+        .score-box { text-align: center; }
 
         .score {
             background: var(--bvb-black);
@@ -121,7 +171,7 @@
             display: inline-block;
         }
 
-        /* --- DETALHES (ESCONDIDOS POR PADRÃO) --- */
+        /* --- DETALHES --- */
         .game-details {
             display: none;
             background: #f9f9f9;
@@ -161,7 +211,22 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li class="nav-link"><a href="index.html" style="color:white; text-decoration:none">Início</a></li>
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">Cadastro ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
@@ -196,7 +261,6 @@
                 const data = await resp.json();
                 if (!data) return;
 
-                // Transforma objeto em array e ordena por data
                 todosJogos = Object.keys(data).map(key => ({ id: key, ...data[key] }))
                     .sort((a, b) => new Date(a.data.split('/').reverse().join('-')) - new Date(b.data.split('/').reverse().join('-')));
 
@@ -214,7 +278,6 @@
                 const isFinished = j.status === 'finished';
                 const classeStatus = isFinished ? (j.resultado_tipo || '') : 'upcoming';
                 
-                // Formatação de Gols e Assistências
                 const listaGols = j.gols_detalhes ? j.gols_detalhes.map(g => `<li>${g.nome} (${g.qtd})</li>`).join('') : '<li>-</li>';
                 const listaAst = j.assist_detalhes ? j.assist_detalhes.map(a => `<li>${a.nome} (${a.qtd})</li>`).join('') : '<li>-</li>';
                 const listaPre = j.presencas ? j.presencas.join(', ') : 'Não registrada';
@@ -254,10 +317,7 @@
         function toggleDetails(id) {
             const div = document.getElementById(`detalhe-${id}`);
             const isVisible = div.style.display === 'block';
-            
-            // Fecha todos os outros antes de abrir o clicado (opcional)
             document.querySelectorAll('.game-details').forEach(d => d.style.display = 'none');
-            
             div.style.display = isVisible ? 'none' : 'block';
         }
 
@@ -266,10 +326,7 @@
             if (mesSelecionado === 'todos') {
                 renderizar(todosJogos);
             } else {
-                const filtrados = todosJogos.filter(j => {
-                    const mesDoJogo = j.data.split('/')[1]; // Pega o MM de DD/MM/YYYY
-                    return mesDoJogo === mesSelecionado;
-                });
+                const filtrados = todosJogos.filter(j => j.data.split('/')[1] === mesSelecionado);
                 renderizar(filtrados);
             }
         }
