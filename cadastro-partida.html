@@ -18,6 +18,7 @@
             margin: 0;
             background-color: var(--bg-gray);
             color: var(--text-dark);
+            font-size: 16px; /* Base para evitar zoom no iOS */
         }
 
         /* --- HEADER GLOBAL --- */
@@ -38,7 +39,7 @@
             color: var(--bvb-yellow);
             text-decoration: none;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
         }
 
@@ -47,7 +48,7 @@
             list-style: none;
             margin: 0;
             padding: 0;
-            gap: 20px;
+            gap: 15px;
         }
 
         .nav-item {
@@ -60,10 +61,9 @@
         nav a {
             color: #fff;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             text-transform: uppercase;
-            transition: 0.3s;
             cursor: pointer;
         }
 
@@ -71,9 +71,9 @@
             display: none;
             position: absolute;
             top: 70px;
-            left: 0;
+            right: 0; /* Ajustado para mobile */
             background: var(--bvb-black);
-            min-width: 180px;
+            min-width: 170px;
             list-style: none;
             padding: 10px 0;
             border-bottom: 3px solid var(--bvb-yellow);
@@ -82,10 +82,9 @@
 
         .submenu li a {
             color: #fff;
-            padding: 10px 20px;
+            padding: 12px 20px;
             display: block;
-            text-decoration: none;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
         }
 
         .nav-item:hover .submenu { display: block; }
@@ -93,13 +92,13 @@
         /* --- FORMULÁRIO --- */
         .container {
             max-width: 550px;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
 
         .form-box {
             background: #fff;
-            padding: 35px;
+            padding: 25px;
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
@@ -108,7 +107,7 @@
             border-left: 5px solid var(--bvb-yellow);
             padding-left: 15px;
             text-transform: uppercase;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 25px;
             color: var(--bvb-black);
         }
@@ -118,7 +117,7 @@
         label {
             display: block;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             color: #666;
             margin-bottom: 8px;
@@ -126,64 +125,77 @@
 
         input, select {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px; /* Mais alto para facilitar o toque */
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
-            font-size: 0.9rem;
+            font-size: 1rem; /* Tamanho confortável para mobile */
+            background-color: #fff;
         }
 
-        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-group { 
+            display: flex; 
+            flex-direction: column; /* Empilha botões no mobile por padrão */
+            gap: 12px; 
+            margin-top: 10px; 
+        }
 
         .btn-acao {
-            flex: 2;
             background: var(--bvb-black);
             color: var(--bvb-yellow);
             border: none;
-            padding: 16px;
+            padding: 18px;
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
             border-radius: 8px;
-            transition: 0.3s;
+            font-size: 1rem;
         }
 
         .btn-delete {
-            flex: 1;
             background: var(--danger);
             color: white;
             border: none;
-            padding: 16px;
+            padding: 18px;
             font-weight: 800;
             text-transform: uppercase;
-            cursor: pointer;
             border-radius: 8px;
-            display: none; /* Só aparece na edição */
+            display: none;
         }
 
         .btn-reset {
             background: #eee;
-            color: #666;
+            color: #333;
             border: none;
-            padding: 5px 10px;
-            font-size: 0.7rem;
+            padding: 10px 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         textarea {
             width: 100%;
-            height: 80px;
+            height: 100px;
             background: #1e1e1e;
             color: #a9dc76;
             padding: 15px;
             font-family: monospace;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             border-radius: 8px;
             margin-top: 10px;
             border: none;
             box-sizing: border-box;
+        }
+
+        /* Ajuste para telas maiores (Desktop) */
+        @media (min-width: 600px) {
+            .btn-group { flex-direction: row; }
+            .btn-acao { flex: 2; }
+            .btn-delete { flex: 1; }
+            .logo { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -220,10 +232,12 @@
                 <select id="select-jogos" onchange="carregarDadosJogo(this.value)">
                     <option value="">-- NOVO CADASTRO --</option>
                 </select>
-                <button class="btn-reset" onclick="resetForm()">Limpar / Novo Jogo</button>
+                <div style="margin-top: 10px;">
+                    <button class="btn-reset" onclick="resetForm()">Limpar / Novo Jogo</button>
+                </div>
             </div>
 
-            <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid #eee;">
+            <hr style="margin-bottom: 25px; border: 0; border-top: 1px solid #eee;">
             
             <div class="input-group">
                 <label>Data da Partida</label>
@@ -245,7 +259,7 @@
                 <button class="btn-delete" id="btnExcluir" onclick="excluirJogo()">Excluir</button>
             </div>
             
-            <div class="output-container" style="margin-top: 20px;">
+            <div class="output-container" style="margin-top: 25px;">
                 <label>Log do Sistema</label>
                 <textarea id="output" readonly placeholder="Aguardando ação..."></textarea>
             </div>
@@ -254,10 +268,9 @@
 
     <script>
         const BASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026";
-        let editKey = null; // Armazena a chave se estivermos editando
+        let editKey = null;
         let jogosLocais = {};
 
-        // Carregar lista de jogos para o select ao abrir a página
         async function listarJogos() {
             try {
                 const response = await fetch(`${BASE_URL}.json`);
@@ -266,7 +279,9 @@
                 select.innerHTML = '<option value="">-- NOVO CADASTRO --</option>';
                 
                 if (jogosLocais) {
-                    Object.keys(jogosLocais).forEach(key => {
+                    Object.keys(jogosLocais).sort((a,b) => {
+                        return new Date(jogosLocais[b].data.split('/').reverse().join('-')) - new Date(jogosLocais[a].data.split('/').reverse().join('-'));
+                    }).forEach(key => {
                         const jogo = jogosLocais[key];
                         select.innerHTML += `<option value="${key}">${jogo.data} vs ${jogo.visitante}</option>`;
                     });
@@ -276,16 +291,12 @@
 
         function carregarDadosJogo(key) {
             if (!key) { resetForm(); return; }
-            
             editKey = key;
             const jogo = jogosLocais[key];
-            
-            // Preencher campos (precisa converter DD/MM/AAAA para YYYY-MM-DD para o input date)
             const partesData = jogo.data.split('/');
             document.getElementById('data').value = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
             document.getElementById('visitante').value = jogo.visitante;
             document.getElementById('rodada').value = jogo.rodada;
-
             document.getElementById('form-title').innerText = "Editar Partida";
             document.getElementById('btnSalvar').innerText = "Salvar Alterações";
             document.getElementById('btnExcluir').style.display = "block";
@@ -334,7 +345,6 @@
                     method: metodo,
                     body: JSON.stringify(payload)
                 });
-
                 if(response.ok) {
                     alert(editKey ? "Atualizado com sucesso!" : "Agendado com sucesso!");
                     resetForm();
@@ -347,7 +357,6 @@
         async function excluirJogo() {
             if(!editKey) return;
             if(!confirm("Tem certeza que deseja EXCLUIR esta partida?")) return;
-
             try {
                 const response = await fetch(`${BASE_URL}/${editKey}.json`, { method: 'DELETE' });
                 if(response.ok) {
