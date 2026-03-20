@@ -18,7 +18,7 @@
             margin: 0;
             background-color: var(--bg-gray);
             color: var(--text-dark);
-            font-size: 16px; /* Base para evitar zoom no iOS */
+            font-size: 16px;
         }
 
         /* --- HEADER GLOBAL --- */
@@ -71,7 +71,7 @@
             display: none;
             position: absolute;
             top: 70px;
-            right: 0; /* Ajustado para mobile */
+            right: 0;
             background: var(--bvb-black);
             min-width: 170px;
             list-style: none;
@@ -125,17 +125,17 @@
 
         input, select {
             width: 100%;
-            padding: 14px; /* Mais alto para facilitar o toque */
+            padding: 14px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
-            font-size: 1rem; /* Tamanho confortável para mobile */
+            font-size: 1rem;
             background-color: #fff;
         }
 
         .btn-group { 
             display: flex; 
-            flex-direction: column; /* Empilha botões no mobile por padrão */
+            flex-direction: column; 
             gap: 12px; 
             margin-top: 10px; 
         }
@@ -176,26 +176,10 @@
             text-transform: uppercase;
         }
 
-        textarea {
-            width: 100%;
-            height: 100px;
-            background: #1e1e1e;
-            color: #a9dc76;
-            padding: 15px;
-            font-family: monospace;
-            font-size: 0.85rem;
-            border-radius: 8px;
-            margin-top: 10px;
-            border: none;
-            box-sizing: border-box;
-        }
-
-        /* Ajuste para telas maiores (Desktop) */
         @media (min-width: 600px) {
             .btn-group { flex-direction: row; }
             .btn-acao { flex: 2; }
             .btn-delete { flex: 1; }
-            .logo { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -241,7 +225,7 @@
             
             <div class="input-group">
                 <label>Data da Partida</label>
-                <input type="date" id="data">
+                <input type="date" id="data" onchange="gerarRodadaAutomatica()">
             </div>
             
             <div class="input-group">
@@ -251,17 +235,12 @@
             
             <div class="input-group">
                 <label>Rodada / Identificação</label>
-                <input type="text" id="rodada" placeholder="Ex: 12º Jogo da Temporada">
+                <input type="text" id="rodada" placeholder="Ex: 1º Jogo da Temporada">
             </div>
             
             <div class="btn-group">
                 <button class="btn-acao" id="btnSalvar" onclick="salvarNoBanco()">Agendar e Salvar</button>
                 <button class="btn-delete" id="btnExcluir" onclick="excluirJogo()">Excluir</button>
-            </div>
-            
-            <div class="output-container" style="margin-top: 25px;">
-                <label>Log do Sistema</label>
-                <textarea id="output" readonly placeholder="Aguardando ação..."></textarea>
             </div>
         </div>
     </div>
@@ -289,6 +268,33 @@
             } catch (e) { console.error("Erro ao listar:", e); }
         }
 
+        // FUNÇÃO PARA GERAR A RODADA AUTOMATICAMENTE
+        function gerarRodadaAutomatica() {
+            // Se estiver editando, não sobrescreve automaticamente a menos que o campo esteja vazio
+            if (editKey && document.getElementById('rodada').value !== "") return;
+
+            const dataSelecionada = document.getElementById('data').value;
+            if (!dataSelecionada) return;
+
+            if (!jogosLocais || Object.keys(jogosLocais).length === 0) {
+                document.getElementById('rodada').value = "1º Jogo da Temporada";
+                return;
+            }
+
+            // Conta quantos jogos existem com data anterior à selecionada
+            const dataTime = new Date(dataSelecionada).getTime();
+            let contador = 1;
+
+            Object.values(jogosLocais).forEach(jogo => {
+                const dataJogo = new Date(jogo.data.split('/').reverse().join('-')).getTime();
+                if (dataJogo < dataTime) {
+                    contador++;
+                }
+            });
+
+            document.getElementById('rodada').value = `${contador}º Jogo da Temporada`;
+        }
+
         function carregarDadosJogo(key) {
             if (!key) { resetForm(); return; }
             editKey = key;
@@ -311,7 +317,6 @@
             document.getElementById('form-title').innerText = "Novo Agendamento";
             document.getElementById('btnSalvar').innerText = "Agendar e Salvar";
             document.getElementById('btnExcluir').style.display = "none";
-            document.getElementById('output').value = "";
         }
 
         function getDiaSemana(dataString) {
@@ -323,13 +328,15 @@
         async function salvarNoBanco() {
             const dataVal = document.getElementById('data').value;
             const visitanteVal = document.getElementById('visitante').value;
-            if(!dataVal || !visitanteVal) { alert("Preencha os campos!"); return; }
+            const rodadaVal = document.getElementById('rodada').value;
+            
+            if(!dataVal || !visitanteVal) { alert("Preencha Data e Visitante!"); return; }
 
             const payload = {
                 data: dataVal.split('-').reverse().join('/'),
                 dia_semana: getDiaSemana(dataVal),
                 visitante: visitanteVal.toUpperCase(),
-                rodada: document.getElementById('rodada').value || "Amistoso",
+                rodada: rodadaVal || "Amistoso",
                 mandante: "PONTUAL FC",
                 status: editKey ? jogosLocais[editKey].status : "upcoming",
                 hora: "21:00",
@@ -346,9 +353,9 @@
                     body: JSON.stringify(payload)
                 });
                 if(response.ok) {
-                    alert(editKey ? "Atualizado com sucesso!" : "Agendado com sucesso!");
+                    alert("Dados salvos com sucesso!");
                     resetForm();
-                    listarJogos();
+                    await listarJogos(); // Atualiza a lista local para o próximo cálculo
                 }
             } catch (e) { alert("Erro ao salvar."); }
             finally { document.getElementById('btnSalvar').disabled = false; }
