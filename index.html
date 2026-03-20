@@ -22,7 +22,7 @@
             font-size: 16px;
         }
 
-        /* --- HEADER PADRONIZADO --- */
+        /* --- HEADER --- */
         header {
             background-color: var(--bvb-black);
             border-bottom: 4px solid var(--bvb-yellow);
@@ -46,7 +46,6 @@
         .submenu li a:hover { background: #222; }
         .nav-item:hover .submenu { display: block; }
 
-        /* --- CONTEÚDO --- */
         .container { max-width: 1200px; margin: 0 auto; padding: 20px 15px; }
 
         /* --- CARD ÚLTIMA PARTIDA --- */
@@ -72,12 +71,42 @@
         .card span { font-size: 1.6rem; font-weight: 800; }
         .card.neutral { border-color: var(--bvb-black); color: var(--bvb-black); }
 
-        /* --- TABELAS --- */
-        .tables-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px; }
-        .table-box { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); }
-        .table-box h3 { background: var(--bvb-black); color: var(--bvb-yellow); margin: 0; padding: 12px; font-size: 0.7rem; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+        /* --- TABELAS COM ROLAGEM (SCROLL) --- */
+        .tables-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px; align-items: start; }
+        
+        .table-box { 
+            background: #fff; 
+            border-radius: 10px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
+        }
+
+        .table-box h3 { 
+            background: var(--bvb-black); 
+            color: var(--bvb-yellow); 
+            margin: 0; 
+            padding: 12px; 
+            font-size: 0.7rem; 
+            text-align: center; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        /* Container da rolagem: Altura calculada para ~8 jogadores */
+        .scroll-container {
+            max-height: 320px; 
+            overflow-y: auto;
+        }
+
+        /* Estilização da Scrollbar (Dortmund Style) */
+        .scroll-container::-webkit-scrollbar { width: 6px; }
+        .scroll-container::-webkit-scrollbar-track { background: #f1f1f1; }
+        .scroll-container::-webkit-scrollbar-thumb { background: var(--bvb-black); border-radius: 10px; }
+        .scroll-container::-webkit-scrollbar-thumb:hover { background: #333; }
+
         table { width: 100%; border-collapse: collapse; }
         td { padding: 10px 12px; font-size: 0.85rem; border-bottom: 1px solid #f0f0f0; }
+        tr:last-child td { border-bottom: none; }
         .val { text-align: right; font-weight: bold; color: var(--bvb-black); }
 
         /* --- RESPONSIVIDADE --- */
@@ -134,19 +163,27 @@
         <div class="tables-grid">
             <div class="table-box">
                 <h3>⚽ Artilharia</h3>
-                <table><tbody id="lista-gols"></tbody></table>
+                <div class="scroll-container">
+                    <table><tbody id="lista-gols"></tbody></table>
+                </div>
             </div>
             <div class="table-box">
                 <h3>👟 Assistências</h3>
-                <table><tbody id="lista-assist"></tbody></table>
+                <div class="scroll-container">
+                    <table><tbody id="lista-assist"></tbody></table>
+                </div>
             </div>
             <div class="table-box">
                 <h3>🏆 Votos (MVP)</h3>
-                <table><tbody id="lista-votos"></tbody></table>
+                <div class="scroll-container">
+                    <table><tbody id="lista-votos"></tbody></table>
+                </div>
             </div>
             <div class="table-box">
                 <h3>📋 Presenças</h3>
-                <table><tbody id="lista-presencas"></tbody></table>
+                <div class="scroll-container">
+                    <table><tbody id="lista-presencas"></tbody></table>
+                </div>
             </div>
         </div>
     </div>
@@ -205,46 +242,28 @@
                 document.getElementById('stat-gp').innerText = gp;
                 document.getElementById('stat-gc').innerText = gc;
 
-                // --- LÓGICA DO SALDO DE GOLS ---
                 const sg = gp - gc;
                 const elSgValue = document.getElementById('stat-sg');
                 const cardSg = document.getElementById('card-sg');
                 elSgValue.innerText = sg;
+                if (sg > 0) { cardSg.style.borderColor = "var(--win)"; elSgValue.style.color = "var(--win)"; }
+                else if (sg === 0) { cardSg.style.borderColor = "var(--draw)"; elSgValue.style.color = "var(--draw)"; }
+                else { cardSg.style.borderColor = "var(--loss)"; elSgValue.style.color = "var(--loss)"; }
 
-                if (sg > 0) {
-                    cardSg.style.borderColor = "var(--win)";
-                    elSgValue.style.color = "var(--win)";
-                } else if (sg === 0) {
-                    cardSg.style.borderColor = "var(--draw)";
-                    elSgValue.style.color = "var(--draw)";
-                } else {
-                    cardSg.style.borderColor = "var(--loss)";
-                    elSgValue.style.color = "var(--loss)";
-                }
-
-                // --- APROVEITAMENTO ---
                 const ptsGanhos = (v * 3) + (e * 1);
                 const ptsPossiveis = t * 3;
                 const perc = ptsPossiveis > 0 ? (ptsGanhos / ptsPossiveis) * 100 : 0;
                 const elAprov = document.getElementById('stat-aprov');
                 const cardAprov = document.getElementById('card-aprov');
                 elAprov.innerText = perc.toFixed(1) + "%";
-
-                if (perc < 45) {
-                    cardAprov.style.borderColor = "var(--loss)";
-                    elAprov.style.color = "var(--loss)";
-                } else if (perc >= 45 && perc < 65) {
-                    cardAprov.style.borderColor = "var(--draw)";
-                    elAprov.style.color = "var(--draw)";
-                } else {
-                    cardAprov.style.borderColor = "var(--win)";
-                    elAprov.style.color = "var(--win)";
-                }
+                if (perc < 45) { cardAprov.style.borderColor = "var(--loss)"; elAprov.style.color = "var(--loss)"; }
+                else if (perc >= 45 && perc < 65) { cardAprov.style.borderColor = "var(--draw)"; elAprov.style.color = "var(--draw)"; }
+                else { cardAprov.style.borderColor = "var(--win)"; elAprov.style.color = "var(--win)"; }
 
                 const render = (id, obj) => {
                     document.getElementById(id).innerHTML = Object.entries(obj)
                         .sort((x, y) => y[1] - x[1])
-                        .slice(0, 10) 
+                        // Removido o .slice(0, 10) para mostrar todos na rolagem
                         .map(i => `<tr><td>${i[0]}</td><td class="val">${i[1]}</td></tr>`)
                         .join('');
                 };
