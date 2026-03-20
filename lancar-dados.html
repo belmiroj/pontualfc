@@ -17,7 +17,7 @@
             margin: 0;
             background: var(--bg-gray);
             color: var(--text-dark);
-            font-size: 16px; /* Aumentado para melhor leitura mobile */
+            font-size: 16px;
         }
 
         /* --- HEADER & NAVEGAÇÃO --- */
@@ -71,7 +71,7 @@
             display: none;
             position: absolute;
             top: 70px;
-            right: 0; /* Ajustado para não sair da tela no mobile */
+            right: 0;
             background: var(--bvb-black);
             min-width: 160px;
             list-style: none;
@@ -80,7 +80,9 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .nav-item:hover .submenu { display: block; }
+        .nav-item:hover .submenu {
+            display: block;
+        }
 
         .submenu li a {
             color: #fff;
@@ -119,13 +121,13 @@
 
         select, input {
             width: 100%;
-            padding: 14px; /* Mais alto para toque */
+            padding: 14px;
             margin-bottom: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
             font-family: inherit;
-            font-size: 1rem; /* Evita zoom automático no iOS */
+            font-size: 1rem;
         }
 
         /* --- GRID RESPONSIVO --- */
@@ -176,6 +178,7 @@
             padding: 0 15px;
             border-radius: 6px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         /* --- TABELA RESPONSIVA --- */
@@ -189,7 +192,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 400px; /* Garante que não esmague no mobile */
+            min-width: 450px;
         }
 
         th {
@@ -294,12 +297,13 @@
         </div>
 
         <button id="btnSalvar" onclick="salvarResultado()" class="btn-acao">Salvar no Firebase</button>
-        <div id="status-msg"></div>
     </div>
 
     <script>
         const BASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026";
-        let listaJogadores = ["ANTONIO", "AUGUSTO", "BELMIRO", "CELSO", "CLESIO", "DEIVID", "DENIS", "DIEGO", "GUILHERME", "GUIMA", "ISMAEL", "JAIR", "LUIZ", "MARCIO", "RANIERI", "ROGERIO", "SAYMONN", "VAGNER"];
+        const listaPadrao = ["ANTONIO", "AUGUSTO", "BELMIRO", "CELSO", "CLESIO", "DEIVID", "DENIS", "DIEGO", "GUILHERME", "GUIMA", "ISMAEL", "JAIR", "LUIZ", "MARCIO", "RANIERI", "ROGERIO", "SAYMONN", "VAGNER"];
+        
+        let listaJogadores = [...listaPadrao];
         let jogosDB = {};
 
         async function carregarJogos() {
@@ -332,41 +336,52 @@
 
         function puxarDadosExistentes(key) {
             if (!key || !jogosDB[key]) { resetarCampos(); return; }
+            
             const jogo = jogosDB[key];
+            
+            // Lógica para mesclar lista padrão com jogadores já cadastrados no jogo
+            let nomesNoJogo = new Set([...listaPadrao]);
+            
+            if (jogo.presencas) jogo.presencas.forEach(n => nomesNoJogo.add(n));
+            if (jogo.gols_detalhes) jogo.gols_detalhes.forEach(i => nomesNoJogo.add(i.nome));
+            if (jogo.assist_detalhes) jogo.assist_detalhes.forEach(i => nomesNoJogo.add(i.nome));
+            if (jogo.votos_melhor) jogo.votos_melhor.forEach(i => nomesNoJogo.add(i.nome));
+
+            listaJogadores = Array.from(nomesNoJogo).sort();
+            renderizarTabela();
+
+            // Preencher placar e tipo
             document.getElementById('gp').value = jogo.placar_mandante || 0;
             document.getElementById('gc').value = jogo.placar_visitante || 0;
             document.getElementById('status-jogo').value = jogo.resultado_tipo || "vitoria";
 
-            renderizarTabela();
+            // Marcar presenças
             if (jogo.presencas) {
                 jogo.presencas.forEach(nome => {
                     const cb = document.querySelector(`.pre[data-n="${nome}"]`);
                     if (cb) cb.checked = true;
                 });
             }
-            if (jogo.gols_detalhes) {
-                jogo.gols_detalhes.forEach(item => {
-                    const inp = document.querySelector(`.gol[data-n="${item.nome}"]`);
-                    if (inp) inp.value = item.qtd;
-                });
-            }
-            if (jogo.assist_detalhes) {
-                jogo.assist_detalhes.forEach(item => {
-                    const inp = document.querySelector(`.ast[data-n="${item.nome}"]`);
-                    if (inp) inp.value = item.qtd;
-                });
-            }
-            if (jogo.votos_melhor) {
-                jogo.votos_melhor.forEach(item => {
-                    const inp = document.querySelector(`.voto[data-n="${item.nome}"]`);
-                    if (inp) inp.value = item.qtd;
-                });
-            }
+
+            // Preencher números (Gols, Ast, Votos)
+            const preencherValores = (lista, classe) => {
+                if (lista) {
+                    lista.forEach(item => {
+                        const inp = document.querySelector(`.${classe}[data-n="${item.nome}"]`);
+                        if (inp) inp.value = item.qtd;
+                    });
+                }
+            };
+
+            preencherValores(jogo.gols_detalhes, 'gol');
+            preencherValores(jogo.assist_detalhes, 'ast');
+            preencherValores(jogo.votos_melhor, 'voto');
         }
 
         function resetarCampos() {
             document.getElementById('gp').value = 0;
             document.getElementById('gc').value = 0;
+            listaJogadores = [...listaPadrao];
             renderizarTabela();
         }
 
@@ -375,6 +390,7 @@
             const nome = input.value.trim().toUpperCase();
             if (nome && !listaJogadores.includes(nome)) {
                 listaJogadores.push(nome);
+                listaJogadores.sort();
                 renderizarTabela();
                 input.value = "";
             }
@@ -389,9 +405,11 @@
 
             listaJogadores.forEach(n => {
                 if (document.querySelector(`.pre[data-n="${n}"]`).checked) pres.push(n);
+                
                 let g = parseInt(document.querySelector(`.gol[data-n="${n}"]`).value) || 0;
                 let a = parseInt(document.querySelector(`.ast[data-n="${n}"]`).value) || 0;
                 let v = parseInt(document.querySelector(`.voto[data-n="${n}"]`).value) || 0;
+                
                 if (g > 0) gols.push({ nome: n, qtd: g });
                 if (a > 0) asts.push({ nome: n, qtd: a });
                 if (v > 0) votos.push({ nome: n, qtd: v });
@@ -417,8 +435,12 @@
                 });
                 alert("Resultado atualizado!");
                 carregarJogos();
-            } catch (e) { alert("Erro ao salvar."); }
-            finally { btn.disabled = false; btn.innerText = "Salvar no Firebase"; }
+            } catch (e) { 
+                alert("Erro ao salvar."); 
+            } finally { 
+                btn.disabled = false; 
+                btn.innerText = "Salvar no Firebase"; 
+            }
         }
 
         window.onload = () => { carregarJogos(); renderizarTabela(); };
