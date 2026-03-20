@@ -36,17 +36,76 @@
             z-index: 9999;
         }
 
-        .logo { color: var(--bvb-yellow); text-decoration: none; font-weight: 800; font-size: 1.1rem; text-transform: uppercase; }
-        nav ul { display: flex; list-style: none; margin: 0; padding: 0; gap: 15px; }
-        .nav-item { position: relative; display: flex; align-items: center; height: 70px; }
-        nav a { color: #fff; text-decoration: none; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
-        nav a:hover { color: var(--bvb-yellow); }
-        .submenu { display: none; position: absolute; top: 70px; right: 0; background: var(--bvb-black); min-width: 170px; list-style: none; padding: 10px 0; border-bottom: 3px solid var(--bvb-yellow); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
-        .submenu li a { color: #fff; padding: 12px 20px; display: block; font-size: 0.8rem; }
-        .submenu li a:hover { background: #222; }
-        .nav-item:hover .submenu { display: block; }
+        .logo {
+            color: var(--bvb-yellow);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+        }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px 15px; }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 15px;
+        }
+
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--bvb-yellow);
+        }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            right: 0;
+            background: var(--bvb-black);
+            min-width: 170px;
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 3px solid var(--bvb-yellow);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .submenu li a {
+            color: #fff;
+            padding: 12px 20px;
+            display: block;
+            font-size: 0.8rem;
+        }
+
+        .submenu li a:hover {
+            background: #222;
+        }
+
+        .nav-item:hover .submenu {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
 
         /* --- CARD ÚLTIMA PARTIDA --- */
         .last-game-card {
@@ -59,63 +118,161 @@
             border-bottom: 5px solid var(--bvb-yellow);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .last-game-card small { text-transform: uppercase; color: var(--bvb-yellow); font-weight: 800; letter-spacing: 1px; font-size: 0.7rem; }
-        .last-game-info { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px; }
-        .lg-team { font-weight: 800; font-size: 1rem; text-transform: uppercase; flex: 1; }
-        .lg-score { font-size: 2rem; font-weight: 900; background: rgba(255,255,255,0.1); padding: 5px 20px; border-radius: 8px; min-width: 100px; }
+
+        .last-game-card small {
+            text-transform: uppercase;
+            color: var(--bvb-yellow);
+            font-weight: 800;
+            letter-spacing: 1px;
+            font-size: 0.7rem;
+        }
+
+        .last-game-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .lg-team {
+            font-weight: 800;
+            font-size: 1rem;
+            text-transform: uppercase;
+            flex: 1;
+        }
+
+        .lg-score {
+            font-size: 2rem;
+            font-weight: 900;
+            background: rgba(255,255,255,0.1);
+            padding: 5px 20px;
+            border-radius: 8px;
+            min-width: 100px;
+        }
 
         /* --- CARDS DE ESTATÍSTICAS --- */
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
-        .card { background: #fff; padding: 15px; border-radius: 10px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); border-bottom: 4px solid #ddd; }
-        .card small { display: block; text-transform: uppercase; font-size: 0.6rem; color: #777; margin-bottom: 5px; font-weight: bold; }
-        .card span { font-size: 1.6rem; font-weight: 800; }
-        .card.neutral { border-color: var(--bvb-black); color: var(--bvb-black); }
-
-        /* --- TABELAS COM ROLAGEM (SCROLL) --- */
-        .tables-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 25px; align-items: start; }
-        
-        .table-box { 
-            background: #fff; 
-            border-radius: 10px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
         }
 
-        .table-box h3 { 
-            background: var(--bvb-black); 
-            color: var(--bvb-yellow); 
-            margin: 0; 
-            padding: 12px; 
-            font-size: 0.7rem; 
-            text-align: center; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
+        .card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-bottom: 4px solid #ddd;
         }
 
-        /* Container da rolagem: Altura calculada para ~8 jogadores */
+        .card small {
+            display: block;
+            text-transform: uppercase;
+            font-size: 0.6rem;
+            color: #777;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .card span {
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .card.neutral {
+            border-color: var(--bvb-black);
+            color: var(--bvb-black);
+        }
+
+        /* --- TABELAS COM ROLAGEM --- */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+            align-items: start;
+        }
+
+        .table-box {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-box h3 {
+            background: var(--bvb-black);
+            color: var(--bvb-yellow);
+            margin: 0;
+            padding: 12px;
+            font-size: 0.7rem;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .scroll-container {
-            max-height: 320px; 
+            max-height: 320px;
             overflow-y: auto;
         }
 
-        /* Estilização da Scrollbar (Dortmund Style) */
-        .scroll-container::-webkit-scrollbar { width: 6px; }
-        .scroll-container::-webkit-scrollbar-track { background: #f1f1f1; }
-        .scroll-container::-webkit-scrollbar-thumb { background: var(--bvb-black); border-radius: 10px; }
-        .scroll-container::-webkit-scrollbar-thumb:hover { background: #333; }
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+        }
 
-        table { width: 100%; border-collapse: collapse; }
-        td { padding: 10px 12px; font-size: 0.85rem; border-bottom: 1px solid #f0f0f0; }
-        tr:last-child td { border-bottom: none; }
-        .val { text-align: right; font-weight: bold; color: var(--bvb-black); }
+        .scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: var(--bvb-black);
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .val {
+            text-align: right;
+            font-weight: bold;
+            color: var(--bvb-black);
+        }
 
         /* --- RESPONSIVIDADE --- */
-        @media (max-width: 1024px) { .tables-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1024px) {
+            .tables-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 600px) {
-            .stats-row { grid-template-columns: repeat(2, 1fr); }
-            .tables-grid { grid-template-columns: 1fr; }
-            .card span { font-size: 1.3rem; }
-            .logo { font-size: 1rem; }
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .tables-grid {
+                grid-template-columns: 1fr;
+            }
+            .card span {
+                font-size: 1.3rem;
+            }
+            .logo {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
@@ -154,7 +311,7 @@
         </div>
 
         <div class="stats-row">
-            <div class="card neutral"><small>Gols Pró</small><span id="stat-gp" style="color:var(--win)">0</span></div>
+            <div class="card" style="border-color: var(--win); color: var(--win)"><small>Gols Pró</small><span id="stat-gp">0</span></div>
             <div class="card" style="border-color: var(--loss); color: var(--loss)"><small>Gols Contra</small><span id="stat-gc">0</span></div>
             <div class="card" id="card-sg"><small>Saldo Gols</small><span id="stat-sg">0</span></div>
             <div class="card" id="card-aprov"><small>Aproveitamento</small><span id="stat-aprov">0%</span></div>
@@ -263,7 +420,6 @@
                 const render = (id, obj) => {
                     document.getElementById(id).innerHTML = Object.entries(obj)
                         .sort((x, y) => y[1] - x[1])
-                        // Removido o .slice(0, 10) para mostrar todos na rolagem
                         .map(i => `<tr><td>${i[0]}</td><td class="val">${i[1]}</td></tr>`)
                         .join('');
                 };
