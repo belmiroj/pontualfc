@@ -112,7 +112,7 @@
             font-family: inherit;
         }
 
-        button {
+        .btn-acao {
             width: 100%;
             background: var(--bvb-black);
             color: var(--bvb-yellow);
@@ -123,6 +123,26 @@
             border-radius: 6px;
             margin-top: 20px;
             text-transform: uppercase;
+        }
+
+        /* --- NOVO JOGADOR --- */
+        .add-player-box {
+            display: flex;
+            gap: 10px;
+            background: #eee;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        .btn-small {
+            width: auto;
+            padding: 10px 20px;
+            margin: 0;
+            background: #27ae60;
+            color: white;
+            text-transform: none;
         }
 
         /* --- OUTPUT --- */
@@ -209,6 +229,11 @@
             </select>
         </div>
 
+        <div class="add-player-box">
+            <input type="text" id="novo-jogador-nome" placeholder="Nome do Jogador Extra" style="margin:0;">
+            <button onclick="adicionarJogador()" class="btn-acao btn-small">Adicionar à Lista</button>
+        </div>
+
         <table>
             <thead>
                 <tr>
@@ -222,13 +247,14 @@
             <tbody id="elenco"></tbody>
         </table>
 
-        <button onclick="gerar()">Gerar JSON de Resultado</button>
+        <button onclick="gerar()" class="btn-acao">Gerar JSON de Resultado</button>
 
         <textarea id="out" readonly placeholder="O código JSON aparecerá aqui..."></textarea>
     </div>
 
     <script>
-        const elenco = ["ANTONIO", "AUGUSTO", "BELMIRO", "CELSO", "CLESIO", "DEIVID", "DENIS", "DIEGO", "GUILHERME", "GUIMA", "ISMAEL", "JAIR", "LUIZ", "RANIERI", "ROGERIO", "SAYMONN"];
+        // Lista base
+        let listaJogadores = ["ANTONIO", "AUGUSTO", "BELMIRO", "CELSO", "CLESIO", "DEIVID", "DENIS", "DIEGO", "GUILHERME", "GUIMA", "ISMAEL", "JAIR", "LUIZ", "RANIERI", "ROGERIO", "SAYMONN"];
         let db = [];
 
         async function init() {
@@ -241,17 +267,37 @@
                     `<option value="${i}">${j.data} - ${j.visitante}</option>`
                 ).join('');
 
-                document.getElementById('elenco').innerHTML = elenco.map(n => `
-                    <tr>
-                        <td><input type="checkbox" class="pre" data-n="${n}"></td>
-                        <td><strong>${n}</strong></td>
-                        <td><input type="number" class="gol input-mini" data-n="${n}" value="0"></td>
-                        <td><input type="number" class="ast input-mini" data-n="${n}" value="0"></td>
-                        <td><input type="number" class="voto input-mini" data-n="${n}" value="0"></td>
-                    </tr>
-                `).join('');
+                renderizarTabela();
             } catch (e) {
                 console.error("Erro ao carregar dados:", e);
+            }
+        }
+
+        function renderizarTabela() {
+            const corpoTabela = document.getElementById('elenco');
+            corpoTabela.innerHTML = listaJogadores.map(n => `
+                <tr id="row-${n}">
+                    <td><input type="checkbox" class="pre" data-n="${n}"></td>
+                    <td><strong>${n}</strong></td>
+                    <td><input type="number" class="gol input-mini" data-n="${n}" value="0"></td>
+                    <td><input type="number" class="ast input-mini" data-n="${n}" value="0"></td>
+                    <td><input type="number" class="voto input-mini" data-n="${n}" value="0"></td>
+                </tr>
+            `).join('');
+        }
+
+        function adicionarJogador() {
+            const input = document.getElementById('novo-jogador-nome');
+            const nome = input.value.trim().toUpperCase();
+
+            if (nome && !listaJogadores.includes(nome)) {
+                listaJogadores.push(nome);
+                renderizarTabela();
+                input.value = "";
+                // Foca no checkbox do novo jogador adicionado
+                document.querySelector(`.pre[data-n="${nome}"]`).checked = true;
+            } else {
+                alert("Nome inválido ou já existente na lista.");
             }
         }
 
@@ -260,13 +306,20 @@
             const jogo = db[idx];
             const pres = [], gols = [], asts = [], votos = [];
 
-            elenco.forEach(n => {
-                if (document.querySelector(`.pre[data-n="${n}"]`).checked) {
+            // Percorre a lista atual (que inclui os novos adicionados)
+            listaJogadores.forEach(n => {
+                const check = document.querySelector(`.pre[data-n="${n}"]`);
+                const inputGol = document.querySelector(`.gol[data-n="${n}"]`);
+                const inputAst = document.querySelector(`.ast[data-n="${n}"]`);
+                const inputVoto = document.querySelector(`.voto[data-n="${n}"]`);
+
+                if (check && check.checked) {
                     pres.push(n);
                 }
-                let g = parseInt(document.querySelector(`.gol[data-n="${n}"]`).value);
-                let a = parseInt(document.querySelector(`.ast[data-n="${n}"]`).value);
-                let v = parseInt(document.querySelector(`.voto[data-n="${n}"]`).value);
+                
+                let g = parseInt(inputGol.value) || 0;
+                let a = parseInt(inputAst.value) || 0;
+                let v = parseInt(inputVoto.value) || 0;
 
                 if (g > 0) gols.push({ nome: n, qtd: g });
                 if (a > 0) asts.push({ nome: n, qtd: a });
