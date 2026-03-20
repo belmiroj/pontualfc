@@ -12,12 +12,14 @@
             --win: #2ecc71;
             --draw: #f1c40f;
             --loss: #e74c3c;
+            --upcoming: #3498db;
         }
 
         body {
             font-family: 'Segoe UI', sans-serif;
             margin: 0;
             background: var(--bg-gray);
+            color: #333;
         }
 
         /* --- HEADER --- */
@@ -29,12 +31,16 @@
             justify-content: space-between;
             align-items: center;
             height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .logo {
             color: var(--bvb-yellow);
             text-decoration: none;
             font-weight: 800;
+            text-transform: uppercase;
         }
 
         nav ul {
@@ -45,135 +51,107 @@
             padding: 0;
         }
 
-        .nav-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-            height: 70px;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--bvb-yellow);
-        }
-
         .nav-link {
             color: #fff;
             text-decoration: none;
             font-size: 0.8rem;
             font-weight: bold;
             text-transform: uppercase;
-            cursor: pointer;
         }
 
-        .nav-link:hover {
-            color: var(--bvb-yellow);
+        /* --- FILTRO --- */
+        .filter-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: flex-end;
         }
 
-        .submenu {
-            display: none;
-            position: absolute;
-            top: 70px;
-            left: 0;
-            background: var(--bvb-black);
-            min-width: 180px;
-            list-style: none;
-            padding: 10px 0;
-            border-bottom: 3px solid var(--bvb-yellow);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        }
-
-        .submenu li a {
-            color: #fff;
-            padding: 10px 20px;
-            display: block;
-            text-decoration: none;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            transition: background 0.3s;
-        }
-
-        .submenu li a:hover {
-            background: #222;
-            color: var(--bvb-yellow);
-        }
-
-        .nav-item:hover .submenu {
-            display: block;
+        #month-filter {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            font-weight: bold;
         }
 
         /* --- CONTEÚDO --- */
         .container {
             max-width: 900px;
-            margin: 30px auto;
+            margin: 0 auto 50px auto;
             padding: 0 20px;
         }
 
         .game-card {
             background: #fff;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border-radius: 10px;
-            display: grid;
-            grid-template-columns: 80px 1fr 100px 1fr;
-            align-items: center;
-            padding: 20px;
+            overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border-left: 6px solid #ccc;
+            cursor: pointer;
         }
 
-        /* Cores dinâmicas do Card */
-        .game-card.vitoria {
-            border-left-color: var(--win);
+        .game-header {
+            display: grid;
+            grid-template-columns: 100px 1fr 100px 1fr;
+            align-items: center;
+            padding: 20px;
         }
 
-        .game-card.empate {
-            border-left-color: var(--draw);
-        }
+        .game-card.vitoria { border-left-color: var(--win); }
+        .game-card.empate { border-left-color: var(--draw); }
+        .game-card.derrota { border-left-color: var(--loss); }
+        .game-card.upcoming { border-left-color: var(--upcoming); }
 
-        .game-card.derrota {
-            border-left-color: var(--loss);
-        }
+        .date { font-size: 0.75rem; color: #666; font-weight: bold; }
+        .team { font-weight: 800; font-size: 0.95rem; text-transform: uppercase; }
 
-        .date {
-            font-size: 0.7rem;
-            color: #888;
-            font-weight: bold;
-        }
-
-        .team {
-            font-weight: 800;
-            font-size: 0.9rem;
-            text-transform: uppercase;
+        .score-box {
+            text-align: center;
         }
 
         .score {
-            background: #111;
+            background: var(--bvb-black);
             color: var(--bvb-yellow);
-            padding: 10px;
-            border-radius: 5px;
-            text-align: center;
+            padding: 5px 12px;
+            border-radius: 4px;
             font-weight: 900;
-            margin: 0 10px;
+            display: inline-block;
         }
 
-        /* Ajuste para Mobile */
+        /* --- DETALHES (ESCONDIDOS POR PADRÃO) --- */
+        .game-details {
+            display: none;
+            background: #f9f9f9;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.5fr;
+            gap: 20px;
+        }
+
+        .detail-title {
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: #888;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 3px;
+        }
+
+        .player-list { list-style: none; padding: 0; margin: 0; }
+        .player-list li { margin-bottom: 4px; }
+
         @media (max-width: 600px) {
-            .game-card {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 10px;
-            }
-            .team {
-                text-align: center !important;
-            }
+            .game-header { grid-template-columns: 1fr; text-align: center; gap: 10px; }
+            .details-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -183,53 +161,119 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li class="nav-item">
-                    <a href="index.html" class="nav-link">Início</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">Jogos ▾</a>
-                    <ul class="submenu">
-                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">Cadastro ▾</a>
-                    <ul class="submenu">
-                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
-                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
-                    </ul>
-                </li>
+                <li class="nav-link"><a href="index.html" style="color:white; text-decoration:none">Início</a></li>
             </ul>
         </nav>
     </header>
 
+    <div class="filter-container">
+        <select id="month-filter" onchange="filtrarJogos()">
+            <option value="todos">Todos os Meses</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+        </select>
+    </div>
+
     <div class="container" id="lista"></div>
 
     <script>
+        const BASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026";
+        let todosJogos = [];
+
         async function carregar() {
             try {
-                const resp = await fetch('jogos-2026.json');
+                const resp = await fetch(`${BASE_URL}.json`);
                 const data = await resp.json();
-                const lista = document.getElementById('lista');
-                
-                data.temporada_2026.forEach(j => {
-                    const placar = j.status === 'upcoming' 
-                        ? 'VS' 
-                        : `${j.placar_mandante} - ${j.placar_visitante}`;
-                    
-                    lista.innerHTML += `
-                        <div class="game-card ${j.status}">
-                            <div class="date">${j.data}</div>
-                            <div class="team" style="text-align:right">${j.mandante}</div>
-                            <div class="score">${placar}</div>
-                            <div class="team">${j.visitante}</div>
-                        </div>
-                    `;
-                });
+                if (!data) return;
+
+                // Transforma objeto em array e ordena por data
+                todosJogos = Object.keys(data).map(key => ({ id: key, ...data[key] }))
+                    .sort((a, b) => new Date(a.data.split('/').reverse().join('-')) - new Date(b.data.split('/').reverse().join('-')));
+
+                renderizar(todosJogos);
             } catch (error) {
-                console.error("Erro ao carregar jogos:", error);
+                console.error("Erro:", error);
             }
         }
+
+        function renderizar(listaParaExibir) {
+            const container = document.getElementById('lista');
+            container.innerHTML = '';
+
+            listaParaExibir.forEach(j => {
+                const isFinished = j.status === 'finished';
+                const classeStatus = isFinished ? (j.resultado_tipo || '') : 'upcoming';
+                
+                // Formatação de Gols e Assistências
+                const listaGols = j.gols_detalhes ? j.gols_detalhes.map(g => `<li>${g.nome} (${g.qtd})</li>`).join('') : '<li>-</li>';
+                const listaAst = j.assist_detalhes ? j.assist_detalhes.map(a => `<li>${a.nome} (${a.qtd})</li>`).join('') : '<li>-</li>';
+                const listaPre = j.presencas ? j.presencas.join(', ') : 'Não registrada';
+
+                container.innerHTML += `
+                    <div class="game-card ${classeStatus}" onclick="toggleDetails('${j.id}')">
+                        <div class="game-header">
+                            <div class="date">${j.data}</div>
+                            <div class="team" style="text-align:right">${j.mandante}</div>
+                            <div class="score-box">
+                                <div class="score">${isFinished ? j.placar_mandante + ' - ' + j.placar_visitante : 'VS'}</div>
+                            </div>
+                            <div class="team">${j.visitante}</div>
+                        </div>
+                        
+                        <div class="game-details" id="detalhe-${j.id}">
+                            <div class="details-grid">
+                                <div>
+                                    <div class="detail-title">⚽ Gols</div>
+                                    <ul class="player-list">${listaGols}</ul>
+                                </div>
+                                <div>
+                                    <div class="detail-title">👟 Assistências</div>
+                                    <ul class="player-list">${listaAst}</ul>
+                                </div>
+                                <div>
+                                    <div class="detail-title">📋 Presenças</div>
+                                    <p style="color:#555; line-height:1.4">${listaPre}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleDetails(id) {
+            const div = document.getElementById(`detalhe-${id}`);
+            const isVisible = div.style.display === 'block';
+            
+            // Fecha todos os outros antes de abrir o clicado (opcional)
+            document.querySelectorAll('.game-details').forEach(d => d.style.display = 'none');
+            
+            div.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function filtrarJogos() {
+            const mesSelecionado = document.getElementById('month-filter').value;
+            if (mesSelecionado === 'todos') {
+                renderizar(todosJogos);
+            } else {
+                const filtrados = todosJogos.filter(j => {
+                    const mesDoJogo = j.data.split('/')[1]; // Pega o MM de DD/MM/YYYY
+                    return mesDoJogo === mesSelecionado;
+                });
+                renderizar(filtrados);
+            }
+        }
+
         window.onload = carregar;
     </script>
 </body>
