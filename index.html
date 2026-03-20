@@ -107,7 +107,7 @@
             padding: 20px 15px;
         }
 
-        /* --- CARD ÚLTIMA PARTIDA --- */
+        /* --- CARD ÚLTIMA PARTIDA & MVP --- */
         .last-game-card {
             background: var(--bvb-black);
             color: #fff;
@@ -149,6 +149,18 @@
             padding: 5px 20px;
             border-radius: 8px;
             min-width: 100px;
+        }
+
+        .mvp-badge {
+            display: inline-block;
+            margin-top: 15px;
+            background: rgba(253, 225, 0, 0.15);
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid var(--bvb-yellow);
+            color: var(--bvb-yellow);
+            font-weight: bold;
+            font-size: 0.85rem;
         }
 
         /* --- CARDS DE ESTATÍSTICAS --- */
@@ -219,6 +231,7 @@
             overflow-y: auto;
         }
 
+        /* Scrollbar Estilizada */
         .scroll-container::-webkit-scrollbar {
             width: 6px;
         }
@@ -364,6 +377,14 @@
 
                 if (jogosFinalizados.length > 0) {
                     const ultimo = jogosFinalizados[0];
+                    
+                    // Lógica para encontrar o MVP (quem tem mais votos no último jogo)
+                    let mvpNome = "N/A";
+                    if (ultimo.votos_melhor && ultimo.votos_melhor.length > 0) {
+                        const ordenadoVotos = [...ultimo.votos_melhor].sort((a, b) => b.qtd - a.qtd);
+                        mvpNome = ordenadoVotos[0].nome;
+                    }
+
                     document.getElementById('ultimo-jogo-container').innerHTML = `
                         <div class="last-game-card">
                             <small>Último Resultado • ${ultimo.rodada || 'Confronto'}</small>
@@ -372,7 +393,8 @@
                                 <div class="lg-score">${ultimo.placar_mandante} - ${ultimo.placar_visitante}</div>
                                 <div class="lg-team" style="text-align:left">${ultimo.visitante}</div>
                             </div>
-                            <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.8;">${ultimo.data}</div>
+                            <div class="mvp-badge">🏆 MVP: ${mvpNome}</div>
+                            <div style="font-size: 0.7rem; margin-top: 12px; opacity: 0.6;">${ultimo.data}</div>
                         </div>
                     `;
                 }
