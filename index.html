@@ -19,7 +19,7 @@
             margin: 0;
             background-color: var(--bg-gray);
             color: #333;
-            font-size: 16px; /* Evita zoom automático no iOS */
+            font-size: 16px;
         }
 
         /* --- HEADER PADRONIZADO --- */
@@ -100,6 +100,44 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px 15px;
+        }
+
+        /* --- CARD ÚLTIMA PARTIDA --- */
+        .last-game-card {
+            background: var(--bvb-black);
+            color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 5px solid var(--bvb-yellow);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .last-game-card small {
+            text-transform: uppercase;
+            color: var(--bvb-yellow);
+            font-weight: 800;
+            letter-spacing: 1px;
+            font-size: 0.7rem;
+        }
+
+        .last-game-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .lg-team { font-weight: 800; font-size: 1rem; text-transform: uppercase; flex: 1; }
+        .lg-score { 
+            font-size: 2rem; 
+            font-weight: 900; 
+            background: rgba(255,255,255,0.1); 
+            padding: 5px 20px; 
+            border-radius: 8px;
+            min-width: 100px;
         }
 
         /* --- CARDS DE ESTATÍSTICAS --- */
@@ -191,6 +229,8 @@
             .tables-grid { grid-template-columns: 1fr; }
             .card span { font-size: 1.3rem; }
             .logo { font-size: 1rem; }
+            .lg-score { font-size: 1.5rem; }
+            .lg-team { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -219,6 +259,9 @@
     </header>
 
     <div class="container">
+        
+        <div id="ultimo-jogo-container"></div>
+
         <div class="stats-row">
             <div class="card neutral"><small>Jogos</small><span id="stat-total">0</span></div>
             <div class="card" style="border-color: var(--win); color: var(--win)"><small>Vitórias</small><span id="stat-vitorias">0</span></div>
@@ -265,8 +308,29 @@
 
                 const jogos = Object.values(data);
                 
+                // Variáveis para estatísticas
                 let t = 0, v = 0, e = 0, d = 0, gp = 0, gc = 0;
                 let art = {}, ast = {}, pre = {}, vot = {};
+
+                // Filtra apenas jogos finalizados e ordena por data para achar o último
+                const jogosFinalizados = jogos
+                    .filter(j => j.status === 'finished')
+                    .sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
+
+                if (jogosFinalizados.length > 0) {
+                    const ultimo = jogosFinalizados[0];
+                    document.getElementById('ultimo-jogo-container').innerHTML = `
+                        <div class="last-game-card">
+                            <small>Último Resultado • ${ultimo.rodada || 'Confronto'}</small>
+                            <div class="last-game-info">
+                                <div class="lg-team" style="text-align:right">${ultimo.mandante}</div>
+                                <div class="lg-score">${ultimo.placar_mandante} - ${ultimo.placar_visitante}</div>
+                                <div class="lg-team" style="text-align:left">${ultimo.visitante}</div>
+                            </div>
+                            <div style="font-size: 0.7rem; margin-top: 10px; opacity: 0.8;">${ultimo.data}</div>
+                        </div>
+                    `;
+                }
 
                 jogos.forEach(j => {
                     if (j.status === 'finished') {
