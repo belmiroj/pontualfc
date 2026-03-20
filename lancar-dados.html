@@ -2,6 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lançar Resultados | Pontual FC</title>
     <style>
         :root {
@@ -16,6 +17,7 @@
             margin: 0;
             background: var(--bg-gray);
             color: var(--text-dark);
+            font-size: 16px; /* Aumentado para melhor leitura mobile */
         }
 
         /* --- HEADER & NAVEGAÇÃO --- */
@@ -36,7 +38,7 @@
             color: var(--bvb-yellow);
             text-decoration: none;
             font-weight: 800;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-transform: uppercase;
         }
 
@@ -45,7 +47,7 @@
             list-style: none;
             margin: 0;
             padding: 0;
-            gap: 20px;
+            gap: 15px;
         }
 
         .nav-item {
@@ -58,54 +60,41 @@
         nav a {
             color: #fff;
             text-decoration: none;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: bold;
             text-transform: uppercase;
             transition: 0.3s;
             cursor: pointer;
         }
 
-        nav a:hover {
-            color: var(--bvb-yellow);
-        }
-
         .submenu {
             display: none;
             position: absolute;
             top: 70px;
-            left: 0;
+            right: 0; /* Ajustado para não sair da tela no mobile */
             background: var(--bvb-black);
-            min-width: 180px;
+            min-width: 160px;
             list-style: none;
             padding: 10px 0;
             border-bottom: 3px solid var(--bvb-yellow);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
+        .nav-item:hover .submenu { display: block; }
+
         .submenu li a {
             color: #fff;
-            padding: 10px 20px;
+            padding: 12px 20px;
             display: block;
-            text-decoration: none;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-
-        .submenu li a:hover {
-            background: #222;
-            color: var(--bvb-yellow);
-        }
-
-        .nav-item:hover .submenu {
-            display: block;
+            font-size: 0.8rem;
         }
 
         /* --- CONTAINER PRINCIPAL --- */
         .container {
             max-width: 850px;
-            margin: 30px auto;
+            margin: 15px auto;
             background: #fff;
-            padding: 35px;
+            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
@@ -114,105 +103,122 @@
             border-left: 5px solid var(--bvb-yellow);
             padding-left: 15px;
             text-transform: uppercase;
-            font-size: 1.1rem;
-            margin-bottom: 25px;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
             color: var(--bvb-black);
         }
 
         label {
             display: block;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
 
-        select,
-        input {
+        select, input {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
+            padding: 14px; /* Mais alto para toque */
+            margin-bottom: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
             box-sizing: border-box;
             font-family: inherit;
+            font-size: 1rem; /* Evita zoom automático no iOS */
         }
 
-        /* --- BOTÕES E AÇÕES --- */
+        /* --- GRID RESPONSIVO --- */
+        .score-grid {
+            display: flex;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .score-grid {
+                flex-direction: column;
+                gap: 0;
+            }
+            .logo { font-size: 0.9rem; }
+            nav ul { gap: 10px; }
+            .container { margin: 10px; padding: 15px; }
+        }
+
+        /* --- BOTÕES --- */
         .btn-acao {
             width: 100%;
             background: var(--bvb-black);
             color: var(--bvb-yellow);
             border: none;
-            padding: 16px;
+            padding: 18px;
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
             border-radius: 8px;
-            transition: 0.3s;
-            margin-top: 20px;
-        }
-
-        .btn-acao:disabled {
-            background: #666;
-            cursor: not-allowed;
+            font-size: 1rem;
+            margin-top: 10px;
         }
 
         .add-player-box {
             display: flex;
             gap: 10px;
-            background: #fdfdfd;
-            padding: 15px;
+            background: #f9f9f9;
+            padding: 12px;
             border-radius: 8px;
             margin: 20px 0;
             border: 1px dashed #ccc;
-            align-items: center;
         }
 
         .btn-add {
             background: #27ae60;
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 0 15px;
             border-radius: 6px;
             font-weight: bold;
-            cursor: pointer;
         }
 
-        /* --- TABELA DE JOGADORES --- */
+        /* --- TABELA RESPONSIVA --- */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+
         table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
+            min-width: 400px; /* Garante que não esmague no mobile */
         }
 
         th {
             text-align: left;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: #888;
-            text-transform: uppercase;
             padding: 10px;
             border-bottom: 2px solid #eee;
         }
 
         td {
-            padding: 10px;
+            padding: 12px 10px;
             border-bottom: 1px solid #eee;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .input-mini {
-            width: 60px !important;
-            padding: 5px !important;
+            width: 65px !important;
+            padding: 8px !important;
             margin: 0 !important;
             text-align: center;
+            font-size: 0.9rem;
         }
 
-        #status-msg {
-            margin-top: 20px;
-            text-align: center;
-            font-weight: bold;
+        input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin: 0;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -248,7 +254,7 @@
             <option value="">Carregando jogos...</option>
         </select>
 
-        <div style="display:flex; gap:15px;">
+        <div class="score-grid">
             <div style="flex:1">
                 <label>Gols Pontual</label>
                 <input type="number" id="gp" value="0">
@@ -269,21 +275,23 @@
 
         <div class="add-player-box">
             <input type="text" id="novo-jogador-nome" placeholder="Nome do Jogador Extra" style="margin:0; flex:1">
-            <button onclick="adicionarJogador()" class="btn-add">Adicionar</button>
+            <button onclick="adicionarJogador()" class="btn-add">Add</button>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 40px;">✔</th>
-                    <th>Jogador</th>
-                    <th style="width: 70px;">Gols</th>
-                    <th style="width: 70px;">Ast</th>
-                    <th style="width: 70px;">Votos</th>
-                </tr>
-            </thead>
-            <tbody id="elenco"></tbody>
-        </table>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40px;">✔</th>
+                        <th>Jogador</th>
+                        <th style="width: 70px;">Gols</th>
+                        <th style="width: 70px;">Ast</th>
+                        <th style="width: 70px;">Votos</th>
+                    </tr>
+                </thead>
+                <tbody id="elenco"></tbody>
+            </table>
+        </div>
 
         <button id="btnSalvar" onclick="salvarResultado()" class="btn-acao">Salvar no Firebase</button>
         <div id="status-msg"></div>
@@ -304,7 +312,7 @@
 
                 Object.keys(jogosDB).forEach(key => {
                     const j = jogosDB[key];
-                    select.innerHTML += `<option value="${key}">${j.data} - vs ${j.visitante} (${j.status === 'finished' ? 'Finalizado' : 'Aberto'})</option>`;
+                    select.innerHTML += `<option value="${key}">${j.data} - vs ${j.visitante}</option>`;
                 });
             } catch (e) { console.error(e); }
         }
@@ -323,38 +331,31 @@
         }
 
         function puxarDadosExistentes(key) {
-            if (!key || !jogosDB[key]) {
-                resetarCampos();
-                return;
-            }
+            if (!key || !jogosDB[key]) { resetarCampos(); return; }
             const jogo = jogosDB[key];
             document.getElementById('gp').value = jogo.placar_mandante || 0;
             document.getElementById('gc').value = jogo.placar_visitante || 0;
             document.getElementById('status-jogo').value = jogo.resultado_tipo || "vitoria";
 
             renderizarTabela();
-
             if (jogo.presencas) {
                 jogo.presencas.forEach(nome => {
                     const cb = document.querySelector(`.pre[data-n="${nome}"]`);
                     if (cb) cb.checked = true;
                 });
             }
-
             if (jogo.gols_detalhes) {
                 jogo.gols_detalhes.forEach(item => {
                     const inp = document.querySelector(`.gol[data-n="${item.nome}"]`);
                     if (inp) inp.value = item.qtd;
                 });
             }
-
             if (jogo.assist_detalhes) {
                 jogo.assist_detalhes.forEach(item => {
                     const inp = document.querySelector(`.ast[data-n="${item.nome}"]`);
                     if (inp) inp.value = item.qtd;
                 });
             }
-
             if (jogo.votos_melhor) {
                 jogo.votos_melhor.forEach(item => {
                     const inp = document.querySelector(`.voto[data-n="${item.nome}"]`);
@@ -391,7 +392,6 @@
                 let g = parseInt(document.querySelector(`.gol[data-n="${n}"]`).value) || 0;
                 let a = parseInt(document.querySelector(`.ast[data-n="${n}"]`).value) || 0;
                 let v = parseInt(document.querySelector(`.voto[data-n="${n}"]`).value) || 0;
-
                 if (g > 0) gols.push({ nome: n, qtd: g });
                 if (a > 0) asts.push({ nome: n, qtd: a });
                 if (v > 0) votos.push({ nome: n, qtd: v });
