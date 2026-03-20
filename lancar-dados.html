@@ -8,69 +8,165 @@
             --bvb-yellow: #FDE100;
             --bvb-black: #111111;
             --bg-gray: #f4f7f6;
+            --text-dark: #333;
         }
 
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--bg-gray); }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: var(--bg-gray);
+            color: var(--text-dark);
+        }
 
-        /* --- HEADER --- */
+        /* --- HEADER GLOBAL (IGUAL AO AGENDAMENTO) --- */
         header {
-            background: var(--bvb-black);
+            background-color: var(--bvb-black);
             border-bottom: 4px solid var(--bvb-yellow);
             padding: 0 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 9999;
         }
 
-        .logo { color: var(--bvb-yellow); text-decoration: none; font-weight: 800; }
-        nav ul { display: flex; list-style: none; gap: 20px; }
-        nav a { color: #fff; text-decoration: none; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; }
+        .logo {
+            color: var(--bvb-yellow);
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
 
-        /* --- CONTEÚDO --- */
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: 20px;
+        }
+
+        .nav-item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 70px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover { color: var(--bvb-yellow); }
+
+        .submenu {
+            display: none;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            background: var(--bvb-black);
+            min-width: 180px;
+            list-style: none;
+            padding: 10px 0;
+            border-bottom: 3px solid var(--bvb-yellow);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .submenu li a {
+            color: #fff;
+            padding: 10px 20px;
+            display: block;
+            text-decoration: none;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .submenu li a:hover { background: #222; color: var(--bvb-yellow); }
+
+        .nav-item:hover .submenu { display: block; }
+
+        /* --- CONTEÚDO DO FORMULÁRIO --- */
         .container {
             max-width: 850px;
             margin: 30px auto;
             background: #fff;
-            padding: 30px;
+            padding: 35px;
             border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
 
-        h3 { border-left: 5px solid var(--bvb-yellow); padding-left: 10px; text-transform: uppercase; font-size: 1rem; }
+        h3 {
+            border-left: 5px solid var(--bvb-yellow);
+            padding-left: 15px;
+            text-transform: uppercase;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: var(--bvb-black);
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 5px;
+        }
 
         select, input {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
+            margin-bottom: 15px;
             border: 1px solid #ddd;
-            border-radius: 6px;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-family: inherit;
         }
 
         .btn-acao {
             width: 100%;
             background: var(--bvb-black);
             color: var(--bvb-yellow);
-            padding: 15px;
             border: none;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 6px;
+            padding: 16px;
+            font-weight: 800;
             text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
             margin-top: 20px;
         }
 
         .btn-acao:disabled { background: #666; cursor: not-allowed; }
 
+        /* --- JOGADOR EXTRA --- */
         .add-player-box {
             display: flex;
             gap: 10px;
-            background: #f9f9f9;
+            background: #fdfdfd;
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
             border: 1px dashed #ccc;
+            align-items: center;
+        }
+
+        .btn-add {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
         /* --- TABELA --- */
@@ -78,8 +174,8 @@
         th { text-align: left; font-size: 0.7rem; color: #888; text-transform: uppercase; padding: 10px; border-bottom: 2px solid #eee; }
         td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
         .input-mini { width: 60px !important; padding: 5px !important; margin: 0 !important; text-align: center; }
-
-        #status-msg { margin-top: 15px; font-weight: bold; text-align: center; display: none; }
+        
+        #status-msg { margin-top: 20px; text-align: center; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -88,9 +184,20 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li><a href="index.html">Início</a></li>
-                <li><a href="cadastro-partida.html">Agendar</a></li>
-                <li><a href="lancar-dados.html">Resultados</a></li>
+                <li class="nav-item"><a href="index.html">Início</a></li>
+                <li class="nav-item">
+                    <a>Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a>Cadastro ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </header>
@@ -98,22 +205,22 @@
     <div class="container">
         <h3>Lançar Resultado no Banco</h3>
 
-        <label style="font-size: 0.75rem; font-weight: bold; color: #666; text-transform: uppercase;">1. Selecione o Jogo Agendado:</label>
+        <label>1. Selecione o Jogo Agendado</label>
         <select id="sel-jogo">
             <option>Carregando jogos do Firebase...</option>
         </select>
 
-        <div style="display:flex; gap:10px; margin-top: 10px;">
-            <div>
-                <label style="font-size: 0.7rem;">GOLS PONTUAL</label>
+        <div style="display:flex; gap:15px;">
+            <div style="flex:1">
+                <label>Gols Pontual</label>
                 <input type="number" id="gp" value="0">
             </div>
-            <div>
-                <label style="font-size: 0.7rem;">GOLS ADV</label>
+            <div style="flex:1">
+                <label>Gols Adv</label>
                 <input type="number" id="gc" value="0">
             </div>
-            <div>
-                <label style="font-size: 0.7rem;">RESULTADO</label>
+            <div style="flex:1">
+                <label>Status</label>
                 <select id="status-jogo">
                     <option value="vitoria">Vitória</option>
                     <option value="empate">Empate</option>
@@ -123,8 +230,8 @@
         </div>
 
         <div class="add-player-box">
-            <input type="text" id="novo-jogador-nome" placeholder="Nome do Jogador Extra" style="margin:0;">
-            <button onclick="adicionarJogador()" style="width:auto; padding:0 20px; cursor:pointer;">+ Adicionar</button>
+            <input type="text" id="novo-jogador-nome" placeholder="Nome do Jogador Extra" style="margin:0; flex:1">
+            <button onclick="adicionarJogador()" class="btn-add">Adicionar</button>
         </div>
 
         <table>
@@ -161,14 +268,11 @@
                     return;
                 }
 
-                // Filtrar apenas jogos que ainda estão como "upcoming" (opcional)
                 Object.keys(jogosDB).forEach(key => {
                     const j = jogosDB[key];
                     select.innerHTML += `<option value="${key}">${j.data} - vs ${j.visitante}</option>`;
                 });
-            } catch (e) {
-                console.error("Erro ao carregar:", e);
-            }
+            } catch (e) { console.error(e); }
         }
 
         function renderizarTabela() {
@@ -205,7 +309,6 @@
 
             listaJogadores.forEach(n => {
                 if (document.querySelector(`.pre[data-n="${n}"]`).checked) pres.push(n);
-                
                 let g = parseInt(document.querySelector(`.gol[data-n="${n}"]`).value) || 0;
                 let a = parseInt(document.querySelector(`.ast[data-n="${n}"]`).value) || 0;
                 let v = parseInt(document.querySelector(`.voto[data-n="${n}"]`).value) || 0;
@@ -218,7 +321,7 @@
             const dadosAtualizados = {
                 placar_mandante: parseInt(document.getElementById('gp').value) || 0,
                 placar_visitante: parseInt(document.getElementById('gc').value) || 0,
-                status: "finished", // Muda de upcoming para finished
+                status: "finished",
                 resultado_tipo: document.getElementById('status-jogo').value,
                 presencas: pres,
                 gols_detalhes: gols,
@@ -229,21 +332,14 @@
             try {
                 btn.disabled = true;
                 btn.innerText = "Salvando...";
-                
-                // PATCH atualiza apenas os campos enviados, mantendo o ID, DATA, etc.
-                const response = await fetch(`${BASE_URL}/${gameKey}.json`, {
+                await fetch(`${BASE_URL}/${gameKey}.json`, {
                     method: 'PATCH',
                     body: JSON.stringify(dadosAtualizados)
                 });
-
-                if (response.ok) {
-                    msg.style.display = "block";
-                    msg.style.color = "green";
-                    msg.innerText = "✅ Dados integrados ao Firebase com sucesso!";
-                    alert("Resultado salvo!");
-                }
+                msg.innerHTML = "<span style='color:green'>✅ Atualizado com sucesso!</span>";
+                alert("Dados salvos no Banco!");
             } catch (e) {
-                msg.innerText = "❌ Erro ao salvar.";
+                msg.innerHTML = "<span style='color:red'>❌ Erro ao conectar.</span>";
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Atualizar Resultado no Firebase";
