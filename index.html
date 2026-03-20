@@ -39,6 +39,7 @@
             text-decoration: none;
             font-weight: 800;
             font-size: 1.2rem;
+            text-transform: uppercase;
         }
 
         nav ul {
@@ -184,15 +185,11 @@
 
         /* --- RESPONSIVIDADE --- */
         @media (max-width: 1000px) {
-            .tables-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .tables-grid { grid-template-columns: repeat(2, 1fr); }
         }
 
         @media (max-width: 600px) {
-            .stats-row, .tables-grid {
-                grid-template-columns: 1fr;
-            }
+            .stats-row, .tables-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -256,34 +253,44 @@
     </div>
 
     <script>
+        const BASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026";
+
         async function carregar() {
             try {
-                const resp = await fetch('jogos-2026.json');
+                const resp = await fetch(`${BASE_URL}.json`);
                 const data = await resp.json();
-                const jogos = data.temporada_2026;
+                
+                if (!data) return;
+
+                // Converter o objeto do Firebase em uma Array de jogos
+                const jogos = Object.values(data);
                 
                 let t = 0, v = 0, e = 0, d = 0, gp = 0, gc = 0;
                 let art = {}, ast = {}, pre = {}, vot = {};
 
                 jogos.forEach(j => {
-                    if (j.status !== 'upcoming') {
+                    // Só processa estatísticas de jogos com status 'finished'
+                    if (j.status === 'finished') {
                         t++;
-                        if (j.status === 'vitoria') v++;
-                        else if (j.status === 'empate') e++;
-                        else if (j.status === 'derrota') d++;
                         
-                        const isM = j.mandante === "PONTUAL FC";
-                        gp += isM ? (j.placar_mandante || 0) : (j.placar_visitante || 0);
-                        gc += isM ? (j.placar_visitante || 0) : (j.placar_mandante || 0);
+                        // Conta vitórias/empates/derrotas baseadas no resultado_tipo salvo
+                        if (j.resultado_tipo === 'vitoria') v++;
+                        else if (j.resultado_tipo === 'empate') e++;
+                        else if (j.resultado_tipo === 'derrota') d++;
                         
+                        // Soma de gols (assumindo que o Pontual FC é sempre o mandante no seu controle)
+                        gp += (j.placar_mandante || 0);
+                        gc += (j.placar_visitante || 0);
+                        
+                        // Detalhes Individuais
                         if (j.gols_detalhes) j.gols_detalhes.forEach(i => art[i.nome] = (art[i.nome] || 0) + i.qtd);
                         if (j.assist_detalhes) j.assist_detalhes.forEach(i => ast[i.nome] = (ast[i.nome] || 0) + i.qtd);
                         if (j.votos_melhor) j.votos_melhor.forEach(i => vot[i.nome] = (vot[i.nome] || 0) + i.qtd);
-                        if (j.presencas) j.presencas.forEach(i => pre[i] = (pre[i] || 0) + 1);
+                        if (j.presencas) j.presencas.forEach(nome => pre[nome] = (pre[nome] || 0) + 1);
                     }
                 });
 
-                // Preencher Números Básicos
+                // Atualizar Números na Tela
                 document.getElementById('stat-total').innerText = t;
                 document.getElementById('stat-vitorias').innerText = v;
                 document.getElementById('stat-empates').innerText = e;
@@ -292,7 +299,7 @@
                 document.getElementById('stat-gc').innerText = gc;
                 document.getElementById('stat-sg').innerText = (gp - gc);
 
-                // Lógica de Aproveitamento e Cores Dinâmicas
+                // Cálculo de Aproveitamento
                 const ptsGanhos = (v * 3) + (e * 1);
                 const ptsPossiveis = t * 3;
                 const perc = ptsPossiveis > 0 ? (ptsGanhos / ptsPossiveis) * 100 : 0;
@@ -302,25 +309,23 @@
                 
                 elAprov.innerText = perc.toFixed(1) + "%";
 
-                // Aplicação das Regras de Cores
+                // Cores dinâmicas do aproveitamento
                 if (perc < 50) {
-                    // Abaixo de 50% = Vermelho
                     cardAprov.style.borderColor = "var(--loss)";
                     elAprov.style.color = "var(--loss)";
                 } else if (perc >= 50 && perc < 70) {
-                    // Entre 50% e 69.9% = Amarelo
                     cardAprov.style.borderColor = "var(--draw)";
                     elAprov.style.color = "var(--draw)";
                 } else {
-                    // 70% ou mais = Verde
                     cardAprov.style.borderColor = "var(--win)";
                     elAprov.style.color = "var(--win)";
                 }
 
-                // Renderizar Tabelas de Rankings
+                // Renderizar Tabelas de Rankings (Top 10)
                 const render = (id, obj) => {
                     document.getElementById(id).innerHTML = Object.entries(obj)
                         .sort((x, y) => y[1] - x[1])
+                        .slice(0, 10) // Mostra apenas o top 10 para não poluir
                         .map(i => `<tr><td>${i[0]}</td><td class="val">${i[1]}</td></tr>`)
                         .join('');
                 };
@@ -331,7 +336,7 @@
                 render('lista-presencas', pre);
 
             } catch (err) {
-                console.error("Erro ao carregar dados:", err);
+                console.error("Erro ao carregar dados do Firebase:", err);
             }
         }
         window.onload = carregar;
