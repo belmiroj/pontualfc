@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar Partida | Pontual FC</title>
+    <title>Gerenciar Partidas | Pontual FC</title>
     <style>
         :root {
             --bvb-yellow: #FDE100;
             --bvb-black: #111111;
             --bg-gray: #f4f7f6;
             --text-dark: #333;
+            --danger: #e74c3c;
         }
 
         body {
@@ -63,6 +64,7 @@
             font-weight: bold;
             text-transform: uppercase;
             transition: 0.3s;
+            cursor: pointer;
         }
 
         .submenu {
@@ -86,9 +88,7 @@
             font-size: 0.75rem;
         }
 
-        .nav-item:hover .submenu {
-            display: block;
-        }
+        .nav-item:hover .submenu { display: block; }
 
         /* --- FORMULÁRIO --- */
         .container {
@@ -124,7 +124,7 @@
             margin-bottom: 8px;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
@@ -133,8 +133,10 @@
             font-size: 0.9rem;
         }
 
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+
         .btn-acao {
-            width: 100%;
+            flex: 2;
             background: var(--bvb-black);
             color: var(--bvb-yellow);
             border: none;
@@ -146,14 +148,33 @@
             transition: 0.3s;
         }
 
-        .btn-acao:disabled {
-            background: #666;
-            cursor: not-allowed;
+        .btn-delete {
+            flex: 1;
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 8px;
+            display: none; /* Só aparece na edição */
+        }
+
+        .btn-reset {
+            background: #eee;
+            color: #666;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-bottom: 10px;
         }
 
         textarea {
             width: 100%;
-            height: 120px;
+            height: 80px;
             background: #1e1e1e;
             color: #a9dc76;
             padding: 15px;
@@ -192,7 +213,17 @@
 
     <div class="container">
         <div class="form-box">
-            <h3>Novo Agendamento</h3>
+            <h3 id="form-title">Novo Agendamento</h3>
+            
+            <div class="input-group">
+                <label>Editar Jogo Existente?</label>
+                <select id="select-jogos" onchange="carregarDadosJogo(this.value)">
+                    <option value="">-- NOVO CADASTRO --</option>
+                </select>
+                <button class="btn-reset" onclick="resetForm()">Limpar / Novo Jogo</button>
+            </div>
+
+            <hr style="margin-bottom: 20px; border: 0; border-top: 1px solid #eee;">
             
             <div class="input-group">
                 <label>Data da Partida</label>
@@ -209,7 +240,10 @@
                 <input type="text" id="rodada" placeholder="Ex: 12º Jogo da Temporada">
             </div>
             
-            <button class="btn-acao" id="btnSalvar" onclick="gerar()">Agendar e Salvar no Banco</button>
+            <div class="btn-group">
+                <button class="btn-acao" id="btnSalvar" onclick="salvarNoBanco()">Agendar e Salvar</button>
+                <button class="btn-delete" id="btnExcluir" onclick="excluirJogo()">Excluir</button>
+            </div>
             
             <div class="output-container" style="margin-top: 20px;">
                 <label>Log do Sistema</label>
@@ -219,7 +253,55 @@
     </div>
 
     <script>
-        const FIREBASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026.json";
+        const BASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026";
+        let editKey = null; // Armazena a chave se estivermos editando
+        let jogosLocais = {};
+
+        // Carregar lista de jogos para o select ao abrir a página
+        async function listarJogos() {
+            try {
+                const response = await fetch(`${BASE_URL}.json`);
+                jogosLocais = await response.json();
+                const select = document.getElementById('select-jogos');
+                select.innerHTML = '<option value="">-- NOVO CADASTRO --</option>';
+                
+                if (jogosLocais) {
+                    Object.keys(jogosLocais).forEach(key => {
+                        const jogo = jogosLocais[key];
+                        select.innerHTML += `<option value="${key}">${jogo.data} vs ${jogo.visitante}</option>`;
+                    });
+                }
+            } catch (e) { console.error("Erro ao listar:", e); }
+        }
+
+        function carregarDadosJogo(key) {
+            if (!key) { resetForm(); return; }
+            
+            editKey = key;
+            const jogo = jogosLocais[key];
+            
+            // Preencher campos (precisa converter DD/MM/AAAA para YYYY-MM-DD para o input date)
+            const partesData = jogo.data.split('/');
+            document.getElementById('data').value = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
+            document.getElementById('visitante').value = jogo.visitante;
+            document.getElementById('rodada').value = jogo.rodada;
+
+            document.getElementById('form-title').innerText = "Editar Partida";
+            document.getElementById('btnSalvar').innerText = "Salvar Alterações";
+            document.getElementById('btnExcluir').style.display = "block";
+        }
+
+        function resetForm() {
+            editKey = null;
+            document.getElementById('data').value = "";
+            document.getElementById('visitante').value = "";
+            document.getElementById('rodada').value = "";
+            document.getElementById('select-jogos').value = "";
+            document.getElementById('form-title').innerText = "Novo Agendamento";
+            document.getElementById('btnSalvar').innerText = "Agendar e Salvar";
+            document.getElementById('btnExcluir').style.display = "none";
+            document.getElementById('output').value = "";
+        }
 
         function getDiaSemana(dataString) {
             const dias = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
@@ -227,62 +309,56 @@
             return dias[date.getDay()];
         }
 
-        async function gerar() {
-            const dataInput = document.getElementById('data').value;
-            const visitanteInput = document.getElementById('visitante').value;
-            const btn = document.getElementById('btnSalvar');
+        async function salvarNoBanco() {
+            const dataVal = document.getElementById('data').value;
+            const visitanteVal = document.getElementById('visitante').value;
+            if(!dataVal || !visitanteVal) { alert("Preencha os campos!"); return; }
 
-            if(!dataInput || !visitanteInput) {
-                alert("Por favor, preencha a data e o adversário.");
-                return;
-            }
-
-            const res = {
-                id: Date.now(),
-                data: dataInput.split('-').reverse().join('/'), // Converte para DD/MM/AAAA
-                dia_semana: getDiaSemana(dataInput),
-                mandante: "PONTUAL FC",
-                visitante: visitanteInput.toUpperCase(),
-                placar_mandante: null,
-                placar_visitante: null,
-                campeonato: "Temporada 2026",
+            const payload = {
+                data: dataVal.split('-').reverse().join('/'),
+                dia_semana: getDiaSemana(dataVal),
+                visitante: visitanteVal.toUpperCase(),
                 rodada: document.getElementById('rodada').value || "Amistoso",
-                status: "upcoming",
+                mandante: "PONTUAL FC",
+                status: editKey ? jogosLocais[editKey].status : "upcoming",
                 hora: "21:00",
                 local: "Balduíno Soccer Indoor"
             };
 
-            // Mostrar no textarea
-            document.getElementById('output').value = "Gerando JSON...\n" + JSON.stringify(res, null, 2);
+            const url = editKey ? `${BASE_URL}/${editKey}.json` : `${BASE_URL}.json`;
+            const metodo = editKey ? 'PATCH' : 'POST';
 
-            // Enviar para o Firebase
             try {
-                btn.disabled = true;
-                btn.innerText = "Enviando para o Banco...";
-                
-                const response = await fetch(FIREBASE_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(res),
-                    headers: { 'Content-Type': 'application/json' }
+                document.getElementById('btnSalvar').disabled = true;
+                const response = await fetch(url, {
+                    method: metodo,
+                    body: JSON.stringify(payload)
                 });
 
                 if(response.ok) {
-                    document.getElementById('output').value += "\n\n✅ SUCESSO: Partida agendada no Firebase!";
-                    alert("Jogo agendado com sucesso!");
-                    // Limpar campos
-                    document.getElementById('visitante').value = "";
-                    document.getElementById('rodada').value = "";
-                } else {
-                    throw new Error("Falha ao salvar");
+                    alert(editKey ? "Atualizado com sucesso!" : "Agendado com sucesso!");
+                    resetForm();
+                    listarJogos();
                 }
-            } catch (error) {
-                document.getElementById('output').value += "\n\n❌ ERRO: " + error.message;
-                alert("Erro ao conectar com o Firebase.");
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Agendar e Salvar no Banco";
-            }
+            } catch (e) { alert("Erro ao salvar."); }
+            finally { document.getElementById('btnSalvar').disabled = false; }
         }
+
+        async function excluirJogo() {
+            if(!editKey) return;
+            if(!confirm("Tem certeza que deseja EXCLUIR esta partida?")) return;
+
+            try {
+                const response = await fetch(`${BASE_URL}/${editKey}.json`, { method: 'DELETE' });
+                if(response.ok) {
+                    alert("Partida removida!");
+                    resetForm();
+                    listarJogos();
+                }
+            } catch (e) { alert("Erro ao excluir."); }
+        }
+
+        window.onload = listarJogos;
     </script>
 </body>
 </html>
