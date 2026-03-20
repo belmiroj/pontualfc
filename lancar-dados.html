@@ -18,7 +18,7 @@
             color: var(--text-dark);
         }
 
-        /* --- HEADER GLOBAL (IGUAL AO AGENDAMENTO) --- */
+        /* --- HEADER & NAVEGAÇÃO --- */
         header {
             background-color: var(--bvb-black);
             border-bottom: 4px solid var(--bvb-yellow);
@@ -65,7 +65,9 @@
             cursor: pointer;
         }
 
-        nav a:hover { color: var(--bvb-yellow); }
+        nav a:hover {
+            color: var(--bvb-yellow);
+        }
 
         .submenu {
             display: none;
@@ -77,7 +79,7 @@
             list-style: none;
             padding: 10px 0;
             border-bottom: 3px solid var(--bvb-yellow);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
 
         .submenu li a {
@@ -89,18 +91,23 @@
             text-transform: uppercase;
         }
 
-        .submenu li a:hover { background: #222; color: var(--bvb-yellow); }
+        .submenu li a:hover {
+            background: #222;
+            color: var(--bvb-yellow);
+        }
 
-        .nav-item:hover .submenu { display: block; }
+        .nav-item:hover .submenu {
+            display: block;
+        }
 
-        /* --- CONTEÚDO DO FORMULÁRIO --- */
+        /* --- CONTAINER PRINCIPAL --- */
         .container {
             max-width: 850px;
             margin: 30px auto;
             background: #fff;
             padding: 35px;
             border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
 
         h3 {
@@ -121,7 +128,8 @@
             margin-bottom: 5px;
         }
 
-        select, input {
+        select,
+        input {
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
@@ -131,6 +139,7 @@
             font-family: inherit;
         }
 
+        /* --- BOTÕES E AÇÕES --- */
         .btn-acao {
             width: 100%;
             background: var(--bvb-black);
@@ -145,9 +154,11 @@
             margin-top: 20px;
         }
 
-        .btn-acao:disabled { background: #666; cursor: not-allowed; }
+        .btn-acao:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
 
-        /* --- JOGADOR EXTRA --- */
         .add-player-box {
             display: flex;
             gap: 10px;
@@ -169,13 +180,40 @@
             cursor: pointer;
         }
 
-        /* --- TABELA --- */
-        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-        th { text-align: left; font-size: 0.7rem; color: #888; text-transform: uppercase; padding: 10px; border-bottom: 2px solid #eee; }
-        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        .input-mini { width: 60px !important; padding: 5px !important; margin: 0 !important; text-align: center; }
-        
-        #status-msg { margin-top: 20px; text-align: center; font-weight: bold; }
+        /* --- TABELA DE JOGADORES --- */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            padding: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .input-mini {
+            width: 60px !important;
+            padding: 5px !important;
+            margin: 0 !important;
+            text-align: center;
+        }
+
+        #status-msg {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -203,11 +241,11 @@
     </header>
 
     <div class="container">
-        <h3>Lançar Resultado no Banco</h3>
+        <h3>Lançar ou Editar Resultado</h3>
 
-        <label>1. Selecione o Jogo Agendado</label>
-        <select id="sel-jogo">
-            <option>Carregando jogos do Firebase...</option>
+        <label>1. Selecione a Partida</label>
+        <select id="sel-jogo" onchange="puxarDadosExistentes(this.value)">
+            <option value="">Carregando jogos...</option>
         </select>
 
         <div style="display:flex; gap:15px;">
@@ -220,7 +258,7 @@
                 <input type="number" id="gc" value="0">
             </div>
             <div style="flex:1">
-                <label>Status</label>
+                <label>Resultado</label>
                 <select id="status-jogo">
                     <option value="vitoria">Vitória</option>
                     <option value="empate">Empate</option>
@@ -247,7 +285,7 @@
             <tbody id="elenco"></tbody>
         </table>
 
-        <button id="btnSalvar" onclick="salvarResultado()" class="btn-acao">Atualizar Resultado no Firebase</button>
+        <button id="btnSalvar" onclick="salvarResultado()" class="btn-acao">Salvar no Firebase</button>
         <div id="status-msg"></div>
     </div>
 
@@ -261,16 +299,12 @@
                 const r = await fetch(`${BASE_URL}.json`);
                 jogosDB = await r.json();
                 const select = document.getElementById('sel-jogo');
-                select.innerHTML = '';
-
-                if (!jogosDB) {
-                    select.innerHTML = '<option>Nenhum jogo encontrado</option>';
-                    return;
-                }
+                select.innerHTML = '<option value="">-- Selecione um jogo --</option>';
+                if (!jogosDB) return;
 
                 Object.keys(jogosDB).forEach(key => {
                     const j = jogosDB[key];
-                    select.innerHTML += `<option value="${key}">${j.data} - vs ${j.visitante}</option>`;
+                    select.innerHTML += `<option value="${key}">${j.data} - vs ${j.visitante} (${j.status === 'finished' ? 'Finalizado' : 'Aberto'})</option>`;
                 });
             } catch (e) { console.error(e); }
         }
@@ -288,6 +322,53 @@
             `).join('');
         }
 
+        function puxarDadosExistentes(key) {
+            if (!key || !jogosDB[key]) {
+                resetarCampos();
+                return;
+            }
+            const jogo = jogosDB[key];
+            document.getElementById('gp').value = jogo.placar_mandante || 0;
+            document.getElementById('gc').value = jogo.placar_visitante || 0;
+            document.getElementById('status-jogo').value = jogo.resultado_tipo || "vitoria";
+
+            renderizarTabela();
+
+            if (jogo.presencas) {
+                jogo.presencas.forEach(nome => {
+                    const cb = document.querySelector(`.pre[data-n="${nome}"]`);
+                    if (cb) cb.checked = true;
+                });
+            }
+
+            if (jogo.gols_detalhes) {
+                jogo.gols_detalhes.forEach(item => {
+                    const inp = document.querySelector(`.gol[data-n="${item.nome}"]`);
+                    if (inp) inp.value = item.qtd;
+                });
+            }
+
+            if (jogo.assist_detalhes) {
+                jogo.assist_detalhes.forEach(item => {
+                    const inp = document.querySelector(`.ast[data-n="${item.nome}"]`);
+                    if (inp) inp.value = item.qtd;
+                });
+            }
+
+            if (jogo.votos_melhor) {
+                jogo.votos_melhor.forEach(item => {
+                    const inp = document.querySelector(`.voto[data-n="${item.nome}"]`);
+                    if (inp) inp.value = item.qtd;
+                });
+            }
+        }
+
+        function resetarCampos() {
+            document.getElementById('gp').value = 0;
+            document.getElementById('gc').value = 0;
+            renderizarTabela();
+        }
+
         function adicionarJogador() {
             const input = document.getElementById('novo-jogador-nome');
             const nome = input.value.trim().toUpperCase();
@@ -301,9 +382,7 @@
         async function salvarResultado() {
             const gameKey = document.getElementById('sel-jogo').value;
             const btn = document.getElementById('btnSalvar');
-            const msg = document.getElementById('status-msg');
-
-            if (!gameKey) return;
+            if (!gameKey) { alert("Selecione um jogo!"); return; }
 
             const pres = [], gols = [], asts = [], votos = [];
 
@@ -336,20 +415,13 @@
                     method: 'PATCH',
                     body: JSON.stringify(dadosAtualizados)
                 });
-                msg.innerHTML = "<span style='color:green'>✅ Atualizado com sucesso!</span>";
-                alert("Dados salvos no Banco!");
-            } catch (e) {
-                msg.innerHTML = "<span style='color:red'>❌ Erro ao conectar.</span>";
-            } finally {
-                btn.disabled = false;
-                btn.innerText = "Atualizar Resultado no Firebase";
-            }
+                alert("Resultado atualizado!");
+                carregarJogos();
+            } catch (e) { alert("Erro ao salvar."); }
+            finally { btn.disabled = false; btn.innerText = "Salvar no Firebase"; }
         }
 
-        window.onload = () => {
-            carregarJogos();
-            renderizarTabela();
-        };
+        window.onload = () => { carregarJogos(); renderizarTabela(); };
     </script>
 </body>
 </html>
