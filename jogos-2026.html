@@ -20,7 +20,6 @@
             margin: 0;
             background: var(--bg-gray);
             color: #333;
-            font-size: 16px;
         }
 
         /* --- HEADER --- */
@@ -37,146 +36,93 @@
             z-index: 9999;
         }
 
-        .logo {
-            color: var(--bvb-yellow);
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        nav ul { display: flex; list-style: none; margin: 0; padding: 0; gap: 15px; }
-        .nav-item { position: relative; display: flex; align-items: center; height: 70px; }
+        .logo { color: var(--bvb-yellow); text-decoration: none; font-weight: 800; text-transform: uppercase; }
+        nav ul { display: flex; list-style: none; gap: 15px; margin: 0; padding: 0; }
         nav a { color: #fff; text-decoration: none; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
 
-        .submenu {
-            display: none;
-            position: absolute;
-            top: 70px; right: 0;
-            background: var(--bvb-black);
-            min-width: 170px;
-            list-style: none;
-            padding: 10px 0;
-            border-bottom: 3px solid var(--bvb-yellow);
-        }
-        .nav-item:hover .submenu { display: block; }
-        .submenu li a { color: #fff; padding: 12px 20px; display: block; font-size: 0.8rem; text-decoration: none;}
-
         /* --- FILTRO --- */
-        .filter-container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        #month-filter {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-weight: bold;
-            width: 100%;
-            max-width: 200px;
-        }
+        .filter-container { max-width: 900px; margin: 20px auto; padding: 0 15px; display: flex; justify-content: flex-end; }
+        #month-filter { padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-weight: bold; }
 
         /* --- LISTAGEM --- */
-        .container {
-            max-width: 900px;
-            margin: 0 auto 50px auto;
-            padding: 0 15px;
-        }
+        .container { max-width: 900px; margin: 0 auto 50px auto; padding: 0 15px; }
 
         .game-card {
             background: #fff;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             border-radius: 10px;
-            overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border-left: 6px solid #ccc;
             cursor: pointer;
-            position: relative;
+            overflow: hidden;
         }
 
-        /* TAG DA RODADA */
-        .round-tag {
-            background: #eee;
-            color: #666;
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 20px;
-            text-transform: uppercase;
-            display: inline-block;
-            margin-bottom: 5px;
-        }
-
-        .game-header {
-            display: grid;
-            grid-template-columns: 80px 1fr 100px 1fr;
-            align-items: center;
-            padding: 15px;
-            gap: 5px;
-        }
-
+        /* Cores de Status */
         .game-card.vitoria { border-left-color: var(--win); }
         .game-card.empate { border-left-color: var(--draw); }
         .game-card.derrota { border-left-color: var(--loss); }
         .game-card.upcoming { border-left-color: var(--upcoming); }
 
-        .date { font-size: 0.7rem; color: #666; font-weight: bold; text-align: center; }
-        .team { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; }
-
-        .score-box { text-align: center; }
-        .score {
-            background: var(--bvb-black);
-            color: var(--bvb-yellow);
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-weight: 900;
-            font-size: 0.9rem;
-            min-width: 45px;
+        /* Estilo da Rodada */
+        .round-header {
+            text-align: center;
+            padding: 8px 0 0 0;
+        }
+        .round-tag {
+            background: #f0f0f0;
+            color: #555;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 3px 12px;
+            border-radius: 15px;
+            text-transform: uppercase;
             display: inline-block;
         }
 
-        /* --- DETALHES --- */
-        .game-details {
-            display: none;
-            background: #f9f9f9;
-            padding: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        .details-grid {
+        /* Estrutura do Placar - DESKTOP */
+        .game-header {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.5fr;
-            gap: 20px;
+            grid-template-columns: 100px 1fr 120px 1fr; /* Colunas fixas para não quebrar */
+            align-items: center;
+            padding: 15px 20px;
+            text-align: center;
         }
 
-        .detail-title {
-            font-weight: 800;
-            text-transform: uppercase;
-            font-size: 0.7rem;
-            color: #888;
-            margin-bottom: 8px;
-            border-bottom: 1px solid #ddd;
+        .date { font-size: 0.8rem; color: #666; font-weight: bold; border-right: 1px solid #eee; }
+        .team { font-weight: 800; font-size: 1rem; text-transform: uppercase; padding: 0 10px; }
+        .team.mandante { text-align: right; }
+        .team.visitante { text-align: left; }
+
+        .score-box { display: flex; justify-content: center; align-items: center; }
+        .score {
+            background: var(--bvb-black);
+            color: var(--bvb-yellow);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            min-width: 50px;
         }
 
-        .player-list { list-style: none; padding: 0; margin: 0; font-size: 0.85rem; }
+        /* --- DETALHES --- */
+        .game-details { display: none; background: #fdfdfd; padding: 20px; border-top: 1px solid #eee; }
+        .details-grid { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 20px; }
+        .detail-title { font-weight: 800; font-size: 0.7rem; color: #888; text-transform: uppercase; border-bottom: 1px solid #eee; margin-bottom: 10px; }
+        .player-list { list-style: none; padding: 0; margin: 0; font-size: 0.85rem; line-height: 1.6; }
 
+        /* --- RESPONSIVIDADE (MOBILE) --- */
         @media (max-width: 600px) {
             .game-header {
-                grid-template-columns: 1fr 2fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr;
                 grid-template-areas: 
-                    "round round round"
                     "date date date"
                     "teamA score teamB";
+                padding: 15px;
             }
-            .round-tag { grid-area: round; justify-self: center; margin-top: -5px; margin-bottom: 10px; }
-            .date { grid-area: date; margin-bottom: 8px; border-bottom: 1px solid #f0f0f0; }
-            .team:nth-child(3) { grid-area: teamA; text-align: center !important; } /* Ajustado índice por causa da tag */
+            .date { grid-area: date; border-right: none; border-bottom: 1px solid #eee; margin-bottom: 10px; padding-bottom: 5px; }
+            .team.mandante { grid-area: teamA; text-align: center; font-size: 0.85rem; }
             .score-box { grid-area: score; }
-            .team:nth-last-child(1) { grid-area: teamB; text-align: center !important; }
+            .team.visitante { grid-area: teamB; text-align: center; font-size: 0.85rem; }
             .details-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -187,13 +133,8 @@
         <a href="index.html" class="logo">PONTUAL FC</a>
         <nav>
             <ul>
-                <li class="nav-item"><a href="index.html">Início</a></li>
-                <li class="nav-item">
-                    <a>Jogos ▾</a>
-                    <ul class="submenu">
-                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
-                    </ul>
-                </li>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="jogos-2026.html">Temporada 2026</a></li>
             </ul>
         </nav>
     </header>
@@ -227,10 +168,8 @@
                 const resp = await fetch(`${BASE_URL}.json`);
                 const data = await resp.json();
                 if (!data) return;
-
                 todosJogos = Object.keys(data).map(key => ({ id: key, ...data[key] }))
                     .sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
-
                 renderizar(todosJogos);
             } catch (error) { console.error("Erro:", error); }
         }
@@ -242,27 +181,22 @@
             listaParaExibir.forEach(j => {
                 const isFinished = j.status === 'finished';
                 const classeStatus = isFinished ? (j.resultado_tipo || '') : 'upcoming';
-                
                 const listaGols = j.gols_detalhes ? j.gols_detalhes.map(g => `<li>${g.nome} (${g.qtd})</li>`).join('') : '<li>-</li>';
                 const listaAst = j.assist_detalhes ? j.assist_detalhes.map(a => `<li>${a.nome} (${a.qtd})</li>`).join('') : '<li>-</li>';
-                const listaPre = j.presencas ? j.presencas.join(', ') : 'Não registrada';
 
                 container.innerHTML += `
                     <div class="game-card ${classeStatus}" onclick="toggleDetails('${j.id}')">
+                        <div class="round-header">
+                            <span class="round-tag">${j.rodada || 'Amistoso'}</span>
+                        </div>
                         <div class="game-header">
-                            <div class="round-tag">${j.rodada || 'Amistoso'}</div>
-                            
                             <div class="date">${j.data}<br>${j.dia_semana || ''}</div>
-                            
-                            <div class="team" style="text-align:right">${j.mandante}</div>
-                            
+                            <div class="team mandante">${j.mandante}</div>
                             <div class="score-box">
                                 <div class="score">${isFinished ? j.placar_mandante + ' - ' + j.placar_visitante : 'VS'}</div>
                             </div>
-                            
-                            <div class="team">${j.visitante}</div>
+                            <div class="team visitante">${j.visitante}</div>
                         </div>
-                        
                         <div class="game-details" id="detalhe-${j.id}">
                             <div class="details-grid">
                                 <div>
@@ -275,7 +209,7 @@
                                 </div>
                                 <div>
                                     <div class="detail-title">📋 Presenças</div>
-                                    <p style="color:#555; line-height:1.4; font-size:0.8rem; margin:0">${listaPre}</p>
+                                    <p style="font-size:0.8rem; color:#666; margin:0">${j.presencas ? j.presencas.join(', ') : 'Não registrada'}</p>
                                 </div>
                             </div>
                         </div>
@@ -286,18 +220,12 @@
 
         function toggleDetails(id) {
             const div = document.getElementById(`detalhe-${id}`);
-            const isVisible = div.style.display === 'block';
-            div.style.display = isVisible ? 'none' : 'block';
+            div.style.display = div.style.display === 'block' ? 'none' : 'block';
         }
 
         function filtrarJogos() {
-            const mesSelecionado = document.getElementById('month-filter').value;
-            if (mesSelecionado === 'todos') {
-                renderizar(todosJogos);
-            } else {
-                const filtrados = todosJogos.filter(j => j.data.split('/')[1] === mesSelecionado);
-                renderizar(filtrados);
-            }
+            const mes = document.getElementById('month-filter').value;
+            renderizar(mes === 'todos' ? todosJogos : todosJogos.filter(j => j.data.split('/')[1] === mes));
         }
 
         window.onload = carregar;
