@@ -2,448 +2,50 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lançar Resultados | Pontual FC</title>
-    <style>
-        :root {
-            --bvb-yellow: #FDE100;
-            --bvb-black: #111111;
-            --bg-gray: #f4f7f6;
-            --text-dark: #333;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background: var(--bg-gray);
-            color: var(--text-dark);
-            font-size: 16px;
-        }
-
-        /* --- HEADER & NAVEGAÇÃO --- */
-        header {
-            background-color: var(--bvb-black);
-            border-bottom: 4px solid var(--bvb-yellow);
-            padding: 0 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 70px;
-            position: sticky;
-            top: 0;
-            z-index: 9999;
-        }
-
-        .logo {
-            color: var(--bvb-yellow);
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            gap: 15px;
-        }
-
-        .nav-item {
-            position: relative;
-            display: flex;
-            align-items: center;
-            height: 70px;
-        }
-
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .submenu {
-            display: none;
-            position: absolute;
-            top: 70px;
-            right: 0;
-            background: var(--bvb-black);
-            min-width: 160px;
-            list-style: none;
-            padding: 10px 0;
-            border-bottom: 3px solid var(--bvb-yellow);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .nav-item:hover .submenu {
-            display: block;
-        }
-
-        .submenu li a {
-            color: #fff;
-            padding: 12px 20px;
-            display: block;
-            font-size: 0.8rem;
-        }
-
-        /* --- CONTAINER PRINCIPAL --- */
-        .container {
-            max-width: 850px;
-            margin: 15px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-        }
-
-        h3 {
-            border-left: 5px solid var(--bvb-yellow);
-            padding-left: 15px;
-            text-transform: uppercase;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            color: var(--bvb-black);
-        }
-
-        label {
-            display: block;
-            font-weight: 700;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            color: #666;
-            margin-bottom: 8px;
-        }
-
-        select, input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-
-        /* --- GRID RESPONSIVO --- */
-        .score-grid {
-            display: flex;
-            gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .score-grid {
-                flex-direction: column;
-                gap: 0;
-            }
-            .logo { font-size: 0.9rem; }
-            nav ul { gap: 10px; }
-            .container { margin: 10px; padding: 15px; }
-        }
-
-        /* --- BOTÕES --- */
-        .btn-acao {
-            width: 100%;
-            background: var(--bvb-black);
-            color: var(--bvb-yellow);
-            border: none;
-            padding: 18px;
-            font-weight: 800;
-            text-transform: uppercase;
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-
-        .add-player-box {
-            display: flex;
-            gap: 10px;
-            background: #f9f9f9;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 20px 0;
-            border: 1px dashed #ccc;
-        }
-
-        .btn-add {
-            background: #27ae60;
-            color: white;
-            border: none;
-            padding: 0 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        /* --- TABELA RESPONSIVA --- */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            margin-top: 10px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 450px;
-        }
-
-        th {
-            text-align: left;
-            font-size: 0.75rem;
-            color: #888;
-            padding: 10px;
-            border-bottom: 2px solid #eee;
-        }
-
-        td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #eee;
-            font-size: 0.95rem;
-        }
-
-        .input-mini {
-            width: 65px !important;
-            padding: 8px !important;
-            margin: 0 !important;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-
-        input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            margin: 0;
-            cursor: pointer;
-        }
-    </style>
+    <title>Lançar Resultados - Pontual FC</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-    <header>
-        <a href="index.html" class="logo">PONTUAL FC</a>
-        <nav>
-            <ul>
-                <li class="nav-item"><a href="index.html">Início</a></li>
-                <li class="nav-item">
-                    <a>Jogos ▾</a>
-                    <ul class="submenu">
-                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a>Cadastro ▾</a>
-                    <ul class="submenu">
-                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
-                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
-
     <div class="container">
-        <h3>Lançar ou Editar Resultado</h3>
-
-        <label>1. Selecione a Partida</label>
-        <select id="sel-jogo" onchange="puxarDadosExistentes(this.value)">
-            <option value="">Carregando jogos...</option>
-        </select>
-
-        <div class="score-grid">
-            <div style="flex:1">
-                <label>Gols Pontual</label>
-                <input type="number" id="gp" value="0">
-            </div>
-            <div style="flex:1">
-                <label>Gols Adv</label>
-                <input type="number" id="gc" value="0">
-            </div>
-            <div style="flex:1">
-                <label>Resultado</label>
-                <select id="status-jogo">
-                    <option value="vitoria">Vitória</option>
-                    <option value="empate">Empate</option>
-                    <option value="derrota">Derrota</option>
-                </select>
-            </div>
+        <h2>Lançar Resultado e Scout</h2>
+        
+        <div class="form-group">
+            <label>Selecione a Rodada:</label>
+            <select id="selectRodada" onchange="carregarDadosDaRodada()"></select>
         </div>
 
-        <div class="add-player-box">
-            <input type="text" id="novo-jogador-nome" placeholder="Nome do Jogador Extra" style="margin:0; flex:1">
-            <button onclick="adicionarJogador()" class="btn-add">Add</button>
+        <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Gols Pontual:</label>
+                <input type="number" id="gp" value="0">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Gols Adversário:</label>
+                <input type="number" id="ga" value="0">
+            </div>
         </div>
 
         <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 40px;">✔</th>
+                        <th>✔</th>
                         <th>Jogador</th>
-                        <th style="width: 70px;">Gols</th>
-                        <th style="width: 70px;">Ast</th>
-                        <th style="width: 70px;">Votos</th>
+                        <th>Gols</th>
+                        <th>Ast</th>
+                        <th>Votos</th>
                     </tr>
                 </thead>
-                <tbody id="elenco"></tbody>
+                <tbody id="tabelaScout">
+                    <!-- Gerado via JS -->
+                </tbody>
             </table>
         </div>
 
-        <button id="btnSalvar" onclick="salvarResultado()" class="btn-acao">Salvar no Firebase</button>
+        <button class="btn btn-primary" onclick="finalizarPartida()">Salvar Resultado Final</button>
     </div>
 
-    <script>
-        const BASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026";
-        const listaPadrao = ["ANTONIO", "AUGUSTO", "BELMIRO", "CELSO", "CLESIO", "DEIVID", "DENIS", "DIEGO", "GUILHERME", "GUIMA", "ISMAEL", "JAIR", "LUIZ", "MARCIO", "RANIERI", "ROGERIO", "SAYMONN", "VAGNER"];
-        
-        let listaJogadores = [...listaPadrao];
-        let jogosDB = {};
-
-        async function carregarJogos() {
-            try {
-                const r = await fetch(`${BASE_URL}.json`);
-                jogosDB = await r.json();
-                const select = document.getElementById('sel-jogo');
-                select.innerHTML = '<option value="">-- Selecione um jogo --</option>';
-                if (!jogosDB) return;
-
-                Object.keys(jogosDB).forEach(key => {
-                    const j = jogosDB[key];
-                    select.innerHTML += `<option value="${key}">${j.data} - vs ${j.visitante}</option>`;
-                });
-            } catch (e) { console.error(e); }
-        }
-
-        function renderizarTabela() {
-            const corpoTabela = document.getElementById('elenco');
-            corpoTabela.innerHTML = listaJogadores.map(n => `
-                <tr>
-                    <td><input type="checkbox" class="pre" data-n="${n}"></td>
-                    <td><strong>${n}</strong></td>
-                    <td><input type="number" class="gol input-mini" data-n="${n}" value="0"></td>
-                    <td><input type="number" class="ast input-mini" data-n="${n}" value="0"></td>
-                    <td><input type="number" class="voto input-mini" data-n="${n}" value="0"></td>
-                </tr>
-            `).join('');
-        }
-
-        function puxarDadosExistentes(key) {
-            if (!key || !jogosDB[key]) { resetarCampos(); return; }
-            
-            const jogo = jogosDB[key];
-            
-            // Lógica para mesclar lista padrão com jogadores já cadastrados no jogo
-            let nomesNoJogo = new Set([...listaPadrao]);
-            
-            if (jogo.presencas) jogo.presencas.forEach(n => nomesNoJogo.add(n));
-            if (jogo.gols_detalhes) jogo.gols_detalhes.forEach(i => nomesNoJogo.add(i.nome));
-            if (jogo.assist_detalhes) jogo.assist_detalhes.forEach(i => nomesNoJogo.add(i.nome));
-            if (jogo.votos_melhor) jogo.votos_melhor.forEach(i => nomesNoJogo.add(i.nome));
-
-            listaJogadores = Array.from(nomesNoJogo).sort();
-            renderizarTabela();
-
-            // Preencher placar e tipo
-            document.getElementById('gp').value = jogo.placar_mandante || 0;
-            document.getElementById('gc').value = jogo.placar_visitante || 0;
-            document.getElementById('status-jogo').value = jogo.resultado_tipo || "vitoria";
-
-            // Marcar presenças
-            if (jogo.presencas) {
-                jogo.presencas.forEach(nome => {
-                    const cb = document.querySelector(`.pre[data-n="${nome}"]`);
-                    if (cb) cb.checked = true;
-                });
-            }
-
-            // Preencher números (Gols, Ast, Votos)
-            const preencherValores = (lista, classe) => {
-                if (lista) {
-                    lista.forEach(item => {
-                        const inp = document.querySelector(`.${classe}[data-n="${item.nome}"]`);
-                        if (inp) inp.value = item.qtd;
-                    });
-                }
-            };
-
-            preencherValores(jogo.gols_detalhes, 'gol');
-            preencherValores(jogo.assist_detalhes, 'ast');
-            preencherValores(jogo.votos_melhor, 'voto');
-        }
-
-        function resetarCampos() {
-            document.getElementById('gp').value = 0;
-            document.getElementById('gc').value = 0;
-            listaJogadores = [...listaPadrao];
-            renderizarTabela();
-        }
-
-        function adicionarJogador() {
-            const input = document.getElementById('novo-jogador-nome');
-            const nome = input.value.trim().toUpperCase();
-            if (nome && !listaJogadores.includes(nome)) {
-                listaJogadores.push(nome);
-                listaJogadores.sort();
-                renderizarTabela();
-                input.value = "";
-            }
-        }
-
-        async function salvarResultado() {
-            const gameKey = document.getElementById('sel-jogo').value;
-            const btn = document.getElementById('btnSalvar');
-            if (!gameKey) { alert("Selecione um jogo!"); return; }
-
-            const pres = [], gols = [], asts = [], votos = [];
-
-            listaJogadores.forEach(n => {
-                if (document.querySelector(`.pre[data-n="${n}"]`).checked) pres.push(n);
-                
-                let g = parseInt(document.querySelector(`.gol[data-n="${n}"]`).value) || 0;
-                let a = parseInt(document.querySelector(`.ast[data-n="${n}"]`).value) || 0;
-                let v = parseInt(document.querySelector(`.voto[data-n="${n}"]`).value) || 0;
-                
-                if (g > 0) gols.push({ nome: n, qtd: g });
-                if (a > 0) asts.push({ nome: n, qtd: a });
-                if (v > 0) votos.push({ nome: n, qtd: v });
-            });
-
-            const dadosAtualizados = {
-                placar_mandante: parseInt(document.getElementById('gp').value) || 0,
-                placar_visitante: parseInt(document.getElementById('gc').value) || 0,
-                status: "finished",
-                resultado_tipo: document.getElementById('status-jogo').value,
-                presencas: pres,
-                gols_detalhes: gols,
-                assist_detalhes: asts,
-                votos_melhor: votos
-            };
-
-            try {
-                btn.disabled = true;
-                btn.innerText = "Salvando...";
-                await fetch(`${BASE_URL}/${gameKey}.json`, {
-                    method: 'PATCH',
-                    body: JSON.stringify(dadosAtualizados)
-                });
-                alert("Resultado atualizado!");
-                carregarJogos();
-            } catch (e) { 
-                alert("Erro ao salvar."); 
-            } finally { 
-                btn.disabled = false; 
-                btn.innerText = "Salvar no Firebase"; 
-            }
-        }
-
-        window.onload = () => { carregarJogos(); renderizarTabela(); };
-    </script>
+    <script src="js/config.js"></script>
+    <script src="js/resultados.js"></script>
 </body>
 </html>
