@@ -2,50 +2,86 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Lançar Resultados - Pontual FC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lançar Resultados | Pontual FC</title>
     <link rel="stylesheet" href="css/style.css">
+	
 </head>
 <body>
-    <div class="container">
-        <h2>Lançar Resultado e Scout</h2>
-        
-        <div class="form-group">
-            <label>Selecione a Rodada:</label>
-            <select id="selectRodada" onchange="carregarDadosDaRodada()"></select>
-        </div>
 
-        <div style="display: flex; gap: 10px;">
-            <div class="form-group" style="flex: 1;">
-                <label>Gols Pontual:</label>
+    <header>
+        <a href="index.html" class="logo">PONTUAL FC</a>
+        <nav>
+            <ul>
+                <li class="nav-item"><a href="index.html">Início</a></li>
+                <li class="nav-item">
+                    <a>Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a>Cadastro ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h3>Lançar ou Editar Resultado</h3>
+
+        <label>1. Selecione a Partida</label>
+        <select id="sel-jogo" onchange="puxarDadosExistentes(this.value)">
+            <option value="">Carregando jogos...</option>
+        </select>
+
+        <div class="score-grid">
+            <div style="flex:1">
+                <label>Gols Pontual</label>
                 <input type="number" id="gp" value="0">
             </div>
-            <div class="form-group" style="flex: 1;">
-                <label>Gols Adversário:</label>
-                <input type="number" id="ga" value="0">
+            <div style="flex:1">
+                <label>Gols Adv</label>
+                <input type="number" id="gc" value="0">
             </div>
+            <div style="flex:1">
+                <label>Resultado</label>
+                <select id="status-jogo">
+                    <option value="vitoria">Vitória</option>
+                    <option value="empate">Empate</option>
+                    <option value="derrota">Derrota</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="add-player-box">
+            <input type="text" id="novo-jogador-nome" placeholder="Nome do Jogador Extra" style="margin:0; flex:1">
+            <button onclick="adicionarJogador()" class="btn-add">Add</button>
         </div>
 
         <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
-                        <th>✔</th>
+                        <th style="width: 40px;">✔</th>
                         <th>Jogador</th>
-                        <th>Gols</th>
-                        <th>Ast</th>
-                        <th>Votos</th>
+                        <th style="width: 70px;">Gols</th>
+                        <th style="width: 70px;">Ast</th>
+                        <th style="width: 70px;">Votos</th>
                     </tr>
                 </thead>
-                <tbody id="tabelaScout">
-                    <!-- Gerado via JS -->
-                </tbody>
+                <tbody id="elenco"></tbody>
             </table>
         </div>
 
-        <button class="btn btn-primary" onclick="finalizarPartida()">Salvar Resultado Final</button>
+        <button id="btnSalvar" onclick="salvarResultado()" class="btn-acao">Salvar no Firebase</button>
     </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/resultados.js"></script>
+    <!-- Scripts -->
+    <script src="js/lancar-dados.js"></script>
 </body>
 </html>

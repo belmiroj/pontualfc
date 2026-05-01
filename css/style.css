@@ -1,49 +1,24 @@
-/* ==========================================================================
-   VARIÁVEIS E CONFIGURAÇÕES GERAIS
-   ========================================================================== */
 :root {
     --bvb-yellow: #FDE100;
     --bvb-black: #111111;
     --bg-gray: #f4f7f6;
+    --text-dark: #333;
+    --danger: #e74c3c;
     --win: #2ecc71;
     --draw: #f1c40f;
     --loss: #e74c3c;
     --upcoming: #3498db;
-    --white: #ffffff;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
     background-color: var(--bg-gray);
-    color: #333;
-    line-height: 1.6;
+    color: var(--text-dark);
+    font-size: 16px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px 15px;
-}
-
-/* Container específico para formulários (Cadastro/Lançamento) */
-.container-form {
-    max-width: 800px;
-    margin: 30px auto;
-    background: var(--white);
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-}
-
-/* ==========================================================================
-   HEADER E NAVEGAÇÃO (ESTILO ORIGINAL)
-   ========================================================================== */
+/* --- HEADER & NAVEGAÇÃO --- */
 header {
     background-color: var(--bvb-black);
     border-bottom: 4px solid var(--bvb-yellow);
@@ -68,6 +43,8 @@ header {
 nav ul {
     display: flex;
     list-style: none;
+    margin: 0;
+    padding: 0;
     gap: 15px;
 }
 
@@ -84,6 +61,7 @@ nav a {
     font-size: 0.75rem;
     font-weight: bold;
     text-transform: uppercase;
+    cursor: pointer;
     transition: 0.3s;
 }
 
@@ -91,7 +69,6 @@ nav a:hover {
     color: var(--bvb-yellow);
 }
 
-/* Submenu */
 .submenu {
     display: none;
     position: absolute;
@@ -106,160 +83,38 @@ nav a:hover {
 }
 
 .submenu li a {
+    color: #fff;
     padding: 12px 20px;
     display: block;
-}
-
-.submenu li a:hover {
-    background: #222;
+    font-size: 0.8rem;
 }
 
 .nav-item:hover .submenu {
     display: block;
 }
 
-/* ==========================================================================
-   DASHBOARD / CARDS (INDEX)
-   ========================================================================= */
-.last-game-card {
-    background: var(--bvb-black);
-    color: var(--white);
+/* --- CONTAINERS E CARDS --- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 15px;
+}
+
+.form-box, .card, .table-box {
+    background: #fff;
     border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 25px;
-    text-align: center;
-    border-bottom: 5px solid var(--bvb-yellow);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
-.last-game-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.lg-score {
-    font-size: 2rem;
-    font-weight: 900;
-    background: rgba(255,255,255,0.1);
-    padding: 5px 20px;
-    border-radius: 8px;
-}
-
-.stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.card {
-    background: var(--white);
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    border-bottom: 4px solid #ddd;
-}
-
-/* ==========================================================================
-   FORMULÁRIOS E INPUTS
-   ========================================================================== */
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-input, select {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
-input:focus {
-    border-color: var(--bvb-yellow);
-    outline: none;
-}
-
-/* ==========================================================================
-   TABELAS E SCOUT
-   ========================================================================== */
-.table-box {
-    background: var(--white);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 20px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-}
-
-th {
-    background: #f8f9fa;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-}
-
-.input-mini {
-    width: 55px;
-    padding: 5px;
-    text-align: center;
-}
-
-/* ==========================================================================
-   BOTÕES
-   ========================================================================== */
-.btn {
-    display: block;
-    width: 100%;
-    padding: 15px;
+/* Estilos de formulários e botões seguem o padrão visual do clube */
+.btn-acao {
+    background: var(--bvb-black);
+    color: var(--bvb-yellow);
     border: none;
-    border-radius: 6px;
+    padding: 18px;
     font-weight: 800;
     text-transform: uppercase;
     cursor: pointer;
-    transition: 0.3s;
-}
-
-.btn-primary {
-    background-color: var(--bvb-yellow);
-    color: var(--bvb-black);
-}
-
-.btn-primary:hover {
-    background-color: #e5cc00;
-}
-
-.btn-save {
-    background-color: var(--win);
-    color: white;
-}
-
-/* ==========================================================================
-   RESPONSIVIDADE
-   ========================================================================== */
-@media (max-width: 768px) {
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    header { padding: 0 2%; }
-}
-
-@media (max-width: 480px) {
-    .lg-score { font-size: 1.5rem; }
-    .nav-item { font-size: 0.6rem; }
+    border-radius: 8px;
+    font-size: 1rem;
 }

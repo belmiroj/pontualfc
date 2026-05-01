@@ -2,32 +2,74 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Partida - Pontual FC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Partidas | Pontual FC</title>
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
+
+    <header>
+        <a href="index.html" class="logo">PONTUAL FC</a>
+        <nav>
+            <ul>
+                <li class="nav-item"><a href="index.html">Início</a></li>
+                <li class="nav-item">
+                    <a>Jogos ▾</a>
+                    <ul class="submenu">
+                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a>Cadastro ▾</a>
+                    <ul class="submenu">
+                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
+                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
     <div class="container">
-        <h2>Cadastrar Nova Partida</h2>
-        <div class="form-group">
-            <label>Rodada (Identificador):</label>
-            <input type="text" id="rodada" placeholder="Ex: 2026_01">
-        </div>
-        <div class="form-group">
-            <label>Data:</label>
-            <input type="date" id="data">
-        </div>
-        <div class="form-group">
-            <label>Adversário:</label>
-            <input type="text" id="adversario" value="A Definir">
-        </div>
-        <button class="btn btn-primary" onclick="salvarNoBanco()">Agendar Partida</button>
-        <div class="text-center mt-3">
-            <a href="index.html">Voltar ao Painel</a>
+        <div class="form-box">
+            <h3 id="form-title">Novo Agendamento</h3>
+            
+            <div class="input-group">
+                <label>Editar Jogo Existente?</label>
+                <select id="select-jogos" onchange="carregarDadosJogo(this.value)">
+                    <option value="">-- NOVO CADASTRO --</option>
+                </select>
+                <div style="margin-top: 10px;">
+                    <button class="btn-reset" onclick="resetForm()">Limpar / Novo Jogo</button>
+                </div>
+            </div>
+
+            <hr style="margin-bottom: 25px; border: 0; border-top: 1px solid #eee;">
+            
+            <div class="input-group">
+                <label>Data da Partida</label>
+                <input type="date" id="data" onchange="gerarRodadaAutomatica()">
+            </div>
+            
+            <div class="input-group">
+                <label>Nome do Adversário</label>
+                <input type="text" id="visitante" placeholder="Ex: MALA FC">
+            </div>
+            
+            <div class="input-group">
+                <label>Rodada / Identificação</label>
+                <input type="text" id="rodada" placeholder="Ex: 1º Jogo da Temporada">
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn-acao" id="btnSalvar" onclick="salvarNoBanco()">Agendar e Salvar</button>
+                <button class="btn-delete" id="btnExcluir" onclick="excluirJogo()">Excluir</button>
+            </div>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script src="js/config.js"></script>
-    <script src="js/cadastro.js"></script>
+    <script src="js/cadastro-partida.js"></script>
 </body>
 </html>

@@ -1,41 +1,36 @@
+const BASE_URL = "https://dashboard-pontualfc-default-rtdb.firebaseio.com/temporada_2026";
 let todosJogos = [];
 
-async function carregarPaginaJogos() {
-    const data = await fetchData(); // Função global do api.js
-    if (!data) return;
-
-    // Converte objeto em array e ordena pela data mais recente
-    todosJogos = Object.keys(data).map(key => ({ id: key, ...data[key] }))
-        .sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
-
-    renderizarJogos(todosJogos);
-    configurarFiltro();
+async function carregar() {
+    try {
+        const resp = await fetch(`${BASE_URL}.json`);
+        const data = await resp.json();
+        if (!data) return;
+        todosJogos = Object.keys(data).map(key => ({ id: key, ...data[key] }))
+            .sort((a, b) => new Date(b.data.split('/').reverse().join('-')) - new Date(a.data.split('/').reverse().join('-')));
+        renderizar(todosJogos);
+    } catch (error) { console.error("Erro:", error); }
 }
 
-function renderizarJogos(lista) {
-    const container = document.getElementById('lista-jogos');
+function renderizar(listaParaExibir) {
+    const container = document.getElementById('lista');
     container.innerHTML = '';
 
-    if (lista.length === 0) {
-        container.innerHTML = '<p style="text-align:center; margin-top:20px;">Nenhum jogo encontrado para este período.</p>';
-        return;
-    }
-
-    lista.forEach(j => {
+    listaParaExibir.forEach(j => {
         const isFinished = j.status === 'finished';
         const classeStatus = isFinished ? (j.resultado_tipo || '') : 'upcoming';
         
-        // Processamento de detalhes
         const listaGols = j.gols_detalhes ? j.gols_detalhes.map(g => `<li>${g.nome} (${g.qtd})</li>`).join('') : '<li>-</li>';
         const listaAst = j.assist_detalhes ? j.assist_detalhes.map(a => `<li>${a.nome} (${a.qtd})</li>`).join('') : '<li>-</li>';
-        
+
+        // Lógica para capturar o MVP daquela partida específica
         let mvpNome = "N/A";
         if (isFinished && j.votos_melhor && j.votos_melhor.length > 0) {
             const ordenado = [...j.votos_melhor].sort((a, b) => b.qtd - a.qtd);
             mvpNome = ordenado[0].nome;
         }
 
-        const cardHtml = `
+        container.innerHTML += `
             <div class="game-card ${classeStatus}" onclick="toggleDetails('${j.id}')">
                 <div class="round-header">
                     <span class="round-tag">${j.rodada || 'Amistoso'}</span>
@@ -48,7 +43,7 @@ function renderizarJogos(lista) {
                     </div>
                     <div class="team visitante">${j.visitante}</div>
                 </div>
-                <div class="game-details" id="detalhe-${j.id}" style="display:none;">
+                <div class="game-details" id="detalhe-${j.id}">
                     <div class="details-grid">
                         <div>
                             <div class="detail-title">⚽ Gols</div>
@@ -70,29 +65,17 @@ function renderizarJogos(lista) {
                 </div>
             </div>
         `;
-        container.innerHTML += cardHtml;
     });
 }
 
 function toggleDetails(id) {
     const div = document.getElementById(`detalhe-${id}`);
-    if (div) {
-        div.style.display = div.style.display === 'none' ? 'block' : 'none';
-    }
+    div.style.display = div.style.display === 'block' ? 'none' : 'block';
 }
 
-function configurarFiltro() {
-    const selector = document.getElementById('month-filter');
-    selector.addEventListener('change', () => {
-        const mesSelecionado = selector.value;
-        if (mesSelecionado === 'todos') {
-            renderizarJogos(todosJogos);
-        } else {
-            const filtrados = todosJogos.filter(j => j.data.split('/')[1] === mesSelecionado);
-            renderizarJogos(filtrados);
-        }
-    });
+function filtrarJogos() {
+    const mes = document.getElementById('month-filter').value;
+    renderizar(mes === 'todos' ? todosJogos : todosJogos.filter(j => j.data.split('/')[1] === mes));
 }
 
-// Inicia a carga quando o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', carregarPaginaJogos);
+window.onload = carregar;
