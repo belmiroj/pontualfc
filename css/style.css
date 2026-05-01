@@ -260,6 +260,12 @@ th {
 }
 
 /* --- LISTAGEM DE JOGOS --- */
+.container {
+    max-width: 900px;
+    margin: 0 auto 50px auto;
+    padding: 0 15px;
+}
+
 .game-card {
     background: #fff;
     margin-bottom: 15px;
@@ -270,14 +276,13 @@ th {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s;
 }
 
 .game-card:hover {
     transform: translateY(-2px);
 }
 
-/* Classes Dinâmicas de Resultado */
 .game-card.vitoria {
     border-left-color: var(--win);
 }
@@ -316,6 +321,46 @@ th {
     grid-template-columns: 120px 1fr 120px 1fr;
     align-items: center;
     padding: 10px 20px 20px 20px;
+}
+
+.date {
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: bold;
+    text-align: center;
+    border-right: 1px solid #eee;
+}
+
+.team {
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    padding: 0 15px;
+}
+
+.team.mandante {
+    text-align: right;
+}
+
+.team.visitante {
+    text-align: left;
+}
+
+.score-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.score {
+    background: var(--bvb-black);
+    color: var(--bvb-yellow);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    min-width: 55px;
+    text-align: center;
 }
 
 /* --- FORMULÁRIOS E INPUTS --- */
