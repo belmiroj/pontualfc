@@ -1,25 +1,30 @@
-/* PONTUAL FC - Stylesheet Unificado 2026
-    Escopo: Dashboard, Listagem de Jogos, Cadastro e Lançamento de Dados
-*/
+/* * PONTUAL FC - Stylesheet Unificado 2026
+ * Sistema de Gestão de Partidas e Estatísticas
+ */
 
 :root {
-    /* Paleta de Cores */
+    /* Paleta de Cores (Identidade Visual) */
     --bvb-yellow: #FDE100;
     --bvb-black: #111111;
     --bg-gray: #f4f7f6;
     --text-dark: #333;
     --text-light: #fff;
     --text-muted: #666;
-    
-    /* Status de Jogo */
+
+    /* Cores de Status e Feedback */
     --win: #2ecc71;
     --draw: #f1c40f;
     --loss: #e74c3c;
     --upcoming: #3498db;
     --danger: #e74c3c;
+    --success: #27ae60;
 }
 
-/* --- RESET E ESTILOS GERAIS --- */
+/* --- RESET E ESTILOS BASE --- */
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
@@ -29,7 +34,7 @@ body {
     line-height: 1.5;
 }
 
-/* --- HEADER & NAVEGAÇÃO --- */
+/* --- CABEÇALHO E NAVEGAÇÃO --- */
 header {
     background-color: var(--bvb-black);
     border-bottom: 4px solid var(--bvb-yellow);
@@ -73,13 +78,14 @@ nav a {
     font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
-    transition: 0.3s;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
     color: var(--bvb-yellow);
 }
 
+/* Submenu Dropdown */
 .submenu {
     display: none;
     position: absolute;
@@ -108,7 +114,7 @@ nav a:hover {
     display: block;
 }
 
-/* --- CONTAINERS --- */
+/* --- LAYOUT E CONTENT BOXES --- */
 .container {
     max-width: 1200px;
     margin: 20px auto;
@@ -127,7 +133,7 @@ nav a:hover {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-/* --- DASHBOARD: CARDS DE ESTATÍSTICAS E ÚLTIMO JOGO --- */
+/* --- DASHBOARD E CARDS DE ESTATÍSTICAS --- */
 .last-game-card {
     background: var(--bvb-black);
     color: var(--text-light);
@@ -206,7 +212,7 @@ nav a:hover {
     color: var(--bvb-black);
 }
 
-/* --- TABELAS E GRIDS DE DADOS --- */
+/* --- TABELAS E GRIDS DE LÍDERES --- */
 .tables-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -252,7 +258,7 @@ td, th {
     font-weight: bold;
 }
 
-/* --- LISTAGEM DE JOGOS (CARDS) --- */
+/* --- LISTAGEM DE JOGOS --- */
 .game-card {
     background: #fff;
     margin-bottom: 15px;
@@ -263,13 +269,17 @@ td, th {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease;
 }
 
-.game-card:hover { transform: translateY(-2px); }
+.game-card:hover { 
+    transform: translateY(-2px); 
+}
+
+/* Classes Dinâmicas de Resultado */
 .game-card.vitoria { border-left-color: var(--win); }
-.game-card.empate { border-left-color: var(--draw); }
-.game-card.derrota { border-left-color: var(--loss); }
+.game-card.empate   { border-left-color: var(--draw); }
+.game-card.derrota  { border-left-color: var(--loss); }
 .game-card.upcoming { border-left-color: var(--upcoming); }
 
 .round-header {
@@ -306,7 +316,9 @@ h3 {
     color: var(--bvb-black);
 }
 
-.input-group { margin-bottom: 20px; }
+.input-group { 
+    margin-bottom: 20px; 
+}
 
 label {
     display: block;
@@ -326,6 +338,12 @@ input, select {
     font-size: 1rem;
     background-color: #fff;
     font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--bvb-yellow);
 }
 
 .score-grid {
@@ -333,7 +351,7 @@ input, select {
     gap: 15px;
 }
 
-/* --- BOTÕES --- */
+/* --- BOTÕES E ACÇÕES --- */
 .btn-group { 
     display: flex; 
     flex-direction: column; 
@@ -353,7 +371,14 @@ input, select {
     transition: opacity 0.2s;
 }
 
-.btn-acao:disabled { opacity: 0.6; cursor: not-allowed; }
+.btn-acao:hover {
+    opacity: 0.9;
+}
+
+.btn-acao:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+}
 
 .btn-delete {
     background: var(--danger);
@@ -367,7 +392,7 @@ input, select {
 }
 
 .btn-add {
-    background: #27ae60;
+    background: var(--success);
     color: white;
     border: none;
     padding: 0 15px;
@@ -388,7 +413,7 @@ input, select {
     text-transform: uppercase;
 }
 
-/* --- ELEMENTOS ESPECÍFICOS --- */
+/* --- COMPONENTES ESPECÍFICOS --- */
 .mvp-badge, .mvp-text {
     display: inline-block;
     color: var(--bvb-yellow);
@@ -410,14 +435,24 @@ input, select {
     text-align: center;
 }
 
-/* --- RESPONSIVIDADE --- */
+/* --- RESPONSIVIDADE (MEDIA QUERIES) --- */
+
+/* Tablets */
 @media (max-width: 1024px) {
-    .tables-grid { grid-template-columns: repeat(2, 1fr); }
+    .tables-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
 }
 
+/* Smartphones */
 @media (max-width: 600px) {
-    .stats-row { grid-template-columns: repeat(2, 1fr); }
-    .tables-grid { grid-template-columns: 1fr; }
+    .stats-row { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
+
+    .tables-grid { 
+        grid-template-columns: 1fr; 
+    }
     
     .game-header {
         grid-template-columns: 1fr 1fr 1fr;
@@ -428,13 +463,27 @@ input, select {
         gap: 10px;
     }
     
-    .score-grid { flex-direction: column; gap: 0; }
+    .score-grid { 
+        flex-direction: column; 
+        gap: 0; 
+    }
     
-    .btn-group { flex-direction: column; }
+    .btn-group { 
+        flex-direction: column; 
+    }
+}
+
+/* Botões em Row para telas médias/grandes */
+@media (min-width: 600px) {
+    .btn-group { 
+        flex-direction: row; 
+    }
     
-    @media (min-width: 600px) {
-        .btn-group { flex-direction: row; }
-        .btn-acao { flex: 2; }
-        .btn-delete { flex: 1; }
+    .btn-acao { 
+        flex: 2; 
+    }
+    
+    .btn-delete { 
+        flex: 1; 
     }
 }
