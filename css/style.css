@@ -259,6 +259,23 @@ th {
     font-weight: bold;
 }
 
+/* --- FILTRO --- */
+.filter-container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#month-filter {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    background: #fff;
+}
+
 /* --- LISTAGEM DE JOGOS --- */
 .container2 {
     max-width: 900px;
@@ -361,6 +378,44 @@ th {
     font-size: 1.1rem;
     min-width: 55px;
     text-align: center;
+}
+
+/* --- DETALHES --- */
+.game-details {
+    display: none;
+    background: #fdfdfd;
+    padding: 20px;
+    border-top: 1px solid #eee;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.detail-title {
+    font-weight: 800;
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+}
+
+.player-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.mvp-text {
+    color: #b8860b;
+    font-weight: bold;
+    font-size: 0.9rem;
 }
 
 /* --- FORMULÁRIOS E INPUTS --- */
@@ -530,6 +585,41 @@ select:focus {
 
     .btn-group {
         flex-direction: column;
+    }
+
+    .card span {
+        font-size: 1.3rem;
+    }
+    .logo {
+        font-size: 1rem;
+    }
+
+    .date {
+        grid-area: date;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 5px;
+        padding-bottom: 8px;
+    }
+
+    .team.mandante {
+        grid-area: teamA;
+        text-align: center;
+        padding: 0;
+    }
+
+    .score-box {
+        grid-area: score;
+    }
+
+    .team.visitante {
+        grid-area: teamB;
+        text-align: center;
+        padding: 0;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr 1fr;
     }
 }
 
