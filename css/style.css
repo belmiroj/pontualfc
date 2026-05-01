@@ -247,7 +247,8 @@ table {
     border-collapse: collapse;
 }
 
-td, th {
+td,
+th {
     padding: 10px 12px;
     font-size: 0.85rem;
     border-bottom: 1px solid #f0f0f0;
@@ -272,15 +273,26 @@ td, th {
     transition: transform 0.2s ease;
 }
 
-.game-card:hover { 
-    transform: translateY(-2px); 
+.game-card:hover {
+    transform: translateY(-2px);
 }
 
 /* Classes Dinâmicas de Resultado */
-.game-card.vitoria { border-left-color: var(--win); }
-.game-card.empate   { border-left-color: var(--draw); }
-.game-card.derrota  { border-left-color: var(--loss); }
-.game-card.upcoming { border-left-color: var(--upcoming); }
+.game-card.vitoria {
+    border-left-color: var(--win);
+}
+
+.game-card.empate {
+    border-left-color: var(--draw);
+}
+
+.game-card.derrota {
+    border-left-color: var(--loss);
+}
+
+.game-card.upcoming {
+    border-left-color: var(--upcoming);
+}
 
 .round-header {
     width: 100%;
@@ -316,8 +328,8 @@ h3 {
     color: var(--bvb-black);
 }
 
-.input-group { 
-    margin-bottom: 20px; 
+.input-group {
+    margin-bottom: 20px;
 }
 
 label {
@@ -329,7 +341,8 @@ label {
     margin-bottom: 8px;
 }
 
-input, select {
+input,
+select {
     width: 100%;
     padding: 14px;
     border: 1px solid #ddd;
@@ -341,7 +354,8 @@ input, select {
     transition: border-color 0.2s;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     outline: none;
     border-color: var(--bvb-yellow);
 }
@@ -352,10 +366,10 @@ input:focus, select:focus {
 }
 
 /* --- BOTÕES E ACÇÕES --- */
-.btn-group { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 12px; 
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .btn-acao {
@@ -375,9 +389,9 @@ input:focus, select:focus {
     opacity: 0.9;
 }
 
-.btn-acao:disabled { 
-    opacity: 0.5; 
-    cursor: not-allowed; 
+.btn-acao:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .btn-delete {
@@ -414,7 +428,8 @@ input:focus, select:focus {
 }
 
 /* --- COMPONENTES ESPECÍFICOS --- */
-.mvp-badge, .mvp-text {
+.mvp-badge,
+.mvp-text {
     display: inline-block;
     color: var(--bvb-yellow);
     font-weight: bold;
@@ -439,51 +454,51 @@ input:focus, select:focus {
 
 /* Tablets */
 @media (max-width: 1024px) {
-    .tables-grid { 
-        grid-template-columns: repeat(2, 1fr); 
+    .tables-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 /* Smartphones */
 @media (max-width: 600px) {
-    .stats-row { 
-        grid-template-columns: repeat(2, 1fr); 
+    .stats-row {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .tables-grid { 
-        grid-template-columns: 1fr; 
+    .tables-grid {
+        grid-template-columns: 1fr;
     }
-    
+
     .game-header {
         grid-template-columns: 1fr 1fr 1fr;
-        grid-template-areas: 
+        grid-template-areas:
             "date date date"
             "teamA score teamB";
         padding: 15px;
         gap: 10px;
     }
-    
-    .score-grid { 
-        flex-direction: column; 
-        gap: 0; 
+
+    .score-grid {
+        flex-direction: column;
+        gap: 0;
     }
-    
-    .btn-group { 
-        flex-direction: column; 
+
+    .btn-group {
+        flex-direction: column;
     }
 }
 
 /* Botões em Row para telas médias/grandes */
 @media (min-width: 600px) {
-    .btn-group { 
-        flex-direction: row; 
+    .btn-group {
+        flex-direction: row;
     }
-    
-    .btn-acao { 
-        flex: 2; 
+
+    .btn-acao {
+        flex: 2;
     }
-    
-    .btn-delete { 
-        flex: 1; 
+
+    .btn-delete {
+        flex: 1;
     }
 }
