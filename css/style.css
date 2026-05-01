@@ -1,6 +1,17 @@
 /* ==========================================================================
-   CONFIGURAÇÕES GERAIS E RESET
+   VARIÁVEIS E CONFIGURAÇÕES GERAIS
    ========================================================================== */
+:root {
+    --bvb-yellow: #FDE100;
+    --bvb-black: #111111;
+    --bg-gray: #f4f7f6;
+    --win: #2ecc71;
+    --draw: #f1c40f;
+    --loss: #e74c3c;
+    --upcoming: #3498db;
+    --white: #ffffff;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,216 +19,247 @@
 }
 
 body {
-    background-color: #f4f4f9;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-gray);
     color: #333;
     line-height: 1.6;
-    padding: 20px;
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
-    background: #fff;
+    padding: 20px 15px;
+}
+
+/* Container específico para formulários (Cadastro/Lançamento) */
+.container-form {
+    max-width: 800px;
+    margin: 30px auto;
+    background: var(--white);
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-h1, h2, h3 {
+/* ==========================================================================
+   HEADER E NAVEGAÇÃO (ESTILO ORIGINAL)
+   ========================================================================== */
+header {
+    background-color: var(--bvb-black);
+    border-bottom: 4px solid var(--bvb-yellow);
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+}
+
+.logo {
+    color: var(--bvb-yellow);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 15px;
+}
+
+.nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 70px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--bvb-yellow);
+}
+
+/* Submenu */
+.submenu {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: var(--bvb-black);
+    min-width: 170px;
+    list-style: none;
+    padding: 10px 0;
+    border-bottom: 3px solid var(--bvb-yellow);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.submenu li a {
+    padding: 12px 20px;
+    display: block;
+}
+
+.submenu li a:hover {
+    background: #222;
+}
+
+.nav-item:hover .submenu {
+    display: block;
+}
+
+/* ==========================================================================
+   DASHBOARD / CARDS (INDEX)
+   ========================================================================= */
+.last-game-card {
+    background: var(--bvb-black);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
     text-align: center;
-    color: #2c3e50;
+    border-bottom: 5px solid var(--bvb-yellow);
+}
+
+.last-game-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.lg-score {
+    font-size: 2rem;
+    font-weight: 900;
+    background: rgba(255,255,255,0.1);
+    padding: 5px 20px;
+    border-radius: 8px;
+}
+
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
     margin-bottom: 25px;
 }
 
-/* ==========================================================================
-   BOTÕES E LINKS
-   ========================================================================== */
-.btn {
-    display: inline-block;
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
+.card {
+    background: var(--white);
+    padding: 15px;
+    border-radius: 10px;
     text-align: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    margin-bottom: 10px;
-}
-
-.btn-primary {
-    background-color: #28a745;
-    color: white;
-}
-
-.btn-primary:hover {
-    background-color: #218838;
-    transform: translateY(-1px);
-}
-
-.btn-secondary {
-    background-color: #007bff;
-    color: white;
-}
-
-.btn-secondary:hover {
-    background-color: #0069d9;
-}
-
-.link-voltar {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
-    color: #666;
-    text-decoration: none;
-}
-
-.link-voltar:hover {
-    text-decoration: underline;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-bottom: 4px solid #ddd;
 }
 
 /* ==========================================================================
-   FORMULÁRIOS (CADASTRO E FILTROS)
+   FORMULÁRIOS E INPUTS
    ========================================================================== */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #555;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
 }
 
-input[type="text"],
-input[type="number"],
-input[type="date"],
-select {
+input, select {
     width: 100%;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 6px;
-    font-size: 15px;
-    background-color: #fafafa;
+    font-size: 1rem;
 }
 
-input:focus, select:focus {
+input:focus {
+    border-color: var(--bvb-yellow);
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-}
-
-.row {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-}
-
-.col {
-    flex: 1;
 }
 
 /* ==========================================================================
-   TABELAS (SCOUT E LISTAGEM DE JOGOS)
+   TABELAS E SCOUT
    ========================================================================== */
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-    margin-top: 20px;
-    border-radius: 8px;
+.table-box {
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
 }
 
-table th, table td {
-    padding: 12px 15px;
-    border: 1px solid #edf2f7;
+th, td {
+    padding: 12px;
     text-align: center;
+    border-bottom: 1px solid #eee;
 }
 
-table th {
-    background-color: #f8f9fa;
-    color: #4a5568;
+th {
+    background: #f8f9fa;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 0.05em;
 }
 
-table tr:nth-child(even) {
-    background-color: #fcfcfc;
-}
-
-/* Inputs pequenos dentro da tabela de scout */
 .input-mini {
-    width: 60px;
-    padding: 6px;
+    width: 55px;
+    padding: 5px;
     text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* Checkboxes na tabela */
-input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
 }
 
 /* ==========================================================================
-   CARDS E DASHBOARD (INDEX)
+   BOTÕES
    ========================================================================== */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.card-jogo {
-    border: 1px solid #eee;
+.btn {
+    display: block;
+    width: 100%;
     padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    background-color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.status-agendado {
-    color: #f39c12;
-    font-weight: bold;
+.btn-primary {
+    background-color: var(--bvb-yellow);
+    color: var(--bvb-black);
 }
 
-.status-finalizado {
-    color: #27ae60;
-    font-weight: bold;
+.btn-primary:hover {
+    background-color: #e5cc00;
+}
+
+.btn-save {
+    background-color: var(--win);
+    color: white;
 }
 
 /* ==========================================================================
-   RESPONSIVIDADE (MOBILE)
+   RESPONSIVIDADE
    ========================================================================== */
-@media (max-width: 600px) {
-    .container {
-        padding: 15px;
-    }
-    
-    .row {
-        flex-direction: column;
-        gap: 0;
-    }
+@media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    header { padding: 0 2%; }
+}
 
-    .btn {
-        padding: 16px;
-    }
-
-    table th, table td {
-        padding: 8px;
-        font-size: 14px;
-    }
+@media (max-width: 480px) {
+    .lg-score { font-size: 1.5rem; }
+    .nav-item { font-size: 0.6rem; }
 }
