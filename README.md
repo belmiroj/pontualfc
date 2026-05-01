@@ -1,51 +1,42 @@
-Acesso em https://belmiroj.github.io/pontualfc/index.html
+# ⚽ Pontual FC - Sistema de Gestão Esportiva
 
-⚽ Pontual FC - Gestão de Futebol 7
-Este projeto é um dashboard interativo e sistema de gestão desenvolvido para o Pontual FC, um time de futebol 7. A aplicação permite o acompanhamento de desempenho da equipe, agendamento de partidas e controle detalhado de estatísticas individuais (artilharia, assistências e MVP).
+[![Link do Projeto](https://img.shields.io/badge/Acesse_o_Site-Acesse_Aqui-0078d7?style=for-the-badge&logo=github&logoColor=white)](https://belmiroj.github.io/pontualfc/index.html)
 
-🚀 Tecnologias Utilizadas
-HTML5: Estruturação semântica das páginas de dashboard, cadastro e listagem.
+O **Pontual FC** é uma solução web desenvolvida para a gestão completa de um time de futebol 7. Este sistema foi criado para substituir processos manuais e planilhas, oferecendo uma plataforma centralizada para o agendamento de partidas, acompanhamento de desempenho coletivo e controle estatístico detalhado dos atletas (artilharia, assistências e MVP).
 
-CSS3: Estilização moderna com uso de variáveis CSS, layouts responsivos (Grids e Flexbox) e submenus interativos.
+Este projeto é um componente central do meu portfólio de transição de carreira, demonstrando competências em desenvolvimento front-end, integração com back-end (BaaS) e foco na experiência do usuário.
 
-JavaScript (ES6+): Manipulação dinâmica do DOM, lógica de filtros e integração com persistência de dados.
+---
 
-Firebase: Utilizado como Back-end as a Service (BaaS) para armazenamento e recuperação de dados em tempo real.
+## 💻 Tecnologias e Ferramentas
 
-📊 Funcionalidades Principais
-Dashboard de Estatísticas: Visão geral do desempenho da temporada, incluindo vitórias, empates, derrotas, saldo de gols e aproveitamento percentual.
+| Categoria | Tecnologia | Aplicação no Projeto |
+| :--- | :--- | :--- |
+| **Front-end** | HTML5 | Estruturação semântica e acessível das interfaces. |
+| **Estilização** | CSS3 | Layouts responsivos com **Flexbox/Grid**, variáveis CSS e design moderno. |
+| **Lógica** | JavaScript (ES6+) | Manipulação dinâmica do DOM, lógica de filtros e tratamento de eventos. |
+| **Back-end** | Firebase | Persistência de dados em tempo real e hospedagem via BaaS. |
 
-Gestão de Partidas: Sistema completo para agendar novos confrontos e editar informações de jogos existentes.
+---
 
-Lançamento de Resultados: Interface para inserir placares e contabilizar dados individuais por jogador (Gols, Assistências e Votos de MVP).
+## 📊 Funcionalidades em Destaque
 
-Filtro por Temporada: Visualização organizada de jogos com filtragem dinâmica por mês.
+* **Dashboard Analítico:** Visão consolidada da performance do time (vitórias, empates, derrotas, saldo de gols e aproveitamento).
+* **Gestão de Confrontos:** Sistema de CRUD para agendamento e edição de partidas.
+* **Scout Individual:** Controle preciso de estatísticas de jogo (gols, assistências e votos de "Craque do Jogo").
+* **Filtros Inteligentes:** Navegação por histórico mensal para análise da temporada 2026.
+* **Gestão de Elenco:** Cadastro dinâmico de jogadores extras durante o lançamento de dados.
 
-Controle de Elenco: Possibilidade de adicionar jogadores extras dinamicamente durante o lançamento de dados.
+---
 
-🛠️ Estrutura do Projeto
-O projeto está organizado de forma modular para facilitar a manutenção:
+## 📂 Arquitetura do Repositório
 
-/css: Arquivos de estilização global e componentes.
+O projeto segue uma estrutura modular para facilitar a manutenção e legibilidade:
 
-/js: Lógica de negócio separada por contexto (dashboard, cadastro, listagem de jogos).
-
-index.html: Dashboard principal com os cards de performance.
-
-cadastro-partida.html: Formulário de agendamento.
-
-jogos-2026.html: Histórico de partidas da temporada.
-
-lancar-dados.html: Painel de controle de scout individual.
-
-💡 Sobre o Projeto
-Este sistema foi desenvolvido para resolver a necessidade de centralizar as informações do Pontual FC, substituindo controles manuais por uma plataforma web acessível e visualmente intuitiva. Ele faz parte do meu portfólio de transição de carreira, demonstrando proficiência em operações de CRUD, integração com bancos de dados NoSQL e design focado na experiência do usuário.
-
-Como rodar o projeto localmente
-Clone o repositório:
-
-Bash
-git clone https://github.com/belmiroj/pontualfc.git
-Abra o arquivo index.html em seu navegador ou utilize a extensão Live Server no VS Code.
-
-Desenvolvido por Belmiro Junior
+```text
+├── /css             # Estilização global e componentes
+├── /js              # Scripts de lógica (Dashboard, Jogos, Cadastro)
+├── index.html       # Painel principal (Dashboard)
+├── cadastro-partida.html  # Formulário de agendamento
+├── jogos-2026.html  # Histórico da temporada
+└── lancar-dados.html # Painel de lançamento de scout
