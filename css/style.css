@@ -1442,3 +1442,11 @@ textarea:focus {
   text-decoration-color: rgba(56, 189, 248, 0.45);
   text-underline-offset: 3px;
 }
+
+.app-header {
+    padding-top: calc(12px + env(safe-area-inset-top));
+}
+
+.bottom-nav {
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
