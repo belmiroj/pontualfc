@@ -2,80 +2,394 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pontual FC | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Pontual FC App</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <header>
-        <a href="index.html" class="logo">PONTUAL FC</a>
-        <nav>
-            <ul>
-                <li class="nav-item"><a href="index.html">Início</a></li>
-                <li class="nav-item">
-                    <a>Jogos ▾</a>
-                    <ul class="submenu">
-                        <li><a href="jogos-2026.html">Temporada 2026</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a>Cadastro ▾</a>
-                    <ul class="submenu">
-                        <li><a href="cadastro-partida.html">Agendar Partida</a></li>
-                        <li><a href="lancar-dados.html">Lançar Resultados</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+    <!-- Header Nativo com Seletor de Temporada -->
+    <header class="app-header">
+        <span class="app-logo">PONTUAL FC</span>
+        <div class="season-selector-wrapper">
+            <select id="season-select" class="season-select" onchange="trocarTemporada(this.value)">
+                <option value="2026">Temporada 2026</option>
+                <option value="2027">Temporada 2027</option>
+            </select>
+        </div>
     </header>
 
-    <div class="container">
-        <div id="ultimo-jogo-container"></div>
+    <!-- Conteúdo Principal Dinâmico -->
+    <main class="app-content">
 
-        <div class="stats-row">
-            <div class="card neutral"><small>Jogos</small><span id="stat-total">0</span></div>
-            <div class="card" style="border-color: var(--win); color: var(--win)"><small>Vitórias</small><span id="stat-vitorias">0</span></div>
-            <div class="card" style="border-color: var(--draw); color: var(--draw)"><small>Empates</small><span id="stat-empates">0</span></div>
-            <div class="card" style="border-color: var(--loss); color: var(--loss)"><small>Derrotas</small><span id="stat-derrotas">0</span></div>
-        </div>
+        <!-- ABA 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-page active">
+            <div id="ultimo-jogo-container"></div>
+            <div id="streak-container"></div>
 
-        <div class="stats-row">
-            <div class="card" style="border-color: var(--win); color: var(--win)"><small>Gols Pró</small><span id="stat-gp">0</span></div>
-            <div class="card" style="border-color: var(--loss); color: var(--loss)"><small>Gols Contra</small><span id="stat-gc">0</span></div>
-            <div class="card" id="card-sg"><small>Saldo Gols</small><span id="stat-sg">0</span></div>
-            <div class="card" id="card-aprov"><small>Aproveitamento</small><span id="stat-aprov">0%</span></div>
-        </div>
+            <div class="section-title">Estatísticas do Time</div>
+            <div class="stats-grid">
+                <div class="stat-card"><small>Jogos</small><span id="stat-total">0</span></div>
+                <div class="stat-card win"><small>Vitórias</small><span id="stat-vitorias">0</span></div>
+                <div class="stat-card draw"><small>Empates</small><span id="stat-empates">0</span></div>
+                <div class="stat-card loss"><small>Derrotas</small><span id="stat-derrotas">0</span></div>
+                <div class="stat-card win"><small>Gols Pró</small><span id="stat-gp">0</span></div>
+                <div class="stat-card loss"><small>Gols Contra</small><span id="stat-gc">0</span></div>
+                <div class="stat-card" id="card-sg"><small>Saldo Gols</small><span id="stat-sg">0</span></div>
+                <div class="stat-card" id="card-aprov"><small>Aproveitamento</small><span id="stat-aprov">0%</span></div>
+            </div>
 
-        <div class="tables-grid">
-            <div class="table-box">
-                <h3>⚽ Artilharia</h3>
-                <div class="scroll-container">
-                    <table><tbody id="lista-gols"></tbody></table>
+            <div class="rankings-container">
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3>⚽ Artilharia</h3>
+                        <button class="btn-see-more" onclick="abrirModalRanking('⚽ Artilharia', artilhariaCompleta)">Ver todos</button>
+                    </div>
+                    <table class="rank-table"><tbody id="lista-gols"></tbody></table>
+                </div>
+
+                <!-- Card oculto automaticamente se a temporada não tiver assistências -->
+                <div class="rank-card" id="card-ranking-assist" style="display:none;">
+                    <div class="rank-header">
+                        <h3>👟 Assistências</h3>
+                        <button class="btn-see-more" onclick="abrirModalRanking('👟 Assistências', assistenciasCompleta)">Ver todos</button>
+                    </div>
+                    <table class="rank-table"><tbody id="lista-assist"></tbody></table>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3>🏆 Votos (MVP)</h3>
+                        <button class="btn-see-more" onclick="abrirModalRanking('🏆 Votos (MVP)', votosCompleta)">Ver todos</button>
+                    </div>
+                    <table class="rank-table"><tbody id="lista-votos"></tbody></table>
+                </div>
+
+                <div class="rank-card">
+                    <div class="rank-header">
+                        <h3>📋 Presenças</h3>
+                        <button class="btn-see-more" onclick="abrirModalRanking('📋 Presenças', presencasCompleta)">Ver todos</button>
+                    </div>
+                    <table class="rank-table"><tbody id="lista-presencas"></tbody></table>
                 </div>
             </div>
-            <div class="table-box">
-                <h3>👟 Assistências</h3>
-                <div class="scroll-container">
-                    <table><tbody id="lista-assist"></tbody></table>
+        </section>
+
+		<!-- ABA 2: HISTÓRICO DE JOGOS + CONFRONTOS DIRETOS (H2H) -->
+        <section id="tab-jogos" class="tab-page">
+            <div class="filter-bar-grid">
+                <select id="adversario-filter" onchange="filtrarJogos()">
+                    <option value="todos">Todos os Adversários</option>
+                </select>
+                <select id="month-filter" onchange="filtrarJogos()">
+                    <option value="todos">Todos os Meses</option>
+                    <option value="01">Janeiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+            </div>
+
+			<!-- Card Dinâmico de Retrospecto Direto (aparece ao selecionar um adversário) -->
+            <div id="h2h-summary-container"></div>
+			
+            <div id="lista-jogos-cards" class="games-list"></div>
+        </section>
+
+        <!-- ABA 3: IMPORTAR DO WHATSAPP -->
+        <section id="tab-importar" class="tab-page">
+            <!-- ETAPA 1: COLAR MENSAGENS -->
+			<div id="wpp-step-input" class="form-card">
+                <div class="wpp-header-title">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <div>
+                        <h3>Importar Partida</h3>
+                        <small>Cole as listas do grupo para gerar o scout</small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-action">
+                        <label>1. Lista de Confirmação</label>
+                        <button type="button" class="btn-paste" onclick="colarClipboard('wpp-presenca')">
+                            <i class="fa-regular fa-paste"></i> Colar
+                        </button>
+                    </div>
+                    <textarea id="wpp-presenca" rows="9" placeholder="💛🖤 CONFIRMAÇÕES 41ª PARTIDA - TEMPORADA 2026 💛🖤&#10;&#10;⚽ Pontual X Barcelona ⚽&#10;Data e Hora - 19/11/2026 - 21 horas&#10;&#10;Confirmados:✅&#10;Goleiros:🧤&#10;1- Luiz&#10;&#10;Linha:⚽&#10;1- Vagner&#10;2- Deivid&#10;&#10;Treinador:🤵🏼‍♂️&#10;1- Rogério Baron"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-with-action">
+                        <label>2. Placar, Votos e Gols</label>
+                        <button type="button" class="btn-paste" onclick="colarClipboard('wpp-scout')">
+                            <i class="fa-regular fa-paste"></i> Colar
+                        </button>
+                    </div>
+                    <textarea id="wpp-scout" rows="9" placeholder="Pontual 9 X 3 Barcelona&#10;&#10;Diego&#10;Luiz&#10;Pontual&#10;Rani&#10;&#10;Gols:&#10;Diego (2X)&#10;Rani (2X)&#10;Braun"></textarea>
+                </div>
+
+                <div class="button-stack">
+                    <button type="button" class="btn btn-whatsapp" onclick="processarMensagensWhatsApp()">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Processar e Validar Dados
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="limparImportacao()">Limpar Campos</button>
                 </div>
             </div>
-            <div class="table-box">
-                <h3>🏆 Votos (MVP)</h3>
-                <div class="scroll-container">
-                    <table><tbody id="lista-votos"></tbody></table>
+
+            <!-- ETAPA 2: TELA DE VALIDAÇÃO ANTES DE ENVIAR -->
+            <div id="wpp-step-validate" style="display: none;">
+                <div class="validation-banner">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <div>
+                        <strong>Conferência antes de salvar</strong>
+                        <small>Revise placar, presentes, gols e votos antes de enviar ao banco.</small>
+                    </div>
+                </div>
+
+                <div id="wpp-alerts-container"></div>
+
+                <div class="form-card" style="margin-bottom: 14px;">
+                    <h3>Dados da Partida</h3>
+
+                    <div class="form-group" id="wpp-existing-match-box" style="display:none;">
+                        <label>Destino no Firebase</label>
+                        <select id="wpp-target-key">
+                            <option value="">+ Criar como Nova Partida</option>
+                        </select>
+                    </div>
+
+                    <div class="grid-2-cols">
+                        <div class="form-group">
+                            <label>Data</label>
+                            <input type="date" id="val-data" onchange="atualizarRodadaValidacao()">
+                        </div>
+                        <div class="form-group">
+                            <label>Dia Semana</label>
+                            <input type="text" id="val-dia" maxlength="3" placeholder="QUI">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Adversário</label>
+                        <input type="text" id="val-visitante" placeholder="EX: BARCELONA">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rodada</label>
+                        <input type="text" id="val-rodada" placeholder="Ex: 41º Jogo da Temporada">
+                    </div>
+
+                    <div class="score-inputs" style="margin-top: 12px; margin-bottom: 8px;">
+                        <div class="score-field">
+                            <label>PONTUAL</label>
+                            <input type="number" id="val-gp" value="0" onchange="atualizarResultadoValidacao()">
+                        </div>
+                        <span class="vs-divider">X</span>
+                        <div class="score-field">
+                            <label>ADV</label>
+                            <input type="number" id="val-gc" value="0" onchange="atualizarResultadoValidacao()">
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Resultado Computado</label>
+                        <select id="val-resultado">
+                            <option value="vitoria">Vitória</option>
+                            <option value="empate">Empate</option>
+                            <option value="derrota">Derrota</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-card">
+                    <div class="rank-header">
+                        <h3>Elenco & Scout (<span id="val-count-presentes">0</span> presentes)</h3>
+                        <span id="val-pontual-badge" class="round-badge" style="display:none;">+0 Pontual</span>
+                    </div>
+
+                    <div class="add-player-bar">
+                        <input type="text" id="val-novo-jogador" placeholder="Adicionar jogador...">
+                        <button type="button" onclick="adicionarJogadorValidacao()" class="btn btn-small">+</button>
+                    </div>
+
+                    <div id="val-players-list" class="val-players-container"></div>
+
+                    <div class="button-stack">
+                        <button type="button" id="btnConfirmarImportacao" class="btn btn-whatsapp" onclick="confirmarEnvioImportacao()">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Confirmar e Salvar no Firebase
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="voltarParaEdicaoTexto()">
+                            <i class="fa-solid fa-arrow-left"></i> Voltar e Editar Texto
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="table-box">
-                <h3>📋 Presenças</h3>
-                <div class="scroll-container">
-                    <table><tbody id="lista-presencas"></tbody></table>
+        </section>
+
+        <!-- ABA 4: AGENDAR / EDITAR PARTIDA -->
+        <section id="tab-agendar" class="tab-page">
+            <div class="form-card">
+                <h3 id="form-title">Novo Agendamento</h3>
+
+                <div class="form-group">
+                    <label>Editar jogo já existente?</label>
+                    <select id="select-jogos" onchange="carregarDadosJogo(this.value)">
+                        <option value="">-- NOVO CADASTRO --</option>
+                    </select>
                 </div>
+
+                <div class="form-group">
+                    <label>Data da Partida</label>
+                    <input type="date" id="data" onchange="gerarRodadaAutomatica()">
+                </div>
+
+                <div class="form-group">
+                    <label>Nome do Adversário</label>
+                    <input type="text" id="visitante" placeholder="Ex: MALA FC">
+                </div>
+
+                <div class="form-group">
+                    <label>Rodada / Identificação</label>
+                    <input type="text" id="rodada" placeholder="Ex: 1º Jogo da Temporada">
+                </div>
+
+                <div class="button-stack">
+                    <button class="btn btn-primary" id="btnSalvar" onclick="salvarNoBanco()">Agendar Partida</button>
+                    <button class="btn btn-secondary" onclick="resetForm()">Limpar Formulário</button>
+                    <button class="btn btn-danger" id="btnExcluir" style="display:none;" onclick="excluirJogo()">Excluir Partida</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABA 5: LANÇAR SCOUT / RESULTADOS -->
+        <section id="tab-scout" class="tab-page">
+            <div class="form-card">
+                <h3>Lançar Placar & Scout</h3>
+
+                <div class="form-group">
+                    <label>Selecione a Partida</label>
+                    <select id="sel-jogo" onchange="puxarDadosExistentes(this.value)">
+                        <option value="">Carregando partidas...</option>
+                    </select>
+                </div>
+
+                <div class="score-inputs">
+                    <div class="score-field">
+                        <label>PONTUAL</label>
+                        <input type="number" id="gp" value="0">
+                    </div>
+                    <span class="vs-divider">X</span>
+                    <div class="score-field">
+                        <label>ADV</label>
+                        <input type="number" id="gc" value="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Resultado Final</label>
+                    <select id="status-jogo">
+                        <option value="vitoria">Vitória</option>
+                        <option value="empate">Empate</option>
+                        <option value="derrota">Derrota</option>
+                    </select>
+                </div>
+
+                <div class="add-player-bar">
+                    <input type="text" id="novo-jogador-nome" placeholder="Jogador Extra">
+                    <button onclick="adicionarJogador()" class="btn btn-small">+</button>
+                </div>
+
+                <div class="scout-table-wrapper">
+                    <table class="scout-table">
+                        <thead>
+                            <tr>
+                                <th>✔</th>
+                                <th>Jogador</th>
+                                <th>Gols</th>
+                                <th>Ast</th>
+                                <th>Votos</th>
+                            </tr>
+                        </thead>
+                        <tbody id="elenco"></tbody>
+                    </table>
+                </div>
+
+                <button id="btnSalvarScout" onclick="salvarResultado()" class="btn btn-primary full-width">Salvar Scout no Firebase</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Sheet Modal (Rankings Completos) -->
+    <div id="modal-bottom-sheet" class="bottom-sheet-overlay" onclick="fecharModalRanking(event)">
+        <div class="bottom-sheet-content">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <h3 id="modal-ranking-titulo">Ranking Completo</h3>
+                <button class="btn-close-sheet" onclick="fecharModalRanking(null, true)">&times;</button>
+            </div>
+            <div class="sheet-body">
+                <table class="rank-table">
+                    <tbody id="modal-ranking-corpo"></tbody>
+                </table>
             </div>
         </div>
     </div>
+	
+	<!-- Bottom Sheet Modal (Ficha Individual do Jogador) -->
+    <div id="modal-player-sheet" class="bottom-sheet-overlay" onclick="fecharFichaJogador(event)">
+        <div class="bottom-sheet-content">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <div class="player-sheet-title">
+                    <div class="player-avatar" id="player-sheet-avatar">PF</div>
+                    <div>
+                        <h3 id="player-sheet-nome">JOGADOR</h3>
+                        <small id="player-sheet-sub">Temporada 2026</small>
+                    </div>
+                </div>
+                <button class="btn-close-sheet" onclick="fecharFichaJogador(null, true)">&times;</button>
+            </div>
+            <div class="sheet-body" id="player-sheet-body"></div>
+        </div>
+    </div>
 
-    <!-- Scripts -->
-    <script src="js/dashboard.js"></script>
+    <!-- Toast Nativo de Feedback -->
+    <div id="app-toast" class="app-toast"></div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="switchTab('tab-dashboard', this)">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Início</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('tab-jogos', this)">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Jogos</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('tab-importar', this)">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>Importar</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('tab-agendar', this)">
+            <i class="fa-solid fa-calendar-plus"></i>
+            <span>Agendar</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('tab-scout', this)">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <span>Scout</span>
+        </button>
+    </nav>
+
+    <script src="js/app.js"></script>
 </body>
 </html>
